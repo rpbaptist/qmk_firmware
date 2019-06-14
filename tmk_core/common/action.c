@@ -915,7 +915,7 @@ bool is_tap_key(keypos_t key)
         case ACT_LAYER_TAP:
         case ACT_LAYER_TAP_EXT:
             switch (action.layer_tap.code) {
-                case 0x00 ... 0xdf:
+                case 0x00 ... 0xE7:
                 case OP_TAP_TOGGLE:
                 case OP_ONESHOT:
                     return true;
@@ -923,7 +923,7 @@ bool is_tap_key(keypos_t key)
             return false;
         case ACT_SWAP_HANDS:
             switch (action.swap.code) {
-                case 0x00 ... 0xdf:
+                case 0x00 ... 0xE7:
                 case OP_SH_TAP_TOGGLE:
                     return true;
             }
