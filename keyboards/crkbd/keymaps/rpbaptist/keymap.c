@@ -38,6 +38,7 @@ enum custom_keycodes {
 #define KC_CTGUI LCTL_T(KC_LGUI)
 #define KC_CTENT RCTL_T(KC_ENT)
 
+#define KC_ALTQT LALT_T(KC_QUOTE)
 #define KC_ALTBR LALT_T(KC_LBRACKET)
 #define KC_GUIBR RGUI_T(KC_RBRACKET)
 
@@ -71,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------.                ,-----------------------------------------.
         ESC,     Q,     W,     F,     P,     B,                      J,     L,    U,     Y,   SCLN,  BSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      FNTAB,     A,     R,     S,     T,     G,                      M,     N,     E,     I,     O,  QUOT,\
+      FNTAB,     A,     R,     S,     T,     G,                      M,     N,     E,     I,     O, ALTQT,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
       CTGUI,     Z,     X,     C,     D,     V,                      K,     H,  COMM,   DOT,  SLSH, CTENT,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
