@@ -34,7 +34,7 @@ enum custom_keycodes {
 #define KC_EXT MO(_GAMING_EXT)
 
 #define KC_FNTAB LT(_FN, KC_TAB)
-#define KC_SMSPC LT(_SYM, KC_SPC)
+// #define KC_SMSPC LT(_SYM, KC_SPC)
 #define KC_SYMBR LT(_SYM, KC_LBRACKET)
 #define KC_GMSPC LT(_GAMING_EXT, KC_SPC)
 
@@ -42,7 +42,7 @@ enum custom_keycodes {
 #define KC_CTENT RCTL_T(KC_ENT)
 
 #define KC_ALTQT LALT_T(KC_QUOTE)
-#define KC_ALTBR LALT_T(KC_LBRACKET)
+// #define KC_ALTBR LALT_T(KC_LBRACKET)
 #define KC_GUIBR RGUI_T(KC_RBRACKET)
 
 #define KC_TBFWD LCTL(KC_TAB)
