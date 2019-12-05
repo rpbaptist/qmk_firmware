@@ -10,7 +10,7 @@ enum layer_names {
   _MOUSE,
   _NUM,
   _NAV,
-  _UTIL
+  _META
 };
 
 enum custom_keycodes {
@@ -152,7 +152,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //`--------------------------'  `--------------------------'
   ),
 
-  [_UTIL] = LAYOUT( \
+  [_META] = LAYOUT( \
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
         RESET, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, COLEMAK,                      RGB_IDL, RGB_MAP, RGB_SPL, XXXXXXX, RGB_HUD, RGB_HUI,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -168,10 +168,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(default_layer_state)) {
         case _COLEMAKDHM:
-            state = update_tri_layer_state(state, _NUM, _NAV, _UTIL);
+            state = update_tri_layer_state(state, _NUM, _NAV, _META);
             break;
         case _GAMING:
-            state = update_tri_layer_state(state, _GAMING_EXT, _NAV, _UTIL);
+            state = update_tri_layer_state(state, _GAMING_EXT, _NAV, _META);
             break;
     }
     return state;
@@ -245,8 +245,8 @@ void render_status(void) {
         case _MOUSE:
             oled_write_P(PSTR("Mouse"), false);
             break;
-        case _UTIL:
-            oled_write_P(PSTR("Util "), false);
+        case _META:
+            oled_write_P(PSTR("Meta "), false);
             break;
         default:
             oled_write_P(PSTR("Unkn "), false);
@@ -350,7 +350,7 @@ void rgb_matrix_indicators_user(void) {
             case _NAV:
                 rgb_matrix_layer_helper(HSV_SPRINGGREEN, LED_FLAG_UNDERGLOW);
                 break;
-            case _UTIL:
+            case _META:
                 rgb_matrix_layer_helper(HSV_PINK, LED_FLAG_UNDERGLOW);
                 break;
             case _MOUSE:
