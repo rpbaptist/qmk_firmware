@@ -10,9 +10,13 @@ Many thanks to foostan for the keyboard, all QMK contributors and drashna specif
 
 ### COLEMAKDHM
 
-Main typing layer. I really love having SHIFT available on thumbs. I am a left thumb space bar person, so I put SPACE there and ENTER on right. I use CTRL key combos lot in my text editor and desktop environment. That's why I have two of them. I also found them to be a great position for the square brackets. (`[` and `]`)
+Main typing layer. I really love having SHIFT available on thumbs. I am a left thumb space bar person, so I put SPACE there and ENTER on right. I use CTRL key combos lot in my text editor and desktop environment. That's why I have two of them. I also found them to be a great position for the square brackets. (`[` and `]`). These become parenthesis (`(` and `)`) on either of the layers.
+
+Holding SHIFT while tapping BACKSPACE will output DEL. Holding both SHIFT keys will output SHIFT+DEL.
 
 I don't know about you but "lower" and "raise" don't mean that much to me. I named my layers `NUM`, short for numbers and `NAV`, short for navigation. Holding the key will activate the layer for as long as it is held, double tapping it will switch to it. Single tapping it once will switch to main layer again.
+
+Holding TAB will access `MOUSE` layer.
 
 Everything else is pretty standard I'd say.
 
@@ -22,15 +26,17 @@ Includes a number row, the symbols normally on SHIFT and numbers, as well as a n
 
 ### NAV
 
-This is where I access arrow keys, page up, down, home, end and mouse control. I also added general tab forward and backward keys. I use these in my browser, terminal and text editor. 
-
-## FN
-
-Short for function. This gives access to the function keys, as well as rarely used keys on the left side and often used symbols (for me) on the right side. It is accessed by holding TAB.
+This is where I access arrow keys, page up, down, home, end and F keys. I also added general tab forward and backward keys. Tab close and window close. I primarily use these in my browser, terminal and text editor.
 
 ### UTIL
 
 Short for utility. This is accessed by pressing both `NUM` and `NAV` at the same time. It has a software `RESET` key, media keys, RGB control and switches main layer between Colemak and a gaming layer.
+
+### MOUSE
+
+A simple set up which changes where the arrows are on `NAV` to mouse directions. There's also scroll wheel and mouse clicks of course.
+
+The left thumb keys change into accelleration control keys.
 
 ### GAMING
 
@@ -38,11 +44,20 @@ Sometimes I switch to type in Discord, Steam, or in game chat, so I think it's m
 
 I put movement on FRST (would be ESDF on QWERTY), because it lines up more comfortably with the columnar staggered layout of the Corne. It also gives more easy access to all keys on left half.
 
-Most notable here is that there are no tap and hold differences anymore on left hand side besides the new layer key. This is a different layer than `NUM`. 
+Most notable here is that there are no tap and hold differences anymore on left hand side besides the new layer key. This is a different layer than `NUM`.
 
 ### GAMING_EXT
 
-This is the gaming extended layer where movement keys remain the same. This means I can keep moving while accessing second layer keys. All other keys are keys on which I can easily rebind something. Besides that it gives me the function keys and an ENTER key which does not change. This is good when a game requires you to hold ENTER.
+This is the gaming extended layer where movement keys remain the same. This means I can keep moving while accessing second layer keys. All other keys are keys on which I can easily rebind something. Besides that it gives me an ENTER key which does not switch. This is good when a game requires you to hold ENTER.
+
+## RGB
+
+I took a big inspiration from Drashna's RGB configuration and tweaked it.
+
+- `RGB_UND`: Toggles underglow indicators on and off. Each layer has its own color.
+- `RGB_IDL`: This will enable/disable idle mode. By default, whent typing, the `RGB_MATRIX_TYPING_HEATMAP` will be used. When the idle timeout has exceeded the secondary animation will be activated, which is `RGB_MATRIX_CYCLE_ALL` by default. When switching to `GAMING` layer the timeout will be reduced and the idle animation changed to `RGB_MATRIX_RAINBOW_PINWHEELS`.
+   When idle mode enabled, `RGB_MATRIX_TYPING_HEATMAP` and `RGB_MATRIX_MULTISPLASH` will be used for active animation. All others for idle animation. When disabling idle mode, the current idle animation will be activated. Additionally, on idling, the underglow layer indication will be deactivated.
+- There are no RGB mode cycle keys, but instead several keys to use RGB directly. Each has their own default speed, although this can be changed.
 
 ## Notes
 
@@ -50,8 +65,4 @@ I use MT3 Godspeed caps and thought it would be fun to theme the OLED output tow
 
 ## Building
 
-I am using DFU and have to flash both halves individually.
-
-Left half: `make crkbd/rev1:rpbaptist:dfu-split-left`
-
-Right half: `make crkbd/rev1:rpbaptist:dfu-split-right RGB_MATRIX_SPLIT_RIGHT=yes`
+`make crkbd/rev1:rpbaptist:dfu`
