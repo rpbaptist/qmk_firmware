@@ -492,6 +492,80 @@ switch (temp_keycode) {
             unregister_code(KC_BSPC);
         }
         return false;
+#ifdef RGB_MATRIX_ENABLE
+        case COLEMAK:
+            if (record->event.pressed) {
+                user_config.rgb_matrix_idle_timeout = 60000;
+                rgb_matrix_update_mode(RGB_MATRIX_CYCLE_ALL, RGB_MATRIX_ANIMATION_SPEED_SLOWER, false);
+            }
+            return true;
+        case GAMING:
+            if (record->event.pressed) {
+                if (!user_config.rgb_layer_change) {
+                    user_config.rgb_layer_change = true;
+                }
+                user_config.rgb_matrix_idle_timeout = 10000;
+                rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
+            }
+            return true;
+        case RGB_RST:
+            if (record->event.pressed) {
+                rgb_matrix_set_defaults();
+                rgb_matrix_enable();
+            }
+            break;
+        case RGB_UND:  // Toggle separate underglow status
+            if (record->event.pressed) {
+                user_config.rgb_layer_change ^= 1;
+                eeconfig_update_user(user_config.raw);
+                if (user_config.rgb_layer_change) {
+                    layer_state_set(layer_state);  // This is needed to immediately set the layer color (looks better)
+                } else {
+                    rgb_matrix_layer_helper(0, 0, 0, LED_FLAG_UNDERGLOW);
+                }
+            }
+            break;
+        case RGB_IDL:  // Toggle idle/heatmap animation
+            if (record->event.pressed) {
+                user_config.rgb_matrix_idle_anim ^= 1;
+                if (user_config.rgb_matrix_idle_anim) {
+                    rgb_matrix_update_mode(user_config.rgb_matrix_active_mode, user_config.rgb_matrix_active_speed, true);
+                } else {
+                    rgb_matrix_update_current_mode(user_config.rgb_matrix_idle_mode, user_config.rgb_matrix_idle_speed);
+                }
+            }
+            break;
+        case RGB_MAP:
+            if (record->event.pressed) {
+                rgb_matrix_update_mode(RGB_MATRIX_TYPING_HEATMAP, rgb_matrix_config.speed, true);
+            }
+            break;
+        case RGB_NXS:
+            if (record->event.pressed) {
+                rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS, RGB_MATRIX_ANIMATION_SPEED_DEFAULT, true);
+            }
+            break;
+        case RGB_SOL:
+            if (record->event.pressed) {
+                rgb_matrix_update_mode(RGB_MATRIX_SOLID_COLOR, rgb_matrix_config.speed, false);
+            }
+            break;
+        case RGB_CYC:
+            if (record->event.pressed) {
+                rgb_matrix_update_mode(RGB_MATRIX_CYCLE_ALL, RGB_MATRIX_ANIMATION_SPEED_SLOWER, false);
+            }
+            break;
+        case RGB_DUO:
+            if (record->event.pressed) {
+                rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
+            }
+            break;
+        case RGB_SCR:
+            if (record->event.pressed) {
+                rgb_matrix_update_mode(RGB_MATRIX_CYCLE_LEFT_RIGHT, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
+            }
+            break;
+#endif
     }
     return true;
 }
