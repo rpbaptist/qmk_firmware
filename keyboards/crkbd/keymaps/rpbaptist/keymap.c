@@ -470,30 +470,30 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 #endif
 
-// Filter out the actual keycode from MT and LT keys.
-if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) {
-    temp_keycode &= 0xFF;
-}
+    // Filter out the actual keycode from MT and LT keys.
+    if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) {
+        temp_keycode &= 0xFF;
+    }
 
-switch (temp_keycode) {
-    case BSP_DEL:
-        if (record->event.pressed) {
-            saved_mods = get_mods() & MOD_MASK_SHIFT;
+    switch (temp_keycode) {
+        case BSP_DEL:
+            if (record->event.pressed) {
+                saved_mods = get_mods() & MOD_MASK_SHIFT;
 
-            if (saved_mods == MOD_MASK_SHIFT) {  // Both shifts pressed
-                register_code(KC_DEL);
-            } else if (saved_mods) {   // One shift pressed
-                del_mods(saved_mods);  // Remove any Shifts present
-                register_code(KC_DEL);
-                add_mods(saved_mods);  // Add shifts again
+                if (saved_mods == MOD_MASK_SHIFT) {  // Both shifts pressed
+                    register_code(KC_DEL);
+                } else if (saved_mods) {   // One shift pressed
+                    del_mods(saved_mods);  // Remove any Shifts present
+                    register_code(KC_DEL);
+                    add_mods(saved_mods);  // Add shifts again
+                } else {
+                    register_code(KC_BSPC);
+                }
             } else {
-                register_code(KC_BSPC);
+                unregister_code(KC_DEL);
+                unregister_code(KC_BSPC);
             }
-        } else {
-            unregister_code(KC_DEL);
-            unregister_code(KC_BSPC);
-        }
-        return false;
+            return false;
 #ifdef RGB_MATRIX_ENABLE
         case COLEMAK:
             if (record->event.pressed) {
