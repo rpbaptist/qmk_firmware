@@ -3,6 +3,10 @@
 extern uint8_t  is_master;
 static uint32_t oled_timer = 0;
 
+#ifdef RGB_MATRIX_ENABLE
+    static uint32_t hypno_timer;
+#endif
+
 enum layer_names {
   _COLEMAKDHM,
   _GAMING,
@@ -311,8 +315,6 @@ void oled_task_user(void) {
 #endif
 
 #ifdef RGB_MATRIX_ENABLE
-
-static uint32_t hypno_timer;
 
 extern led_config_t g_led_config;
 void rgb_matrix_layer_helper(uint8_t hue, uint8_t sat, uint8_t val, uint8_t led_type) {
