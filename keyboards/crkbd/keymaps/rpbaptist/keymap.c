@@ -288,12 +288,25 @@ void render_status(void) {
 }
 
 void oled_task_user(void) {
-  if (is_master) {
-    render_status();     // Renders the current keyboard state (layer, lock, caps, scroll, etc)
-  } else {
-    render_crkbd_logo();
-    // oled_scroll_left();  // Turns on scrolling
-  }
+    if (timer_elapsed32(oled_timer) > OLED_TIMEOUT) {
+        oled_off();
+        return;
+    } else {
+        oled_on();
+    }
+
+    if (is_master) {
+        render_status();  // Renders the current keyboard state (layer, lock, caps, scroll, etc)
+    } else {
+        render_crkbd_logo();
+        #ifdef RGB_MATRIX_ENABLE
+            if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
+                oled_scroll_left();  // Turns on scrolling
+            } else {
+              oled_scroll_off();
+            }
+        #endif
+    }
 }
 #endif
 
