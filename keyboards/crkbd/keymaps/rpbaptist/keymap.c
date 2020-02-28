@@ -367,6 +367,45 @@ void rgb_matrix_indicators_user(void) {
         }
     }
 }
+
+void rgb_matrix_update_current_mode(uint8_t mode, uint8_t speed) {
+    rgb_matrix_config.speed = speed;
+    rgb_matrix_mode_noeeprom(mode);
+    eeconfig_update_user(user_config.raw);
+}
+
+void rgb_matrix_update_dynamic_mode(uint8_t mode, uint8_t speed, bool active) {
+    if (active) {
+        user_config.rgb_matrix_active_speed = speed;
+        user_config.rgb_matrix_active_mode  = mode;
+    } else {
+        user_config.rgb_matrix_idle_speed = speed;
+        user_config.rgb_matrix_idle_mode  = mode;
+    }
+}
+
+void rgb_matrix_update_mode(uint8_t mode, uint8_t speed, bool active) {
+    if (user_config.rgb_matrix_idle_anim) {
+        rgb_matrix_update_dynamic_mode(mode, speed, active);
+    }
+    if (active || !user_config.rgb_matrix_idle_anim) {
+        rgb_matrix_update_current_mode(mode, speed);
+    }
+}
+
+void rgb_matrix_set_defaults(void) {
+    rgb_matrix_config.enable = 1;
+    rgb_matrix_sethsv_noeeprom(THEME_HSV);
+
+    user_config.rgb_layer_change        = false;
+    user_config.rgb_matrix_idle_anim    = true;
+    user_config.rgb_matrix_idle_timeout = 60000;
+
+    rgb_matrix_update_dynamic_mode(RGB_MATRIX_CYCLE_ALL, RGB_MATRIX_ANIMATION_SPEED_SLOWER, false);
+    rgb_matrix_update_dynamic_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS, RGB_MATRIX_ANIMATION_SPEED_DEFAULT, true);
+
+    eeprom_update_block(&rgb_matrix_config, EECONFIG_RGB_MATRIX, sizeof(rgb_matrix_config));
+}
 #endif
 
 void suspend_power_down_keymap(void) {
