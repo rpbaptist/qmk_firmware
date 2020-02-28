@@ -429,16 +429,6 @@ void matrix_scan_user(void) {
     matrix_scan_rgb();
 }
 
-void suspend_power_down_keymap(void) {
-    oled_off();
-    rgb_matrix_set_suspend_state(true);
-}
-
-void suspend_wakeup_init_keymap(void) {
-    oled_on();
-    rgb_matrix_set_suspend_state(false);
-}
-
 void eeconfig_init_user(void) {
     user_config.raw = 0;
     rgb_matrix_mode_noeeprom(user_config.rgb_matrix_active_mode);
@@ -451,6 +441,16 @@ void keyboard_post_init_user(void) {
     rgb_matrix_enable_noeeprom();
 }
 #endif
+
+void suspend_power_down_keymap(void) {
+    oled_off();
+    rgb_matrix_set_suspend_state(true);
+}
+
+void suspend_wakeup_init_keymap(void) {
+    oled_on();
+    rgb_matrix_set_suspend_state(false);
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     static uint8_t saved_mods   = 0;
