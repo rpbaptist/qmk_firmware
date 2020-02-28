@@ -406,6 +406,26 @@ void rgb_matrix_set_defaults(void) {
 
     eeprom_update_block(&rgb_matrix_config, EECONFIG_RGB_MATRIX, sizeof(rgb_matrix_config));
 }
+
+static uint32_t hypno_timer;
+
+void matrix_scan_rgb(void) {
+    if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_active_mode && timer_elapsed32(hypno_timer) > user_config.rgb_matrix_idle_timeout) {
+        if (user_config.rgb_layer_change) {
+            rgb_matrix_layer_helper(0, 0, 0, LED_FLAG_UNDERGLOW);
+        }
+        rgb_matrix_update_current_mode(user_config.rgb_matrix_idle_mode, user_config.rgb_matrix_idle_speed);
+    }
+}
+
+void matrix_scan_user(void) {
+    static bool has_ran_yet;
+    if (!has_ran_yet) {
+        has_ran_yet = true;
+        startup_user();
+    }
+    matrix_scan_rgb();
+}
 #endif
 
 void suspend_power_down_keymap(void) {
@@ -423,6 +443,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     uint16_t       temp_keycode = keycode;
 
     oled_timer = timer_read32();
+
+#ifdef RGB_MATRIX_ENABLE
+    if (user_config.rgb_matrix_idle_anim) {
+        hypno_timer = timer_read32();
+        if (rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
+            rgb_matrix_update_current_mode(user_config.rgb_matrix_active_mode, user_config.rgb_matrix_active_speed);
+            if (!user_config.rgb_layer_change) {
+                rgb_matrix_layer_helper(0, 0, 0, LED_FLAG_UNDERGLOW);
+            }
+        }
+    }
+#endif
+
 // Filter out the actual keycode from MT and LT keys.
 if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) {
     temp_keycode &= 0xFF;
