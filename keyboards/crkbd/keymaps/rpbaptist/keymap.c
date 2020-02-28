@@ -1,7 +1,7 @@
 #include QMK_KEYBOARD_H
 
 extern uint8_t  is_master;
-static uint32_t oled_timer = 0;
+// static uint32_t oled_timer = 0;
 
 enum layer_names {
   _COLEMAKDHM,
@@ -166,87 +166,86 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-  switch (get_highest_layer(default_layer_state)) {
-    case _COLEMAKDHM:
-      state = update_tri_layer_state(state, _NUM, _NAV, _UTIL);
-      break;
-    case _GAMING:
-      state = update_tri_layer_state(state, _GAMING_EXT, _NAV, _UTIL);
-      break;
-  }
-  return state;
+    switch (get_highest_layer(default_layer_state)) {
+        case _COLEMAKDHM:
+            state = update_tri_layer_state(state, _SYM, _NAV, _UTIL);
+            break;
+        case _GAMING:
+            state = update_tri_layer_state(state, _GAMING_EXT, _NAV, _UTIL);
+            break;
+    }
+    return state;
 }
 
 #ifdef OLED_DRIVER_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-  if (is_master) {
-    return OLED_ROTATION_270;
-  } else {
-    return OLED_ROTATION_180;
-  }
+    if (is_master) {
+        return OLED_ROTATION_270;
+    } else {
+        return OLED_ROTATION_180;
+    }
 }
 
 void render_crkbd_logo(void) {
-  static const char PROGMEM crkbd_logo[] = {
-      0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8a, 0x8b, 0x8c, 0x8d, 0x8e, 0x8f, 0x90, 0x91, 0x92, 0x93, 0x94,
-      0xa0, 0xa1, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6, 0xa7, 0xa8, 0xa9, 0xaa, 0xab, 0xac, 0xad, 0xae, 0xaf, 0xb0, 0xb1, 0xb2, 0xb3, 0xb4,
-      0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xcb, 0xcc, 0xcd, 0xce, 0xcf, 0xd0, 0xd1, 0xd2, 0xd3, 0xd4,
-      0};
-  oled_write_P(crkbd_logo, false);
+    static const char PROGMEM crkbd_logo[] = {
+        0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8a, 0x8b, 0x8c, 0x8d, 0x8e, 0x8f, 0x90, 0x91, 0x92, 0x93, 0x94,
+        0xa0, 0xa1, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6, 0xa7, 0xa8, 0xa9, 0xaa, 0xab, 0xac, 0xad, 0xae, 0xaf, 0xb0, 0xb1, 0xb2, 0xb3, 0xb4,
+        0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xcb, 0xcc, 0xcd, 0xce, 0xcf, 0xd0, 0xd1, 0xd2, 0xd3, 0xd4,
+        0};
+    oled_write_P(crkbd_logo, false);
 }
 
 void render_status(void) {
-  // oled_write_P(PSTR("Layout: "), false);
-  switch (get_highest_layer(default_layer_state)) {
-    case _COLEMAKDHM:
-      oled_write_P(PSTR("CLMK "), false);
-      break;
-    case _GAMING:
-      oled_write_P(PSTR("GAME "), false);
-      break;
-  }
+    // oled_write_P(PSTR("Layout: "), false);
+    switch (get_highest_layer(default_layer_state)) {
+        case _COLEMAKDHM:
+            oled_write_P(PSTR("TYPE "), false);
+            break;
+        case _GAMING:
+            oled_write_P(PSTR("GAME "), false);
+            break;
+    }
 
-  oled_write_P(PSTR("\n"), false);
+    oled_write_P(PSTR("\n"), false);
 
-  switch (get_highest_layer(layer_state)) {
-    case 0:
-      oled_write_P(PSTR("     "), false);
-      break;
-    case _NUM:
-      oled_write_P(PSTR("Comm "), false);
-      break;
-    case _FN:
-      oled_write_P(PSTR("Stage"), false);
-      break;
-    case _NAV:
-      oled_write_P(PSTR("Fuel "), false);
-      break;
-    case _GAMING_EXT:
-      oled_write_P(PSTR("Ext  "), false);
-      break;
-    case _UTIL:
-      oled_write_P(PSTR("Util "), false);
-      break;
-    default:
-      oled_write_P(PSTR("Unkn "), false);
-      break;
-  }
-  oled_write_P(PSTR("\n"), false);
+    switch (get_highest_layer(layer_state)) {
+        case 0:
+            oled_write_P(PSTR("     "), false);
+            break;
+        case _SYM:
+            oled_write_P(PSTR("Sym  "), false);
+            break;
+        case _NAV:
+            oled_write_P(PSTR("Nav  "), false);
+            break;
+        case _GAMING_EXT:
+            oled_write_P(PSTR("Ext  "), false);
+            break;
+        case _NUMPAD:
+            oled_write_P(PSTR("Num  "), false);
+            break;
+        case _UTIL:
+            oled_write_P(PSTR("Util "), false);
+            break;
+        default:
+            oled_write_P(PSTR("Unkn "), false);
+            break;
+    }
+    oled_write_P(PSTR("\n"), false);
 
-  uint8_t modifiers = get_mods();
+    uint8_t modifiers = get_mods();
 
-  oled_write_P( (modifiers & MOD_MASK_CTRL)  ? PSTR("PROG ") : PSTR("     "), false);
-  oled_write_P( (modifiers & MOD_MASK_SHIFT) ? PSTR("PULSE") : PSTR("     "), false);
-  oled_write_P( (modifiers & MOD_MASK_ALT)   ? PSTR("STBY ") : PSTR("     "), false);
-  oled_write_P( (modifiers & MOD_MASK_GUI)   ? PSTR("GYRO ") : PSTR("     "), false);
+    oled_write_P((modifiers & MOD_MASK_SHIFT) ? PSTR("SHIFT") : PSTR("\n"), false);
+    oled_write_P((modifiers & MOD_MASK_CTRL) ? PSTR("CTRL ") : PSTR("\n"), false);
+    oled_write_P((modifiers & MOD_MASK_ALT) ? PSTR("ALT  ") : PSTR("\n"), false);
+    oled_write_P((modifiers & MOD_MASK_GUI) ? PSTR("SUPER") : PSTR("\n"), false);
 
-  oled_write_P(PSTR("\n"), false);
+    oled_write_P(PSTR("\n"), false);
 
-  uint8_t led_usb_state = host_keyboard_leds();
-  oled_write_P(PSTR("Mode:\n"), false);
-  oled_write_P(IS_LED_ON(led_usb_state, USB_LED_NUM_LOCK)    ? PSTR(" NUM ") : PSTR("     "), false);
-  oled_write_P(IS_LED_ON(led_usb_state, USB_LED_CAPS_LOCK)   ? PSTR(" CAPS") : PSTR("     "), false);
-  oled_write_P(IS_LED_ON(led_usb_state, USB_LED_SCROLL_LOCK) ? PSTR(" SCRL") : PSTR("     "), false);
+    uint8_t led_usb_state = host_keyboard_leds();
+    oled_write_P(PSTR("Mode:"), false);
+    oled_write_P(IS_LED_ON(led_usb_state, USB_LED_NUM_LOCK) ? PSTR(" NUM ") : PSTR("\n"), false);
+    oled_write_P(IS_LED_ON(led_usb_state, USB_LED_CAPS_LOCK) ? PSTR(" CAPS") : PSTR("\n"), false);
 }
 
 void oled_task_user(void) {
@@ -260,9 +259,44 @@ void oled_task_user(void) {
 #endif
 
 void suspend_power_down_keymap(void) {
+    oled_off();
     rgb_matrix_set_suspend_state(true);
 }
 
 void suspend_wakeup_init_keymap(void) {
+    oled_on();
     rgb_matrix_set_suspend_state(false);
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    static uint8_t saved_mods   = 0;
+    uint16_t       temp_keycode = keycode;
+
+    // oled_timer = timer_read32();
+// Filter out the actual keycode from MT and LT keys.
+if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) {
+    temp_keycode &= 0xFF;
+}
+
+switch (temp_keycode) {
+    case BSP_DEL:
+        if (record->event.pressed) {
+            saved_mods = get_mods() & MOD_MASK_SHIFT;
+
+            if (saved_mods == MOD_MASK_SHIFT) {  // Both shifts pressed
+                register_code(KC_DEL);
+            } else if (saved_mods) {   // One shift pressed
+                del_mods(saved_mods);  // Remove any Shifts present
+                register_code(KC_DEL);
+                add_mods(saved_mods);  // Add shifts again
+            } else {
+                register_code(KC_BSPC);
+            }
+        } else {
+            unregister_code(KC_DEL);
+            unregister_code(KC_BSPC);
+        }
+        return false;
+    }
+    return true;
 }
