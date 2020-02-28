@@ -29,6 +29,14 @@ BOOTLOADER       = qmk-dfu
 
 OLED_DRIVER_ENABLE = yes
 
-# ifneq ($(strip $(OLED_DRIVER_ENABLE)), yes)
-#     RGB_MATRIX_SPLIT_RIGHT=yes
-# endif
+ifeq ($(strip $(THEME)), godspeed)
+    OPT_DEFS += -DTHEME_GODSPEED
+endif
+
+ifeq ($(strip $(THEME)), pulse)
+    OPT_DEFS += -DTHEME_PULSE
+endif
+
+ifeq ($(strip $(THEME)), laser)
+    OPT_DEFS += -DTHEME_LASER
+endif
