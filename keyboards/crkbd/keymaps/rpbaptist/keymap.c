@@ -3,6 +3,10 @@
 extern uint8_t  is_master;
 static uint32_t oled_timer = 0;
 
+#ifdef RGB_MATRIX_ENABLE
+    static uint32_t hypno_timer;
+#endif
+
 enum layer_names {
   _COLEMAKDHM,
   _GAMING,
@@ -406,8 +410,6 @@ void rgb_matrix_set_defaults(void) {
 
     eeprom_update_block(&rgb_matrix_config, EECONFIG_RGB_MATRIX, sizeof(rgb_matrix_config));
 }
-
-static uint32_t hypno_timer;
 
 void matrix_scan_rgb(void) {
     if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_active_mode && timer_elapsed32(hypno_timer) > user_config.rgb_matrix_idle_timeout) {
