@@ -195,6 +195,27 @@ void render_crkbd_logo(void) {
     oled_write_P(crkbd_logo, false);
 }
 
+#    ifdef RGB_MATRIX_ENABLE
+const char *rgb_matrix_anim_oled_text(uint8_t mode) {
+    switch (mode) {
+        case RGB_MATRIX_TYPING_HEATMAP:
+            return PSTR("Heat ");
+        case RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS:
+            return PSTR("Nexus");
+        case RGB_MATRIX_SOLID_COLOR:
+            return PSTR("Solid");
+        case RGB_MATRIX_CYCLE_ALL:
+            return PSTR("Cycle");
+        case RGB_MATRIX_RAINBOW_PINWHEELS:
+            return PSTR("Wheel");
+        case RGB_MATRIX_CYCLE_LEFT_RIGHT:
+            return PSTR("Wave ");
+        default:
+            return PSTR("");
+    }
+}
+#    endif
+
 void render_status(void) {
     // oled_write_P(PSTR("Layout: "), false);
     switch (get_highest_layer(default_layer_state)) {
@@ -246,6 +267,24 @@ void render_status(void) {
     oled_write_P(PSTR("Mode:"), false);
     oled_write_P(IS_LED_ON(led_usb_state, USB_LED_NUM_LOCK) ? PSTR(" NUM ") : PSTR("\n"), false);
     oled_write_P(IS_LED_ON(led_usb_state, USB_LED_CAPS_LOCK) ? PSTR(" CAPS") : PSTR("\n"), false);
+
+#    ifdef RGB_MATRIX_ENABLE
+    oled_write_P(PSTR("\n"), false);
+    oled_write_P(PSTR("\n"), false);
+
+    if (rgb_matrix_config.enable) {
+        if (user_config.rgb_matrix_idle_anim) {
+            oled_write_P(rgb_matrix_anim_oled_text(user_config.rgb_matrix_active_mode), false);
+            oled_write_P(rgb_matrix_anim_oled_text(user_config.rgb_matrix_idle_mode), false);
+        } else {
+            oled_write_P(PSTR("\n"), false);
+            oled_write_P(rgb_matrix_anim_oled_text(rgb_matrix_get_mode()), false);
+        }
+      } else {
+        oled_write_P(PSTR("\n"), false);
+        oled_write_P(PSTR("\n"), false);
+      }
+#    endif
 }
 
 void oled_task_user(void) {
