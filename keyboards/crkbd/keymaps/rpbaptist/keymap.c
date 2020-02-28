@@ -1,7 +1,7 @@
 #include QMK_KEYBOARD_H
 
 extern uint8_t  is_master;
-// static uint32_t oled_timer = 0;
+static uint32_t oled_timer = 0;
 
 enum layer_names {
   _COLEMAKDHM,
@@ -311,7 +311,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     static uint8_t saved_mods   = 0;
     uint16_t       temp_keycode = keycode;
 
-    // oled_timer = timer_read32();
+    oled_timer = timer_read32();
 // Filter out the actual keycode from MT and LT keys.
 if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) {
     temp_keycode &= 0xFF;
