@@ -116,17 +116,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 
 // Default to Pulse theme
-#ifdef THEME_PULSE
-// #define OLED_FONT_H "keyboards/crkbd/keymaps/rpbaptist/glcdfont_pulse.c"
-// #define THEME_HSV 123, 255, 125
-#endif
+// #ifdef THEME_PULSE
+#  define OLED_FONT_H "keyboards/crkbd/keymaps/rpbaptist/glcdfont_pulse.c"
+#  define THEME_HSV 123, 255, 125
+// #endif
 
 #ifdef THEME_GODSPEED
+#   undef OLED_FONT_H
+#   undef THEME_HSV
+
 #   define OLED_FONT_H "keyboards/crkbd/keymaps/rpbaptist/glcdfont_godspeed.c"
 #   define THEME_HSV 132, 255, 125
 #endif
 
 #ifdef THEME_LASER
+#   undef OLED_FONT_H
+#   undef THEME_HSV
+
 #   define OLED_FONT_H "keyboards/crkbd/keymaps/rpbaptist/glcdfont_laser.c"
 #   define THEME_HSV HSV_MAGENTA
 #endif
