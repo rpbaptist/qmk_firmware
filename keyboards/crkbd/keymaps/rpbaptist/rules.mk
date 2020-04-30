@@ -34,6 +34,10 @@ ifeq ($(strip $(THEME)), godspeed)
     OPT_DEFS += -DTHEME_GODSPEED
 endif
 
+ifeq ($(strip $(THEME)), godspeed_ares)
+    OPT_DEFS += -DTHEME_GODSPEED_ARES
+endif
+
 ifeq ($(strip $(THEME)), pulse)
     OPT_DEFS += -DTHEME_PULSE
 endif

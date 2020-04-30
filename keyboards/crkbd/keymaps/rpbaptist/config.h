@@ -129,6 +129,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   define THEME_HSV 132, 255, 125
 #endif
 
+#ifdef THEME_GODSPEED_ARES
+#   undef OLED_FONT_H
+#   undef THEME_HSV
+
+#   define OLED_FONT_H "keyboards/crkbd/keymaps/rpbaptist/glcdfont_godspeed.c"
+#   define THEME_HSV HSV_ORANGE
+#endif
+
 #ifdef THEME_LASER
 #   undef OLED_FONT_H
 #   undef THEME_HSV
