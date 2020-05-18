@@ -24,6 +24,7 @@ enum custom_keycodes {
     RGB_IDL,  // RGB Idling animations
     RGB_MAP,  // RGB_MATRIX_TYPING_HEATMAP
     RGB_NXS,  // RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS
+    RGB_SIM,  // RGB_MATRIX_SOLID_REACTIVE_SIMPLE
     RGB_SOL,  // RGB_MATRIX_SOLID_COLOR
     RGB_CYC,  // RGB_MATRIX_CYCLE_ALL
     RGB_DUO,  // RGB_MATRIX_RAINBOW_PINWHEELS
@@ -160,7 +161,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_UTIL] = LAYOUT( \
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        RESET, RGB_RST, KC_MPRV, KC_VOLU, KC_MNXT, COLEMAK,                      RGB_IDL, RGB_MAP, RGB_NXS, XXXXXXX, RGB_HUD, RGB_HUI,\
+        RESET, RGB_RST, KC_MPRV, KC_VOLU, KC_MNXT, COLEMAK,                      RGB_IDL, RGB_MAP, RGB_NXS, RGB_SIM, RGB_HUD, RGB_HUI,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       LCK_NMP, XXXXXXX, KC_MSTP, KC_VOLD, KC_MPLY,  GAMING,                      RGB_UND, RGB_DUO, RGB_SCR, RGB_SPI, RGB_SAD, RGB_SAI,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -208,6 +209,8 @@ const char *rgb_matrix_anim_oled_text(uint8_t mode) {
             return PSTR("Heat ");
         case RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS:
             return PSTR("Nexus");
+        case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
+            return PSTR("Ease ");
         case RGB_MATRIX_SOLID_COLOR:
             return PSTR("Solid");
         case RGB_MATRIX_CYCLE_ALL:
@@ -547,6 +550,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case RGB_NXS:
             if (record->event.pressed) {
                 rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS, RGB_MATRIX_ANIMATION_SPEED_DEFAULT, true);
+            }
+            break;
+        case RGB_SIM:
+            if (record->event.pressed) {
+                rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_SIMPLE, RGB_MATRIX_ANIMATION_SPEED_DEFAULT, true);
             }
             break;
         case RGB_SOL:

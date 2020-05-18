@@ -81,7 +81,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #    define RGB_MATRIX_KEYPRESSES  // reacts to keypresses
 
-#    define DISABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE
+// #    define DISABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE
 #    define DISABLE_RGB_MATRIX_SOLID_REACTIVE
 #    define DISABLE_RGB_MATRIX_SOLID_REACTIVE_WIDE
 #    define DISABLE_RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE
