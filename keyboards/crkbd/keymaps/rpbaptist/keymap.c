@@ -412,6 +412,7 @@ void rgb_matrix_set_defaults(void) {
 
     rgb_matrix_update_dynamic_mode(RGB_MATRIX_CYCLE_ALL, RGB_MATRIX_ANIMATION_SPEED_SLOWER, false);
     rgb_matrix_update_dynamic_mode(RGB_MATRIX_SOLID_REACTIVE_SIMPLE, RGB_MATRIX_ANIMATION_SPEED_DEFAULT, true);
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
 
     eeprom_update_block(&rgb_matrix_config, EECONFIG_RGB_MATRIX, sizeof(rgb_matrix_config));
 }
