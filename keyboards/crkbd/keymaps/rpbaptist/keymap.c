@@ -5,6 +5,26 @@ static uint32_t oled_timer = 0;
 
 #ifdef RGB_MATRIX_ENABLE
     static uint32_t hypno_timer;
+
+    const rgblight_segment_t PROGMEM gaming_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+        {1, 5, HSV_PURPLE},
+    );
+    const rgblight_segment_t PROGMEM sym_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+        {1, 5, HSV_GOLDENROD},
+    );
+    const rgblight_segment_t PROGMEM nav_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+        {1, 5, HSV_SPRINGGREEN},
+    );
+    const rgblight_segment_t PROGMEM util_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+        {1, 5, HSV_PINK},
+    );
+    const rgblight_segment_t PROGMEM numpad_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+        {1, 5, HSV_CORAL},
+    );
+
+    const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+        gaming_layer, sym_layer, nav_layer, util_layer, numpad_layer
+    );
 #endif
 
 enum layer_names {
@@ -445,6 +465,7 @@ void keyboard_post_init_user(void) {
     user_config.raw = eeconfig_read_user();
     rgb_matrix_set_defaults();
     rgb_matrix_enable_noeeprom();
+    rgblight_layers = my_rgb_layers;
 }
 #endif
 
