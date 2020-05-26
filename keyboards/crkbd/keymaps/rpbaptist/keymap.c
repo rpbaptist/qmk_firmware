@@ -6,24 +6,22 @@ static uint32_t oled_timer = 0;
 #ifdef RGB_MATRIX_ENABLE
     static uint32_t hypno_timer;
 
-    const rgblight_segment_t PROGMEM gaming_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-        {1, 5, HSV_PURPLE},
-    );
-    const rgblight_segment_t PROGMEM sym_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-        {1, 5, HSV_GOLDENROD},
-    );
-    const rgblight_segment_t PROGMEM nav_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-        {1, 5, HSV_SPRINGGREEN},
-    );
-    const rgblight_segment_t PROGMEM util_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-        {1, 5, HSV_PINK},
-    );
-    const rgblight_segment_t PROGMEM numpad_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-        {1, 5, HSV_CORAL},
-    );
+    const rgblight_segment_t PROGMEM typing_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 12, THEME_HSV});
+    const rgblight_segment_t PROGMEM gaming_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_RED});
+    const rgblight_segment_t PROGMEM gaming_ext_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_PURPLE});
+    const rgblight_segment_t PROGMEM sym_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_GOLDENROD});
+    const rgblight_segment_t PROGMEM nav_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_SPRINGGREEN});
+    const rgblight_segment_t PROGMEM util_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_PINK});
+    const rgblight_segment_t PROGMEM numpad_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_CORAL});
 
     const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
-        gaming_layer, sym_layer, nav_layer, util_layer, numpad_layer
+        typing_layer,
+        gaming_layer,
+        gaming_ext_layer,
+        sym_layer,
+        nav_layer,
+        util_layer,
+        numpad_layer
     );
 #endif
 
@@ -201,6 +199,13 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             state = update_tri_layer_state(state, _GAMING_EXT, _NAV, _UTIL);
             break;
     }
+    rgblight_set_layer_state(1, layer_state_cmp(state, 1));
+    rgblight_set_layer_state(2, layer_state_cmp(state, 2));
+    rgblight_set_layer_state(3, layer_state_cmp(state, 3));
+    rgblight_set_layer_state(4, layer_state_cmp(state, 4));
+    rgblight_set_layer_state(5, layer_state_cmp(state, 5));
+    rgblight_set_layer_state(6, layer_state_cmp(state, 6));
+    rgblight_set_layer_state(7, layer_state_cmp(state, 7));
     return state;
 }
 
@@ -356,46 +361,46 @@ void rgb_matrix_layer_helper(uint8_t hue, uint8_t sat, uint8_t val, uint8_t led_
     }
 }
 
-void check_default_layer(uint8_t type) {
-    switch (get_highest_layer(default_layer_state)) {
-        case _COLEMAKDHM:
-            rgb_matrix_layer_helper(THEME_HSV, type);
-            break;
-        case _GAMING:
-            rgb_matrix_layer_helper(HSV_RED, type);
-            break;
-    }
-}
+// void check_default_layer(uint8_t type) {
+//     switch (get_highest_layer(default_layer_state)) {
+//         case _COLEMAKDHM:
+//             rgb_matrix_layer_helper(THEME_HSV, type);
+//             break;
+//         case _GAMING:
+//             rgb_matrix_layer_helper(HSV_RED, type);
+//             break;
+//     }
+// }
 
-void rgb_matrix_indicators_user(void) {
-  if (
-    user_config.rgb_layer_change && !g_suspend_state && rgb_matrix_config.enable &&
-      (!user_config.rgb_matrix_idle_anim || rgb_matrix_get_mode() != user_config.rgb_matrix_idle_mode)
-  )
-    {
-        switch (get_highest_layer(layer_state)) {
-            case _GAMING_EXT:
-                rgb_matrix_layer_helper(HSV_PURPLE, LED_FLAG_UNDERGLOW);
-                break;
-            case _SYM:
-                rgb_matrix_layer_helper(HSV_GOLDENROD, LED_FLAG_UNDERGLOW);
-                break;
-            case _NAV:
-                rgb_matrix_layer_helper(HSV_SPRINGGREEN, LED_FLAG_UNDERGLOW);
-                break;
-            case _UTIL:
-                rgb_matrix_layer_helper(HSV_PINK, LED_FLAG_UNDERGLOW);
-                break;
-            case _NUMPAD:
-                rgb_matrix_layer_helper(HSV_CORAL, LED_FLAG_UNDERGLOW);
-                break;
-            default: {
-                check_default_layer(LED_FLAG_UNDERGLOW);
-                break;
-            }
-        }
-    }
-}
+// void rgb_matrix_indicators_user(void) {
+//   if (
+//     user_config.rgb_layer_change && !g_suspend_state && rgb_matrix_config.enable &&
+//       (!user_config.rgb_matrix_idle_anim || rgb_matrix_get_mode() != user_config.rgb_matrix_idle_mode)
+//   )
+//     {
+//         switch (get_highest_layer(layer_state)) {
+//             case _GAMING_EXT:
+//                 rgb_matrix_layer_helper(HSV_PURPLE, LED_FLAG_UNDERGLOW);
+//                 break;
+//             case _SYM:
+//                 rgb_matrix_layer_helper(HSV_GOLDENROD, LED_FLAG_UNDERGLOW);
+//                 break;
+//             case _NAV:
+//                 rgb_matrix_layer_helper(HSV_SPRINGGREEN, LED_FLAG_UNDERGLOW);
+//                 break;
+//             case _UTIL:
+//                 rgb_matrix_layer_helper(HSV_PINK, LED_FLAG_UNDERGLOW);
+//                 break;
+//             case _NUMPAD:
+//                 rgb_matrix_layer_helper(HSV_CORAL, LED_FLAG_UNDERGLOW);
+//                 break;
+//             default: {
+//                 check_default_layer(LED_FLAG_UNDERGLOW);
+//                 break;
+//             }
+//         }
+//     }
+// }
 
 void rgb_matrix_update_current_mode(uint8_t mode, uint8_t speed) {
     rgb_matrix_config.speed = speed;
