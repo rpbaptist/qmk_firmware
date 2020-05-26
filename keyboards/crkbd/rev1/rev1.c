@@ -75,7 +75,7 @@ void matrix_init_kb(void) {
 
 #ifdef RGB_MATRIX_ENABLE
     if (!isLeftHand) {
-        g_led_config = (led_config_t){ {
+        static const PROGMEM led_config_t right_led_config = { {
             {  51,  50,  45,  44,  37,  36 },
             {  52,  49,  46,  43,  38,  35 },
             {  53,  48,  47,  42,  39,  34 },
@@ -103,6 +103,7 @@ void matrix_init_kb(void) {
             4, 4, 4, 4, 4, 4, 4,
             4, 4, 1, 1, 1
         } };
+	memcpy_P(&g_led_config, &right_led_config, sizeof g_led_config);
     }
 #endif
     matrix_init_user();
