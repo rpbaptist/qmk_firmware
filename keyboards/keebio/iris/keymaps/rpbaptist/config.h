@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MASTER_LEFT
 
 #ifdef RGBLIGHT_ENABLE
+#    define RGBLIGHT_LAYERS
 #    undef RGBLED_NUM
 #    define RGBLED_NUM 18  // Number of LEDs
 #    undef RGBLED_SPLIT
