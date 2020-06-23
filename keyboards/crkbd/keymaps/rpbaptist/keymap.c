@@ -462,6 +462,15 @@ void suspend_wakeup_init_keymap(void) {
     rgb_matrix_set_suspend_state(false);
 }
 
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case SFT_ENT:
+            return TAPPING_TERM - 40;
+        default:
+            return TAPPING_TERM;
+    }
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     static uint8_t saved_mods   = 0;
     uint16_t       temp_keycode = keycode;
