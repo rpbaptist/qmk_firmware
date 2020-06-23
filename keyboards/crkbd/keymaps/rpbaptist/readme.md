@@ -16,15 +16,15 @@ Holding SHIFT while tapping BACKSPACE will output DEL. Holding both SHIFT keys w
 
 I don't know about you but "lower" and "raise" don't mean that much to me. I named my layers `SYM`, short for symbols and `NAV`, short for navigation. Holding the key will activate the layer for as long as it is held, double tapping it will switch to it. Single tapping it once will switch to main layer again.
 
-Holding TAB will access `NUM` layer which features a numpad.
+Holding TAB will access `NUMPAD` layer which features a numpad.
 
 ### SYM
 
-Includes a number row, the symbols normally on SHIFT and numbers, as well as a numpad under right side homing keys.
+Includes a number row, the symbols normally on SHIFT and numbers and a variety of other symbols used mostly for programming.
 
 ### NAV
 
-This is where I access arrow keys, page up, down, home, end and F keys. I also added general tab forward and backward keys. Tab close and window close. I primarily use these in my browser, terminal and text editor.
+This is where I access F keys, arrow keys, page up, down, home, end and F keys. I also added general tab forward and backward keys. Tab close and window close. I primarily use these in my browser, terminal and text editor.
 
 ### UTIL
 
@@ -32,7 +32,7 @@ Short for utility. This is accessed by pressing both `SYM` and `NAV` at the same
 
 ### NUMPAD
 
-This gives access to a numpad on the right half with some additional symbols I find useful when using the numpad.
+This gives access to a numpad on the right half with some additional symbols I find useful when using the numpad. It also contains dynamic macro's which I'm not really using tbh.
 
 ### GAMING
 
@@ -51,7 +51,7 @@ This is the gaming extended layer where movement keys remain the same. This mean
 I took a big inspiration from Drashna's RGB configuration and tweaked it.
 
 - `RGB_UND`: Toggles underglow indicators on and off. Each layer has its own color.
-- `RGB_IDL`: This will enable/disable idle mode. By default, when typing, the `DISABLE_RGB_MATRIX_SOLID_REACTIVE_NEXUS` will be used. When the idle timeout has exceeded the secondary animation will be activated, which is `RGB_MATRIX_CYCLE_ALL` by default. When switching to `GAMING` layer the timeout will be reduced and the idle animation changed to `RGB_MATRIX_RAINBOW_PINWHEELS`.
+- `RGB_IDL`: This will enable/disable idle mode. By default, when typing, the `RGB_MATRIX_SOLID_REACTIVE_SIMPLE` will be used. When the idle timeout has exceeded the secondary animation will be activated, which is `RGB_MATRIX_SOLID_COLOR` by default. When switching to `GAMING` layer the timeout will be reduced and the idle animation changed to `RGB_MATRIX_RAINBOW_PINWHEELS`.
    When idle mode is enabled, `RGB_MATRIX_TYPING_HEATMAP` and `RGB_MATRIX_MULTISPLASH` will be used for active animation. All others for idle animation. When disabling idle mode, the current idle animation will be activated. Additionally, on idling, the underglow layer indication will be deactivated.
 - There are no RGB mode cycle keys, but instead several keys to use a specific RGB directly. Each has their own default speed, although this can be changed.
 
