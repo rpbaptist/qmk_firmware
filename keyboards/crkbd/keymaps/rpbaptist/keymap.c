@@ -445,6 +445,7 @@ void eeconfig_init_user(void) {
 
 void keyboard_post_init_user(void) {
     user_config.raw = eeconfig_read_user();
+    set_single_persistent_default_layer(_COLEMAKDHM);
     rgb_matrix_set_defaults();
     rgb_matrix_enable_noeeprom();
 }
