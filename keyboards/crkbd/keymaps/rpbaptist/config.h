@@ -55,7 +55,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define DISABLE_RGB_MATRIX_ALPHAS_MODS
 #    define DISABLE_RGB_MATRIX_GRADIENT_LEFT_RIGHT
 #    define DISABLE_RGB_MATRIX_GRADIENT_UP_DOWN
-#    define DISABLE_RGB_MATRIX_BREATHING
+// #    define DISABLE_RGB_MATRIX_BREATHING
 #    define DISABLE_RGB_MATRIX_BAND_SAT
 #    define DISABLE_RGB_MATRIX_BAND_VAL
 #    define DISABLE_RGB_MATRIX_BAND_PINWHEEL_SAT

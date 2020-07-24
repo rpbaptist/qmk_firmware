@@ -28,6 +28,7 @@ enum custom_keycodes {
     RGB_NXS,  // RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS
     RGB_SIM,  // RGB_MATRIX_SOLID_REACTIVE_SIMPLE
     RGB_SOL,  // RGB_MATRIX_SOLID_COLOR
+    RGB_BRE,  // RGB_MATRIX_BREATHING
     RGB_CYC,  // RGB_MATRIX_CYCLE_ALL
     RGB_DUO,  // RGB_MATRIX_RAINBOW_PINWHEELS
     RGB_SCR   // RGB_MATRIX_CYCLE_LEFT_RIGHT
@@ -215,6 +216,8 @@ const char *rgb_matrix_anim_oled_text(uint8_t mode) {
             return PSTR("Ease ");
         case RGB_MATRIX_SOLID_COLOR:
             return PSTR("Solid");
+        case RGB_MATRIX_BREATHING:
+            return PSTR("Fade ");
         case RGB_MATRIX_CYCLE_ALL:
             return PSTR("Cycle");
         case RGB_MATRIX_RAINBOW_PINWHEELS:
@@ -412,7 +415,7 @@ void rgb_matrix_set_defaults(void) {
     user_config.rgb_matrix_idle_anim    = true;
     user_config.rgb_matrix_idle_timeout = 60000;
 
-    rgb_matrix_update_dynamic_mode(RGB_MATRIX_SOLID_COLOR, RGB_MATRIX_ANIMATION_SPEED_DEFAULT, false);
+    rgb_matrix_update_dynamic_mode(RGB_MATRIX_BREATHING, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
     rgb_matrix_update_dynamic_mode(RGB_MATRIX_SOLID_REACTIVE_SIMPLE, RGB_MATRIX_ANIMATION_SPEED_DEFAULT, true);
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
 
@@ -602,7 +605,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case RGB_SOL:
             if (record->event.pressed) {
-                rgb_matrix_update_mode(RGB_MATRIX_SOLID_COLOR, rgb_matrix_config.speed, false);
+                if (rgb_matrix_get_mode() == RGB_MATRIX_SOLID_COLOR) {
+                    rgb_matrix_update_mode(RGB_MATRIX_BREATHING, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
+                } else {
+                    rgb_matrix_update_mode(RGB_MATRIX_SOLID_COLOR, rgb_matrix_config.speed, false);
+                }
             }
             break;
         case RGB_CYC:
