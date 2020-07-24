@@ -37,7 +37,7 @@ enum custom_keycodes {
 typedef union {
     uint32_t raw;
     struct {
-        bool     rgb_layer_change        : 1;
+        bool     rgb_layer_indicator     : 1;
         bool     rgb_matrix_idle_anim    : 1;
         uint8_t  rgb_matrix_active_mode  : 4;
         uint8_t  rgb_matrix_idle_mode    : 4;
@@ -354,7 +354,7 @@ void check_default_layer(uint8_t type) {
 
 void rgb_matrix_indicators_user(void) {
   if (
-    user_config.rgb_layer_change && !g_suspend_state && rgb_matrix_config.enable &&
+    user_config.rgb_layer_indicator && !g_suspend_state && rgb_matrix_config.enable &&
       (!user_config.rgb_matrix_idle_anim || rgb_matrix_get_mode() != user_config.rgb_matrix_idle_mode)
   )
     {
@@ -411,7 +411,7 @@ void rgb_matrix_set_defaults(void) {
     rgb_matrix_config.enable = 1;
     rgb_matrix_sethsv_noeeprom(THEME_HSV);
 
-    user_config.rgb_layer_change        = true;
+    user_config.rgb_layer_indicator        = true;
     user_config.rgb_matrix_idle_anim    = true;
     user_config.rgb_matrix_idle_timeout = 60000;
 
@@ -424,7 +424,7 @@ void rgb_matrix_set_defaults(void) {
 
 void matrix_scan_rgb(void) {
     if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_active_mode && timer_elapsed32(hypno_timer) > user_config.rgb_matrix_idle_timeout) {
-        if (user_config.rgb_layer_change) {
+        if (user_config.rgb_layer_indicator) {
             rgb_matrix_layer_helper(0, 0, 0, LED_FLAG_UNDERGLOW);
         }
         rgb_matrix_update_current_mode(user_config.rgb_matrix_idle_mode, user_config.rgb_matrix_idle_speed);
@@ -488,7 +488,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         hypno_timer = timer_read32();
         if (rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
             rgb_matrix_update_current_mode(user_config.rgb_matrix_active_mode, user_config.rgb_matrix_active_speed);
-            if (!user_config.rgb_layer_change) {
+            if (!user_config.rgb_layer_indicator) {
                 rgb_matrix_layer_helper(0, 0, 0, LED_FLAG_UNDERGLOW);
             }
         }
@@ -554,8 +554,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return true;
         case GAMING:
             if (record->event.pressed) {
-                if (!user_config.rgb_layer_change) {
-                    user_config.rgb_layer_change = true;
+                if (!user_config.rgb_layer_indicator) {
+                    user_config.rgb_layer_indicator = true;
                 }
                 user_config.rgb_matrix_idle_timeout = 10000;
                 rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
@@ -569,9 +569,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case RGB_UND:  // Toggle separate underglow status
             if (record->event.pressed) {
-                user_config.rgb_layer_change ^= 1;
+                user_config.rgb_layer_indicator ^= 1;
                 eeconfig_update_user(user_config.raw);
-                if (user_config.rgb_layer_change) {
+                if (user_config.rgb_layer_indicator) {
                     layer_state_set(layer_state);  // This is needed to immediately set the layer color (looks better)
                 } else {
                     rgb_matrix_layer_helper(0, 0, 0, LED_FLAG_UNDERGLOW);
