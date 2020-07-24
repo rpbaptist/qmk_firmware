@@ -605,7 +605,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case RGB_SOL:
             if (record->event.pressed) {
-                if (rgb_matrix_get_mode() == RGB_MATRIX_SOLID_COLOR) {
+                if (rgb_matrix_get_mode() == RGB_MATRIX_SOLID_COLOR || user_config.rgb_matrix_idle_mode == RGB_MATRIX_SOLID_COLOR) {
                     rgb_matrix_update_mode(RGB_MATRIX_BREATHING, RGB_MATRIX_ANIMATION_SPEED_MEDIUM, false);
                 } else {
                     rgb_matrix_update_mode(RGB_MATRIX_SOLID_COLOR, rgb_matrix_config.speed, false);
