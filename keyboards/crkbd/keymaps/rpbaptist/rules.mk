@@ -45,3 +45,7 @@ endif
 ifeq ($(strip $(THEME)), laser)
     OPT_DEFS += -DTHEME_LASER
 endif
+
+ifeq ($(strip $(THEME)), milkshake)
+    OPT_DEFS += -DTHEME_MILKSHAKE
+endif
