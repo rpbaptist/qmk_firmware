@@ -2,8 +2,6 @@
 
 extern uint8_t  is_master;
 static uint32_t oled_timer = 0;
-// bool alt_tab_used = false;
-// bool switched_from_gaming = false;
 
 #ifdef RGB_MATRIX_ENABLE
     static uint32_t hypno_timer;
@@ -12,8 +10,6 @@ static uint32_t oled_timer = 0;
 enum layer_names {
   _COLEMAKDHM,
   _QWERTY,
-  _GAMING,
-  _GAMING_EXT,
   _NUMPAD,
   _SYM,
   _NAV,
@@ -53,7 +49,6 @@ user_config_t user_config;
 // Base layers
 #define COLEMAK DF(_COLEMAKDHM)
 #define QWERTY DF(_QWERTY)
-#define GAMING  DF(_GAMING)
 
 // Layer toggle and switch
 #define T_NAV TT(_NAV)
@@ -67,8 +62,6 @@ user_config_t user_config;
 #define TAB_NUM LT(_NUMPAD, KC_TAB)
 #define LCK_NMP TG(_NUMPAD)
 #define S_NUM MO(_NUMPAD)
-
-#define EXT_SF LT(_GAMING_EXT, KC_LSHIFT)
 
 // Tap/mod keys
 #define RCTL_BR RCTL_T(KC_RBRACKET)
@@ -94,13 +87,13 @@ user_config_t user_config;
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_COLEMAKDHM] = LAYOUT( \
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_ESC,    KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                         KC_J,    KC_L,    KC_U,    KC_Y, KC_SCLN, BSP_DEL,\
+      TAB_NUM,    KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                         KC_J,    KC_L,    KC_U,    KC_Y, KC_SCLN, BSP_DEL,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      TAB_NUM,    KC_A,    KC_R,    KC_S,    KC_T,    KC_G,                         KC_M,    KC_N,    KC_E,    KC_I,    KC_O, KC_QUOT,\
+      KC_LCTL,    KC_A,    KC_R,    KC_S,    KC_T,    KC_G,                         KC_M,    KC_N,    KC_E,    KC_I,    KC_O, KC_QUOT,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      LCTL_BR,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                         KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH, RCTL_BR,\
+      KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                         KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LALT,   T_SYM, SFT_SPC,    SFT_ENT,   T_NAV, KC_RGUI \
+                                          KC_LALT,   T_SYM,  KC_ENT,   KC_SPACE,   T_NAV, KC_RGUI \
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -110,35 +103,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT,\
+      _______,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, _______,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          _______, _______,  KC_ENT,     KC_SPC, _______, _______ \
+                                          _______, _______, _______,    _______, _______, _______ \
                                       //`--------------------------'  `--------------------------'
 
-  ),
-
-  [_GAMING] = LAYOUT( \
-  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, KC_BSPC,\
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-       KC_TAB, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,\
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LCTL, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, KC_RCTL,\
-  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          _______,  EXT_SF,  KC_SPC,    _______, _______, _______ \
-                                      //`--------------------------'  `--------------------------'
-  ),
-
-  [_GAMING_EXT] = LAYOUT( \
-  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_GRV, KC_COMM,  KC_DOT, _______, KC_LBRC, KC_RBRC,                      _______, _______, _______, _______, _______,  KC_DEL,\
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_MINS,  KC_EQL, _______, _______, _______, KC_BSLS,                      _______, _______, _______, _______, _______, _______,\
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0, _______,\
-  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          _______, _______, _______,     KC_ENT, _______, _______ \
-                                      //`--------------------------'  `--------------------------'
   ),
 
   [_NUMPAD] = LAYOUT( \
@@ -183,7 +152,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       LCK_NMP, XXXXXXX, KC_MSTP, KC_VOLD, KC_MPLY,  QWERTY,                      RGB_UND, RGB_DUO, RGB_SCR, RGB_SPI, RGB_SAD, RGB_SAI,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      EEP_RST, KC_SLEP, XXXXXXX, KC_MUTE, XXXXXXX,  GAMING,                      RGB_TOG, RGB_SOL, RGB_CYC, RGB_SPD, RGB_VAD, RGB_VAI,\
+      EEP_RST, KC_SLEP, XXXXXXX, KC_MUTE, XXXXXXX, XXXXXXX,                      RGB_TOG, RGB_SOL, RGB_CYC, RGB_SPD, RGB_VAD, RGB_VAI,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______, _______, _______ \
                                       //`--------------------------'  `--------------------------'
@@ -195,9 +164,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         case _COLEMAKDHM:
         case _QWERTY:
             state = update_tri_layer_state(state, _SYM, _NAV, _UTIL);
-            break;
-        case _GAMING:
-            state = update_tri_layer_state(state, _GAMING_EXT, _NAV, _UTIL);
             break;
     }
     return state;
@@ -255,9 +221,6 @@ void render_status(void) {
         case _QWERTY:
             oled_write_P(PSTR("QWERT"), false);
             break;
-        case _GAMING:
-            oled_write_P(PSTR("GAME "), false);
-            break;
     }
 
     oled_write_P(PSTR("\n"), false);
@@ -271,9 +234,6 @@ void render_status(void) {
             break;
         case _NAV:
             oled_write_P(PSTR("Nav  "), false);
-            break;
-        case _GAMING_EXT:
-            oled_write_P(PSTR("Ext  "), false);
             break;
         case _NUMPAD:
             oled_write_P(PSTR("Num  "), false);
@@ -366,9 +326,6 @@ void check_default_layer(uint8_t type) {
         case _QWERTY:
             rgb_matrix_layer_helper(THEME_HSV, type);
             break;
-        case _GAMING:
-            rgb_matrix_layer_helper(HSV_RED, type);
-            break;
     }
 }
 
@@ -379,9 +336,6 @@ void rgb_matrix_indicators_user(void) {
   )
     {
         switch (get_highest_layer(layer_state)) {
-            case _GAMING_EXT:
-                rgb_matrix_layer_helper(HSV_PURPLE, LED_FLAG_UNDERGLOW);
-                break;
             case _SYM:
                 rgb_matrix_layer_helper(HSV_GOLDENROD, LED_FLAG_UNDERGLOW);
                 break;
@@ -539,47 +493,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unregister_code(KC_BSPC);
             }
             return false;
-        // case KC_TAB:
-        //     if (record->event.pressed) {
-        //         if (get_mods() & MOD_MASK_ALT) { // ALT is pressed
-        //             alt_tab_used = true; // Set a reminder that ALT+TAB has been used
-        //         }
-        //     }
-        //     return true;
-        // case KC_LALT:
-        // case KC_RALT:
-        //     if (!record->event.pressed && alt_tab_used) { // Only run this upon release and if ALT+TAB was used
-        //         switch (get_highest_layer(default_layer_state)) {
-        //             case _GAMING:
-        //                 switched_from_gaming = true; // remember if we switched from ALT+TAB
-        //                 default_layer_set(1U << _COLEMAKDHM);
-        //                 break;
-        //             case _COLEMAKDHM:
-        //                 if (switched_from_gaming) {
-        //                     switched_from_gaming = false; // return to default state
-        //                     default_layer_set(1U << _GAMING);
-        //                 }
-        //                 break;
-        //         }
-        //         alt_tab_used = false; // return to default state
-        //     }
-        //     return true;
+
 #ifdef RGB_MATRIX_ENABLE
         case COLEMAK:
         case QWERTY:
             if (record->event.pressed) {
                 user_config.rgb_matrix_idle_timeout = 60000;
                 rgb_matrix_update_mode(RGB_MATRIX_CYCLE_ALL, RGB_MATRIX_ANIMATION_SPEED_SLOWER, false);
-            }
-            // switched_from_gaming = false; // When manually switching, disable ALT+TAB behavior
-            return true;
-        case GAMING:
-            if (record->event.pressed) {
-                if (!user_config.rgb_layer_indicator) {
-                    user_config.rgb_layer_indicator = true;
-                }
-                user_config.rgb_matrix_idle_timeout = 10000;
-                rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
             }
             return true;
         case RGB_RST:
