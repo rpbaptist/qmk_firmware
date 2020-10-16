@@ -5,8 +5,9 @@ LTO_ENABLE = yes
 #change to "no" to disable the options, or define them in the Makefile in
 #the appropriate keymap folder that will get included automatically
 #
-EXTRAKEY_ENABLE    = yes  # Audio control and System control(+450)
-NKRO_ENABLE        = yes  # Nkey Rollover - if this doesn't work, see here: https://github.com/tmk/tmk_keyboard/wiki/FAQ#nkro-doesnt-work
+BSP_DEL_ENABLE       = yes
+EXTRAKEY_ENABLE      = yes  # Audio control and System control(+450)
+NKRO_ENABLE          = yes  # Nkey Rollover - if this doesn't work, see here: https://github.com/tmk/tmk_keyboard/wiki/FAQ#nkro-doesnt-work
 DYNAMIC_MACRO_ENABLE = yes
 
 MOUSEKEY_ENABLE    = no   # Mouse keys(+4700)
@@ -20,7 +21,6 @@ AUDIO_ENABLE       = no   # Audio output on port C6
 UNICODE_ENABLE     = no   # Unicode
 BLUETOOTH_ENABLE   = no   # Enable Bluetooth with the Adafruit EZ-Key HID
 SWAP_HANDS_ENABLE  = no   # Enable one-hand typing
-
 RGB_MATRIX_ENABLE = WS2812
 
 #Do not enable SLEEP_LED_ENABLE.it uses the same timer as BACKLIGHT_ENABLE
