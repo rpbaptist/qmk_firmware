@@ -2,8 +2,6 @@
 
 extern uint8_t  is_master;
 static uint32_t oled_timer = 0;
-// bool alt_tab_used = false;
-// bool switched_from_gaming = false;
 
 #ifdef RGB_MATRIX_ENABLE
     static uint32_t hypno_timer;
@@ -519,31 +517,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unregister_code(KC_BSPC);
             }
             return false;
-        // case KC_TAB:
-        //     if (record->event.pressed) {
-        //         if (get_mods() & MOD_MASK_ALT) { // ALT is pressed
-        //             alt_tab_used = true; // Set a reminder that ALT+TAB has been used
-        //         }
-        //     }
-        //     return true;
-        // case KC_LALT:
-        // case KC_RALT:
-        //     if (!record->event.pressed && alt_tab_used) { // Only run this upon release and if ALT+TAB was used
-        //         switch (get_highest_layer(default_layer_state)) {
-        //             case _GAMING:
-        //                 switched_from_gaming = true; // remember if we switched from ALT+TAB
-        //                 default_layer_set(1U << _COLEMAKDHM);
-        //                 break;
-        //             case _COLEMAKDHM:
-        //                 if (switched_from_gaming) {
-        //                     switched_from_gaming = false; // return to default state
-        //                     default_layer_set(1U << _GAMING);
-        //                 }
-        //                 break;
-        //         }
-        //         alt_tab_used = false; // return to default state
-        //     }
-        //     return true;
 #ifdef RGB_MATRIX_ENABLE
         case COLEMAK:
             if (record->event.pressed) {
