@@ -415,7 +415,7 @@ void rgb_matrix_set_defaults(void) {
     user_config.rgb_matrix_idle_anim    = true;
     user_config.rgb_matrix_idle_timeout = 60000;
 
-    rgb_matrix_update_dynamic_mode(RGB_MATRIX_BREATHING, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
+    rgb_matrix_update_dynamic_mode(RGB_MATRIX_BREATHING, RGB_MATRIX_ANIMATION_SPEED_MEDIUM, false);
     rgb_matrix_update_dynamic_mode(RGB_MATRIX_SOLID_REACTIVE_SIMPLE, RGB_MATRIX_ANIMATION_SPEED_FAST, true);
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
 
