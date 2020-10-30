@@ -559,6 +559,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
                 user_config.rgb_matrix_idle_timeout = 10000;
                 rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
+                rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS, RGB_MATRIX_ANIMATION_SPEED_FAST, true);
             }
             return true;
         case RGB_RST:
