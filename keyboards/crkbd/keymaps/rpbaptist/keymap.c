@@ -363,7 +363,7 @@ void rgb_matrix_indicators_user(void) {
                 rgb_matrix_layer_helper(HSV_PURPLE, LED_FLAG_UNDERGLOW);
                 break;
             case _SYM:
-                rgb_matrix_layer_helper(HSV_GOLDENROD, LED_FLAG_UNDERGLOW);
+                rgb_matrix_layer_helper(HSV_YELLOW, LED_FLAG_UNDERGLOW);
                 break;
             case _NAV:
                 rgb_matrix_layer_helper(HSV_SPRINGGREEN, LED_FLAG_UNDERGLOW);
