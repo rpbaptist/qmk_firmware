@@ -54,3 +54,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       _______,   _______,   _______,                        _______,                             _______, _______, KC_HOME, KC_PGDN, KC_END
       )
 };
+
+// Set underglow RGB leds to green
+// Find the list of available colors in quantum/rgblight_list.h
+void matrix_init_user(void) {
+  rgblight_sethsv_noeeprom_green();
+}
