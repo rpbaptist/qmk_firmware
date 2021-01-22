@@ -7,6 +7,20 @@ enum layer_names {
 
 #define S_FN MO(_FUNCTION)
 
+const rgblight_segment_t PROGMEM qwerty_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 16, HSV_GREEN}
+);
+const rgblight_segment_t PROGMEM function_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 16, HSV_MAGENTA}
+);
+const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    qwerty_layer, function_layer
+);
+
+void keyboard_post_init_user(void) {
+    rgblight_layers = my_rgb_layers;
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /* Qwerty
@@ -55,18 +69,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       )
 };
 
-void keyboard_post_init_user(void) {
-    rgblight_sethsv_noeeprom_green();
-}
-
 layer_state_t layer_state_set_user(layer_state_t state) {
-    switch (get_highest_layer(layer_state)) {
-        case _QWERTY:
-            rgblight_sethsv_noeeprom_green();
-            break;
-        case _FUNCTION:
-            rgblight_sethsv_noeeprom_magenta();
-            break;
-    }
+    rgblight_set_layer_state(0, layer_state_cmp(state, _QWERTY));
+    rgblight_set_layer_state(1, layer_state_cmp(state, _FUNCTION));
     return state;
 }
