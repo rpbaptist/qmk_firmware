@@ -61,11 +61,11 @@ void keyboard_post_init_user(void) {
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(layer_state)) {
-        case _FUNCTION:
-            rgblight_sethsv_noeeprom_yellow();
-            break;
-        default:
+        case _QWERTY:
             rgblight_sethsv_noeeprom_green();
+            break;
+        case _FUNCTION:
+            rgblight_sethsv_noeeprom_magenta();
             break;
     }
     return state;
