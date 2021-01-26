@@ -2,6 +2,12 @@
 
 extern uint8_t  is_master;
 static uint32_t oled_timer = 0;
+static uint32_t hsv_change_timer = 0;
+
+char current_hue[4] = "";
+char current_val[4] = "";
+char current_sat[4] = "";
+
 bool alt_tab_used = false;
 bool switched_from_gaming = false;
 
@@ -301,6 +307,20 @@ void render_status(void) {
 #    endif
 }
 
+void render_hsv_status(void) {
+    snprintf(current_hue, 3, "%d", rgb_matrix_config.hsv.h);
+    oled_write_P(PSTR("H: "), false);
+    oled_write_P(current_hue, false);
+
+    snprintf(current_sat, 3, "%d", rgb_matrix_config.hsv.s);
+    oled_write_P(PSTR("S: "), false);
+    oled_write_P(current_sat, false);
+
+    snprintf(current_val, 3, "%d", rgb_matrix_config.hsv.v);
+    oled_write_P(PSTR("V: "), false);
+    oled_write_P(current_val, false);
+}
+
 void oled_task_user(void) {
     if (timer_elapsed32(oled_timer) > OLED_TIMEOUT) {
         oled_off();
@@ -312,14 +332,18 @@ void oled_task_user(void) {
     if (is_master) {
         render_status();  // Renders the current keyboard state (layer, lock, caps, scroll, etc)
     } else {
-        render_crkbd_logo();
-        #ifdef RGB_MATRIX_ENABLE
-            if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
-                oled_scroll_left();  // Turns on scrolling
-            } else {
-              oled_scroll_off();
-            }
-        #endif
+        if (timer_elapsed32(hsv_change_timer) < HSV_CHANGE_TIMEOUT) {
+            render_hsv_status();
+        } else {
+            render_crkbd_logo();
+            #ifdef RGB_MATRIX_ENABLE
+                if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
+                    oled_scroll_left();  // Turns on scrolling
+                } else {
+                  oled_scroll_off();
+                }
+            #endif
+        }
     }
 }
 #endif
@@ -628,6 +652,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 rgb_matrix_update_mode(RGB_MATRIX_CYCLE_LEFT_RIGHT, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
             }
             break;
+        case RGB_HUI:
+        case RGB_HUD:
+        case RGB_SAI:
+        case RGB_SAD:
+        case RGB_VAI:
+        case RGB_VAD:
+            if (record->event.pressed) {
+                hsv_change_timer = timer_read32();
+            }
+            break;
+
 #endif
     }
     return true;
