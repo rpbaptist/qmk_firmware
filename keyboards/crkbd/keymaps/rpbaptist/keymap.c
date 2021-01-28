@@ -166,9 +166,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
         RESET, RGB_RST, KC_MPRV, KC_VOLU, KC_MNXT, COLEMAK,                      RGB_SIM, RGB_NXS, RGB_MAP, RGB_IDL, RGB_UND, RGB_TOG,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      LCK_NMP, XXXXXXX, KC_MSTP, KC_VOLD, KC_MPLY,  GAMING,                      RGB_DUO, RGB_SCR, RGB_HUI, RGB_SAI, RGB_VAI, RGB_SPI,\
+      LCK_NMP, XXXXXXX, KC_MSTP, KC_VOLD, KC_MPLY,  GAMING,                      RGB_DUO, RGB_SCR, RGB_SPI, RGB_HUI, RGB_SAI, RGB_VAI,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      EEP_RST, KC_SLEP, XXXXXXX, KC_MUTE, XXXXXXX, XXXXXXX,                      RGB_SOL, RGB_CYC, RGB_HUD, RGB_SAD, RGB_VAD, RGB_SPD,\
+      EEP_RST, KC_SLEP, XXXXXXX, KC_MUTE, XXXXXXX, XXXXXXX,                      RGB_SOL, RGB_CYC, RGB_SPD, RGB_HUD, RGB_SAD, RGB_VAD,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______, _______, _______ \
                                       //`--------------------------'  `--------------------------'
