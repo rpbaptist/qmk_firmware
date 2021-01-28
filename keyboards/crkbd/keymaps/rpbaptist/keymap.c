@@ -411,7 +411,7 @@ void rgb_matrix_set_defaults(void) {
     rgb_matrix_config.enable = 1;
     rgb_matrix_sethsv_noeeprom(THEME_HSV);
 
-    user_config.rgb_layer_indicator        = false;
+    user_config.rgb_layer_indicator     = true;
     user_config.rgb_matrix_idle_anim    = true;
     user_config.rgb_matrix_idle_timeout = 60000;
 
