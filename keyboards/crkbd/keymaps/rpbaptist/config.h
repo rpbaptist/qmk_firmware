@@ -44,6 +44,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define NO_ACTION_ONESHOT
 
 #ifdef RGB_MATRIX_ENABLE
+#    define IDLE_TIMEOUT 60000
+#    define GAMING_IDLE_TIMEOUT IDLE_TIMEOUT / 6
 #    define RGB_DISABLE_WHEN_USB_SUSPENDED true  // turn off effects when suspended
 #    define RGB_MATRIX_MAXIMUM_BRIGHTNESS 135
 
