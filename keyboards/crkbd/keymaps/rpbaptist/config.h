@@ -154,7 +154,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   undef THEME_HSV
 
 #   define OLED_FONT_H "keyboards/crkbd/keymaps/rpbaptist/glcdfont_milkshake.c"
-#   define THEME_HSV HSV_GOLDENROD
+#   define THEME_HSV 30, 255, 218
 #endif
 
 #define NO_ACTION_ONESHOT
