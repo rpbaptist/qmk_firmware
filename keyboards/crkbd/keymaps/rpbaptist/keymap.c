@@ -382,13 +382,32 @@ void rgb_matrix_indicators_user(void) {
     }
 }
 
-void rgb_matrix_update_current_mode(uint8_t mode, uint8_t speed) {
-    rgb_matrix_config.speed = speed;
+uint8_t rgb_matrix_speed_for_mode(uint8_t mode) {
+    switch (mode) {
+        case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
+        case RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS:
+            return RGB_MATRIX_ANIMATION_SPEED_FAST;
+        case RGB_MATRIX_CYCLE_LEFT_RIGHT:
+        case RGB_MATRIX_RAINBOW_PINWHEELS:
+            return RGB_MATRIX_ANIMATION_SPEED_SLOW;
+        case RGB_MATRIX_CYCLE_ALL:
+            return RGB_MATRIX_ANIMATION_SPEED_SLOWER;
+        default:
+            return RGB_MATRIX_ANIMATION_SPEED_MEDIUM;
+
+    }
+}
+
+void rgb_matrix_update_current_mode(uint8_t mode) {
+    rgb_matrix_config.speed = rgb_matrix_speed_for_mode(mode);
     rgb_matrix_mode_noeeprom(mode);
     eeconfig_update_user(user_config.raw);
 }
 
-void rgb_matrix_update_dynamic_mode(uint8_t mode, uint8_t speed, bool active) {
+void rgb_matrix_update_dynamic_mode(uint8_t mode, bool active) {
+    uint8_t speed;
+    speed = rgb_matrix_speed_for_mode(mode);
+
     if (active) {
         user_config.rgb_matrix_active_speed = speed;
         user_config.rgb_matrix_active_mode  = mode;
@@ -398,12 +417,12 @@ void rgb_matrix_update_dynamic_mode(uint8_t mode, uint8_t speed, bool active) {
     }
 }
 
-void rgb_matrix_update_mode(uint8_t mode, uint8_t speed, bool active) {
+void rgb_matrix_update_mode(uint8_t mode, bool active) {
     if (user_config.rgb_matrix_idle_anim) {
-        rgb_matrix_update_dynamic_mode(mode, speed, active);
+        rgb_matrix_update_dynamic_mode(mode, active);
     }
     if (active || !user_config.rgb_matrix_idle_anim) {
-        rgb_matrix_update_current_mode(mode, speed);
+        rgb_matrix_update_current_mode(mode);
     }
 }
 
@@ -415,8 +434,8 @@ void rgb_matrix_set_defaults(void) {
     user_config.rgb_matrix_idle_anim    = true;
     user_config.rgb_matrix_idle_timeout = IDLE_TIMEOUT;
 
-    rgb_matrix_update_dynamic_mode(RGB_MATRIX_TYPING_PASSIVE, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
-    rgb_matrix_update_dynamic_mode(RGB_MATRIX_TYPING_ACTIVE, RGB_MATRIX_ANIMATION_SPEED_MEDIUM, true);
+    rgb_matrix_update_dynamic_mode(RGB_MATRIX_TYPING_PASSIVE, false);
+    rgb_matrix_update_dynamic_mode(RGB_MATRIX_TYPING_ACTIVE, true);
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
 
     eeprom_update_block(&rgb_matrix_config, EECONFIG_RGB_MATRIX, sizeof(rgb_matrix_config));
@@ -427,7 +446,7 @@ void matrix_scan_rgb(void) {
         if (user_config.rgb_layer_indicator) {
             rgb_matrix_layer_helper(0, 0, 0, LED_FLAG_UNDERGLOW);
         }
-        rgb_matrix_update_current_mode(user_config.rgb_matrix_idle_mode, user_config.rgb_matrix_idle_speed);
+        rgb_matrix_update_current_mode(user_config.rgb_matrix_idle_mode);
     }
 }
 
@@ -487,7 +506,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (user_config.rgb_matrix_idle_anim) {
         hypno_timer = timer_read32();
         if (rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
-            rgb_matrix_update_current_mode(user_config.rgb_matrix_active_mode, user_config.rgb_matrix_active_speed);
+            rgb_matrix_update_current_mode(user_config.rgb_matrix_active_mode);
             if (!user_config.rgb_layer_indicator) {
                 rgb_matrix_layer_helper(0, 0, 0, LED_FLAG_UNDERGLOW);
             }
@@ -548,8 +567,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case COLEMAK:
             if (record->event.pressed) {
                 user_config.rgb_matrix_idle_timeout = IDLE_TIMEOUT;
-                rgb_matrix_update_mode(RGB_MATRIX_TYPING_PASSIVE, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
-                rgb_matrix_update_mode(RGB_MATRIX_TYPING_ACTIVE, RGB_MATRIX_ANIMATION_SPEED_MEDIUM, true);
+                rgb_matrix_update_mode(RGB_MATRIX_TYPING_PASSIVE, false);
+                rgb_matrix_update_mode(RGB_MATRIX_TYPING_ACTIVE, true);
             }
             switched_from_gaming = false; // When manually switching, disable ALT+TAB behavior
             return true;
@@ -559,8 +578,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     user_config.rgb_layer_indicator = true;
                 }
                 user_config.rgb_matrix_idle_timeout = GAMING_IDLE_TIMEOUT;
-                rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
-                rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS, RGB_MATRIX_ANIMATION_SPEED_FAST, true);
+                rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS, false);
+                rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS, true);
             }
             return true;
         case RGB_RST:
@@ -584,49 +603,49 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 user_config.rgb_matrix_idle_anim ^= 1;
                 if (user_config.rgb_matrix_idle_anim) {
-                    rgb_matrix_update_mode(user_config.rgb_matrix_active_mode, user_config.rgb_matrix_active_speed, true);
+                    rgb_matrix_update_mode(user_config.rgb_matrix_active_mode, true);
                 } else {
-                    rgb_matrix_update_current_mode(user_config.rgb_matrix_idle_mode, user_config.rgb_matrix_idle_speed);
+                    rgb_matrix_update_current_mode(user_config.rgb_matrix_idle_mode);
                 }
             }
             break;
         case RGB_MAP:
             if (record->event.pressed) {
-                rgb_matrix_update_mode(RGB_MATRIX_TYPING_HEATMAP, RGB_MATRIX_ANIMATION_SPEED_MEDIUM, true);
+                rgb_matrix_update_mode(RGB_MATRIX_TYPING_HEATMAP, true);
             }
             break;
         case RGB_NXS:
             if (record->event.pressed) {
-                rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS, RGB_MATRIX_ANIMATION_SPEED_FAST, true);
+                rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS, true);
             }
             break;
         case RGB_SIM:
             if (record->event.pressed) {
-                rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_SIMPLE, RGB_MATRIX_ANIMATION_SPEED_FAST, true);
+                rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_SIMPLE, true);
             }
             break;
         case RGB_SOL:
             if (record->event.pressed) {
                 if (rgb_matrix_get_mode() == RGB_MATRIX_SOLID_COLOR || user_config.rgb_matrix_idle_mode == RGB_MATRIX_SOLID_COLOR) {
-                    rgb_matrix_update_mode(RGB_MATRIX_BREATHING, RGB_MATRIX_ANIMATION_SPEED_MEDIUM, false);
+                    rgb_matrix_update_mode(RGB_MATRIX_BREATHING, false);
                 } else {
-                    rgb_matrix_update_mode(RGB_MATRIX_SOLID_COLOR, rgb_matrix_config.speed, false);
+                    rgb_matrix_update_mode(RGB_MATRIX_SOLID_COLOR, false);
                 }
             }
             break;
         case RGB_CYC:
             if (record->event.pressed) {
-                rgb_matrix_update_mode(RGB_MATRIX_CYCLE_ALL, RGB_MATRIX_ANIMATION_SPEED_SLOWER, false);
+                rgb_matrix_update_mode(RGB_MATRIX_CYCLE_ALL, false);
             }
             break;
         case RGB_DUO:
             if (record->event.pressed) {
-                rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
+                rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS, false);
             }
             break;
         case RGB_SCR:
             if (record->event.pressed) {
-                rgb_matrix_update_mode(RGB_MATRIX_CYCLE_LEFT_RIGHT, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
+                rgb_matrix_update_mode(RGB_MATRIX_CYCLE_LEFT_RIGHT, false);
             }
             break;
 #endif
