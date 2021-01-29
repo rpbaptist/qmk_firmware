@@ -46,6 +46,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef RGB_MATRIX_ENABLE
 #    define IDLE_TIMEOUT 60000
 #    define GAMING_IDLE_TIMEOUT IDLE_TIMEOUT / 6
+#    define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_TYPING_HEATMAP
+#    define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_RAINBOW_PINWHEELS
 #    define RGB_DISABLE_WHEN_USB_SUSPENDED true  // turn off effects when suspended
 #    define RGB_MATRIX_MAXIMUM_BRIGHTNESS 135
 

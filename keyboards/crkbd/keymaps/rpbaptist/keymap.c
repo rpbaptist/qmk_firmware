@@ -415,8 +415,8 @@ void rgb_matrix_set_defaults(void) {
     user_config.rgb_matrix_idle_anim    = true;
     user_config.rgb_matrix_idle_timeout = IDLE_TIMEOUT;
 
-    rgb_matrix_update_dynamic_mode(RGB_MATRIX_RAINBOW_PINWHEELS, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
-    rgb_matrix_update_dynamic_mode(RGB_MATRIX_TYPING_HEATMAP, RGB_MATRIX_ANIMATION_SPEED_MEDIUM, true);
+    rgb_matrix_update_dynamic_mode(RGB_MATRIX_TYPING_PASSIVE, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
+    rgb_matrix_update_dynamic_mode(RGB_MATRIX_TYPING_ACTIVE, RGB_MATRIX_ANIMATION_SPEED_MEDIUM, true);
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
 
     eeprom_update_block(&rgb_matrix_config, EECONFIG_RGB_MATRIX, sizeof(rgb_matrix_config));
@@ -548,7 +548,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case COLEMAK:
             if (record->event.pressed) {
                 user_config.rgb_matrix_idle_timeout = IDLE_TIMEOUT;
-                rgb_matrix_update_mode(RGB_MATRIX_CYCLE_ALL, RGB_MATRIX_ANIMATION_SPEED_SLOWER, false);
+                rgb_matrix_update_mode(RGB_MATRIX_TYPING_PASSIVE, RGB_MATRIX_ANIMATION_SPEED_SLOW, false);
+                rgb_matrix_update_mode(RGB_MATRIX_TYPING_ACTIVE, RGB_MATRIX_ANIMATION_SPEED_MEDIUM, true);
             }
             switched_from_gaming = false; // When manually switching, disable ALT+TAB behavior
             return true;
