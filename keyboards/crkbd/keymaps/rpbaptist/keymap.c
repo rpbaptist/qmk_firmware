@@ -387,6 +387,7 @@ uint8_t rgb_matrix_speed_for_mode(uint8_t mode) {
         case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
         case RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS:
             return RGB_MATRIX_ANIMATION_SPEED_FAST;
+        case RGB_MATRIX_BREATHING:
         case RGB_MATRIX_CYCLE_LEFT_RIGHT:
         case RGB_MATRIX_RAINBOW_PINWHEELS:
             return RGB_MATRIX_ANIMATION_SPEED_SLOW;
