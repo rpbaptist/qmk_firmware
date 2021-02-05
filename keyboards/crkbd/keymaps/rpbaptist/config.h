@@ -44,7 +44,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define NO_ACTION_ONESHOT
 
 #ifdef RGB_MATRIX_ENABLE
-#    define IDLE_TIMEOUT 60000
+#    define IDLE_TIMEOUT 60000 * 5
 #    define GAMING_IDLE_TIMEOUT 10000
 #    define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_TYPING_HEATMAP
 #    define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_RAINBOW_PINWHEELS
