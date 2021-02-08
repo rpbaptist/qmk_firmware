@@ -1,5 +1,8 @@
 #pragma once
 
+#define TAPPING_TERM 160
+#define PERMISSIVE_HOLD
+
 // Turn off RGB when computer goes to sleep
 #ifdef RGBLIGHT_ENABLE
 #define RGBLIGHT_SLEEP
