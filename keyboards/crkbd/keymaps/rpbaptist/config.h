@@ -46,8 +46,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef RGB_MATRIX_ENABLE
 #    define IDLE_TIMEOUT 60000 * 5
 #    define GAMING_IDLE_TIMEOUT 10000
-#    define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_TYPING_HEATMAP
-#    define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_RAINBOW_PINWHEELS
+#    define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_SOLID_REACTIVE_SIMPLE
+#    define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_CYCLE_ALL
 #    define RGB_DISABLE_WHEN_USB_SUSPENDED true  // turn off effects when suspended
 #    define RGB_MATRIX_MAXIMUM_BRIGHTNESS 135
 
@@ -148,17 +148,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef THEME_LASER
 #   undef OLED_FONT_H
 #   undef THEME_HSV
+#   undef RGB_MATRIX_TYPING_ACTIVE
+#   undef RGB_MATRIX_TYPING_PASSIVE
 
 #   define OLED_FONT_H "keyboards/crkbd/keymaps/rpbaptist/glcdfont_laser.c"
 #   define THEME_HSV HSV_MAGENTA
+#   define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_SOLID_REACTIVE_SIMPLE
+#   define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_CYCLE_LEFT_RIGHT
 #endif
 
 #ifdef THEME_MILKSHAKE
 #   undef OLED_FONT_H
 #   undef THEME_HSV
+#   undef RGB_MATRIX_TYPING_ACTIVE
+#   undef RGB_MATRIX_TYPING_PASSIVE
 
 #   define OLED_FONT_H "keyboards/crkbd/keymaps/rpbaptist/glcdfont_milkshake.c"
 #   define THEME_HSV 30, 255, 218
+#   define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_TYPING_HEATMAP
+#   define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_CYCLE_LEFT_RIGHT
 #endif
 
 #define NO_ACTION_ONESHOT
