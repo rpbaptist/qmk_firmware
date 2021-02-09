@@ -1,5 +1,4 @@
-/*
-Copyright 2011 Jun Wako <wakojun@gmail.com>
+/* Copyright 2021 Danny Nguyen <danny@keeb.io>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -15,33 +14,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include "rev1.h"
 
-#include <stdint.h>
-
-// convert to L string
-#define LSTR(s) XLSTR(s)
-#define XLSTR(s) L## #s
-// convert to string
-#define STR(s) XSTR(s)
-#define XSTR(s) #s
-
-#ifdef __cplusplus
-extern "C" {
+void eeconfig_init_kb(void) {
+#ifdef BACKLIGHT_ENABLE
+    backlight_enable();
+    backlight_level(5);
 #endif
-
-uint8_t bitpop(uint8_t bits);
-uint8_t bitpop16(uint16_t bits);
-uint8_t bitpop32(uint32_t bits);
-
-uint8_t biton(uint8_t bits);
-uint8_t biton16(uint16_t bits);
-uint8_t biton32(uint32_t bits);
-
-uint8_t  bitrev(uint8_t bits);
-uint16_t bitrev16(uint16_t bits);
-uint32_t bitrev32(uint32_t bits);
-
-#ifdef __cplusplus
+    eeconfig_update_kb(0);
+    eeconfig_init_user();
 }
-#endif
