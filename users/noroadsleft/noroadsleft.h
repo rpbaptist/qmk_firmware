@@ -1,4 +1,4 @@
-/* Copyright 2015-2018 Jack Humbert
+/* Copyright 2020 James Young (@noroadsleft)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,14 +16,23 @@
 
 #pragma once
 
-#ifndef __ASSEMBLER__
-#    include "pin_defs.h"
-#endif
+#include QMK_KEYBOARD_H
 
-/* diode directions */
-#define COL2ROW 0
-#define ROW2COL 1
+#define MOD_MASK_RALT (MOD_BIT(KC_RALT))
+extern bool macroMode;
 
-#define API_SYSEX_MAX_SIZE 32
+enum userspace_keycodes {
+    VRSN = SAFE_RANGE,
+    G_PUSH,
+    G_FTCH,
+    G_BRCH,
+    M_SALL,
+    M_UNDO,
+    M_CUT,
+    M_COPY,
+    M_PASTE,
+    M_MDSWP,
+    KEYMAP_SAFE_RANGE
+};
 
-#include "song_list.h"
+bool process_record_keymap(uint16_t keycode, keyrecord_t *record);
