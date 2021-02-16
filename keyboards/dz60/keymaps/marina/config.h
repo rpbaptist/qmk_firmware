@@ -16,3 +16,6 @@
 
 #undef PRODUCT
 #define PRODUCT Keyboard van Marina
+
+#undef DEBOUNCE
+#define DEBOUNCE 15
