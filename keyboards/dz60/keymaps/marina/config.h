@@ -18,6 +18,6 @@
 #define PRODUCT Keyboard van Marina
 
 #undef DEBOUNCE
-#define DEBOUNCE 20
+#define DEBOUNCE 30
 
 #define DEBOUNCE_TYPE "sym_eager_pk"
