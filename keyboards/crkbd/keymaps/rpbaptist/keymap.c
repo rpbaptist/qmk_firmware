@@ -21,8 +21,6 @@ enum layer_names {
 
 enum custom_keycodes {
     BSP_DEL = SAFE_RANGE,
-    // MY_MAIL,  // Fill out mail address
-    SSH_END,  // End frozen SSH session
     RGB_RST,  // Reset RGB
     RGB_UND,  // Toggle RGB underglow as layer indicator
     RGB_IDL,  // RGB Idling animations
@@ -134,7 +132,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
         S_NUM, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_UNDS,   KC_P4,   KC_P5,   KC_P6, KC_PMNS, KC_PPLS,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LCTL, XXXXXXX, SSH_END, XXXXXXX, KC_PSCR, KC_NLCK,                       KC_EQL,   KC_P1,   KC_P2,   KC_P3, KC_PSLS, KC_PAST,\
+      KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, KC_PSCR, KC_NLCK,                       KC_EQL,   KC_P1,   KC_P2,   KC_P3, KC_PSLS, KC_PAST,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______,   KC_P0,  KC_DOT \
                                       //`--------------------------'  `--------------------------'
@@ -527,13 +525,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     switch (temp_keycode) {
-        case SSH_END:
-            if (record->event.pressed) {
-                tap_code(KC_ENTER);
-                tap_code(KC_TILD);
-                tap_code(KC_DOT);
-            }
-            break;
         case BSP_DEL:
             if (record->event.pressed) {
                 saved_mods = get_mods() & MOD_MASK_SHIFT;
