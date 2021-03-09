@@ -152,7 +152,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   undef RGB_MATRIX_TYPING_PASSIVE
 
 #   define OLED_FONT_H "keyboards/crkbd/keymaps/rpbaptist/glcdfont_laser.c"
-#   define THEME_HSV HSV_MAGENTA
+#   define THEME_HSV HSV_PURPLE
 #   define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_SOLID_REACTIVE_SIMPLE
 #   define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_CYCLE_LEFT_RIGHT
 #endif
