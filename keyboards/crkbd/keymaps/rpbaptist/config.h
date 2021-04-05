@@ -67,6 +67,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define DISABLE_RGB_MATRIX_BAND_SPIRAL_SAT
 #    define DISABLE_RGB_MATRIX_BAND_SPIRAL_VAL
 
+#    define DISABLE_RGB_MATRIX_HUE_BREATHING
+#    define DISABLE_RGB_MATRIX_HUE_PENDULUM
+#    define DISABLE_RGB_MATRIX_HUE_WAVE
+
 // #define DISABLE_RGB_MATRIX_CYCLE_ALL
 // #    define DISABLE_RGB_MATRIX_CYCLE_LEFT_RIGHT
 #    define DISABLE_RGB_MATRIX_CYCLE_UP_DOWN
