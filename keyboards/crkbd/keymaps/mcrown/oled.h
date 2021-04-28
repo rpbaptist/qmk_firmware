@@ -1,4 +1,5 @@
-/* Copyright 2020-2021 James Young (@noroadsleft)
+/** @file oled.h
+ *  @brief oled header that includes function prototypes and external variables.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,27 +13,22 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Mario Corona (mariocc@comunidad.unam.mx) 2021
+ *
  */
-
 #pragma once
 
-#include QMK_KEYBOARD_H
+#include <stdio.h>
+#include "mcrown.h"
 
-#define MOD_MASK_RALT (MOD_BIT(KC_RALT))
-extern bool macroMode;
+#ifdef OLED_VERTICAL
+#define KEYLOG_LEN (48)
+#else
+#define KEYLOG_LEN (19)
+#endif
 
-enum userspace_keycodes {
-    VRSN = SAFE_RANGE,
-    G_PUSH,
-    G_FTCH,
-    G_BRCH,
-    M_SALL,
-    M_UNDO,
-    M_CUT,
-    M_COPY,
-    M_PASTE,
-    M_MDSWP,
-    KEYMAP_SAFE_RANGE
-};
+#define KEYLOG_EOL_LEN (KEYLOG_LEN+1)
 
-bool process_record_keymap(uint16_t keycode, keyrecord_t *record);
+extern void add_keylog(uint16_t keycode);
+extern void update_log(void);
