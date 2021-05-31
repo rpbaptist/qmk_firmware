@@ -31,7 +31,8 @@ enum custom_keycodes {
     RGB_BRE,  // RGB_MATRIX_BREATHING
     RGB_CYC,  // RGB_MATRIX_CYCLE_ALL
     RGB_DUO,  // RGB_MATRIX_RAINBOW_PINWHEELS
-    RGB_SCR   // RGB_MATRIX_CYCLE_LEFT_RIGHT
+    RGB_SCR,  // RGB_MATRIX_CYCLE_LEFT_RIGHT,
+    TGL_LYR   // Toggle main layer from GAMING to COLEMAKDH and back
 };
 
 typedef union {
@@ -50,8 +51,8 @@ typedef union {
 user_config_t user_config;
 
 // Base layers
-#define COLEMAK DF(_COLEMAKDH)
-#define GAMING  DF(_GAMING)
+// #define COLEMAK DF(_COLEMAKDH)
+// #define GAMING  DF(_GAMING)
 
 // Layer toggle and switch
 #define T_NAV TT(_NAV)
@@ -164,9 +165,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_UTIL] = LAYOUT_split_3x6_3( \
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        RESET, RGB_RST, KC_MPRV, KC_VOLU, KC_MNXT, COLEMAK,                      RGB_SIM, RGB_NXS, RGB_MAP, RGB_IDL, RGB_UND, RGB_TOG,\
+        RESET, RGB_RST, KC_MPRV, KC_VOLU, KC_MNXT, TGL_LYR,                      RGB_SIM, RGB_NXS, RGB_MAP, RGB_IDL, RGB_UND, RGB_TOG,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      LCK_NMP, XXXXXXX, KC_MSTP, KC_VOLD, KC_MPLY,  GAMING,                      RGB_DUO, RGB_SCR, RGB_SPI, RGB_HUI, RGB_SAI, RGB_VAI,\
+      LCK_NMP, XXXXXXX, KC_MSTP, KC_VOLD, KC_MPLY, XXXXXXX,                      RGB_DUO, RGB_SCR, RGB_SPI, RGB_HUI, RGB_SAI, RGB_VAI,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       EEP_RST, KC_SLEP, XXXXXXX, KC_MUTE, XXXXXXX, XXXXXXX,                      RGB_SOL, RGB_CYC, RGB_SPD, RGB_HUD, RGB_SAD, RGB_VAD,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -568,25 +569,33 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 alt_tab_used = false; // return to default state
             }
             return true;
+        case TGL_LYR:
+            if (record->event.pressed) {
+                switch (get_highest_layer(default_layer_state)) {
+                    case _GAMING:
+                        #ifdef RGB_MATRIX_ENABLE
+                            user_config.rgb_matrix_idle_timeout = IDLE_TIMEOUT;
+                            rgb_matrix_update_mode(RGB_MATRIX_TYPING_PASSIVE);
+                            rgb_matrix_update_mode(RGB_MATRIX_TYPING_ACTIVE);
+                            switched_from_gaming = false; // When manually switching, disable ALT+TAB behavior
+                        #endif
+                        default_layer_set(1U << _COLEMAKDH);
+                        break;
+                    case _COLEMAKDH:
+                        #ifdef RGB_MATRIX_ENABLE
+                            if (!user_config.rgb_layer_indicator) {
+                                user_config.rgb_layer_indicator = true;
+                            }
+                            user_config.rgb_matrix_idle_timeout = GAMING_IDLE_TIMEOUT;
+                            rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS);
+                            rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
+                        #endif
+                        default_layer_set(1U << _GAMING);
+                        break;
+                    }
+            }
+            return true;
 #ifdef RGB_MATRIX_ENABLE
-        case COLEMAK:
-            if (record->event.pressed) {
-                user_config.rgb_matrix_idle_timeout = IDLE_TIMEOUT;
-                rgb_matrix_update_mode(RGB_MATRIX_TYPING_PASSIVE);
-                rgb_matrix_update_mode(RGB_MATRIX_TYPING_ACTIVE);
-            }
-            switched_from_gaming = false; // When manually switching, disable ALT+TAB behavior
-            return true;
-        case GAMING:
-            if (record->event.pressed) {
-                if (!user_config.rgb_layer_indicator) {
-                    user_config.rgb_layer_indicator = true;
-                }
-                user_config.rgb_matrix_idle_timeout = GAMING_IDLE_TIMEOUT;
-                rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS);
-                rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
-            }
-            return true;
         case RGB_RST:
             if (record->event.pressed) {
                 rgb_matrix_set_defaults();
