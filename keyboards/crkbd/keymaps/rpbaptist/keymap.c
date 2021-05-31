@@ -427,6 +427,50 @@ void rgb_matrix_update_mode(uint8_t mode) {
     }
 }
 
+void rgb_matrix_cycle_active_mode(uint8_t mode) {
+    switch (mode) {
+        case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
+            rgb_matrix_update_mode(RGB_MATRIX_TYPING_HEATMAP);
+            break;
+        case RGB_MATRIX_TYPING_HEATMAP:
+            rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
+            break;
+        default:
+            rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
+            break;
+    }
+}
+
+void rgb_matrix_toggle_active_mode(void) {
+    if (user_config.rgb_matrix_idle_anim) {
+        rgb_matrix_cycle_active_mode(user_config.rgb_matrix_active_mode);
+    } else {
+        rgb_matrix_cycle_active_mode(rgb_matrix_get_mode());
+    }
+}
+
+void rgb_matrix_cycle_simple_passive_mode(uint8_t mode) {
+    switch (mode) {
+        case RGB_MATRIX_SOLID_COLOR:
+            rgb_matrix_update_mode(RGB_MATRIX_BREATHING);
+            break;
+        case RGB_MATRIX_BREATHING:
+            rgb_matrix_update_mode(RGB_MATRIX_CYCLE_ALL);
+            break;
+        default:
+            rgb_matrix_update_mode(RGB_MATRIX_SOLID_COLOR);
+            break;
+    }
+}
+
+void rgb_matrix_toggle_simple_passive_mode(void) {
+    if (user_config.rgb_matrix_idle_anim) {
+        rgb_matrix_cycle_simple_passive_mode(user_config.rgb_matrix_idle_mode);
+    } else {
+        rgb_matrix_cycle_simple_passive_mode(rgb_matrix_get_mode());
+    }
+}
+
 void rgb_matrix_set_defaults(void) {
     rgb_matrix_config.enable = 1;
     rgb_matrix_sethsv_noeeprom(THEME_HSV);
@@ -620,60 +664,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case RGB_ATG:
             if (record->event.pressed) {
-                if (user_config.rgb_matrix_idle_anim) {
-                    switch (user_config.rgb_matrix_active_mode) {
-                        case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
-                            rgb_matrix_update_mode(RGB_MATRIX_TYPING_HEATMAP);
-                            break;
-                        case RGB_MATRIX_TYPING_HEATMAP:
-                            rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
-                            break;
-                        default:
-                            rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
-                            break;
-                    }
-                } else {
-                    switch (rgb_matrix_get_mode()) {
-                        case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
-                            rgb_matrix_update_mode(RGB_MATRIX_TYPING_HEATMAP);
-                            break;
-                        case RGB_MATRIX_TYPING_HEATMAP:
-                            rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
-                            break;
-                        default:
-                            rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
-                            break;
-                    }
-                }
+                rgb_matrix_toggle_active_mode();
             }
             break;
         case RGB_PST:
             if (record->event.pressed) {
-                if (user_config.rgb_matrix_idle_anim) {
-                    switch (user_config.rgb_matrix_idle_mode) {
-                        case RGB_MATRIX_SOLID_COLOR:
-                            rgb_matrix_update_mode(RGB_MATRIX_BREATHING);
-                            break;
-                        case RGB_MATRIX_BREATHING:
-                            rgb_matrix_update_mode(RGB_MATRIX_CYCLE_ALL);
-                            break;
-                        default:
-                            rgb_matrix_update_mode(RGB_MATRIX_SOLID_COLOR);
-                            break;
-                    }
-                } else {
-                    switch(rgb_matrix_get_mode()) {
-                        case RGB_MATRIX_SOLID_COLOR:
-                            rgb_matrix_update_mode(RGB_MATRIX_BREATHING);
-                            break;
-                        case RGB_MATRIX_BREATHING:
-                            rgb_matrix_update_mode(RGB_MATRIX_CYCLE_ALL);
-                            break;
-                        default:
-                            rgb_matrix_update_mode(RGB_MATRIX_SOLID_COLOR);
-                            break;
-                    }
-                }
+                rgb_matrix_toggle_simple_passive_mode();
             }
             break;
         // case RGB_SOL:
