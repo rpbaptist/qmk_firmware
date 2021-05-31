@@ -427,8 +427,16 @@ void rgb_matrix_update_mode(uint8_t mode) {
     }
 }
 
-void rgb_matrix_cycle_active_mode(uint8_t mode) {
-    switch (mode) {
+uint8_t get_rgb_matrix_acive_mode(void) {
+    if (user_config.rgb_matrix_idle_anim) {
+        return user_config.rgb_matrix_active_mode;
+    } else {
+        return rgb_matrix_get_mode();
+    }
+}
+
+void rgb_matrix_toggle_active_mode(void) {
+    switch (get_rgb_matrix_acive_mode()) {
         case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
             rgb_matrix_update_mode(RGB_MATRIX_TYPING_HEATMAP);
             break;
@@ -441,16 +449,16 @@ void rgb_matrix_cycle_active_mode(uint8_t mode) {
     }
 }
 
-void rgb_matrix_toggle_active_mode(void) {
+uint8_t get_rgb_matrix_idle_mode(void) {
     if (user_config.rgb_matrix_idle_anim) {
-        rgb_matrix_cycle_active_mode(user_config.rgb_matrix_active_mode);
+        return user_config.rgb_matrix_idle_mode;
     } else {
-        rgb_matrix_cycle_active_mode(rgb_matrix_get_mode());
+        return rgb_matrix_get_mode();
     }
 }
 
-void rgb_matrix_cycle_simple_passive_mode(uint8_t mode) {
-    switch (mode) {
+void rgb_matrix_toggle_simple_passive_mode(void) {
+    switch (get_rgb_matrix_idle_mode()) {
         case RGB_MATRIX_SOLID_COLOR:
             rgb_matrix_update_mode(RGB_MATRIX_BREATHING);
             break;
@@ -463,30 +471,14 @@ void rgb_matrix_cycle_simple_passive_mode(uint8_t mode) {
     }
 }
 
-void rgb_matrix_toggle_simple_passive_mode(void) {
-    if (user_config.rgb_matrix_idle_anim) {
-        rgb_matrix_cycle_simple_passive_mode(user_config.rgb_matrix_idle_mode);
-    } else {
-        rgb_matrix_cycle_simple_passive_mode(rgb_matrix_get_mode());
-    }
-}
-
-void rgb_matrix_cycle_color_passive_mode(uint8_t mode) {
-    switch (mode) {
+void rgb_matrix_toggle_color_passive_mode(void) {
+    switch (get_rgb_matrix_idle_mode()) {
         case RGB_MATRIX_RAINBOW_PINWHEELS:
             rgb_matrix_update_mode(RGB_MATRIX_CYCLE_LEFT_RIGHT);
             break;
         default:
             rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS);
             break;
-    }
-}
-
-void rgb_matrix_toggle_color_passive_mode(void) {
-    if (user_config.rgb_matrix_idle_anim) {
-        rgb_matrix_cycle_color_passive_mode(user_config.rgb_matrix_idle_mode);
-    } else {
-        rgb_matrix_cycle_color_passive_mode(rgb_matrix_get_mode());
     }
 }
 
