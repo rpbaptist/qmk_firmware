@@ -620,16 +620,30 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case RGB_ATG:
             if (record->event.pressed) {
-                switch (user_config.rgb_matrix_active_mode) {
-                    case RGB_MATRIX_TYPING_HEATMAP:
-                        rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
-                        break;
-                    case RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS:
-                        rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
-                        break;
-                    case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
-                        rgb_matrix_update_mode(RGB_MATRIX_TYPING_HEATMAP);
-                        break;
+                if (user_config.rgb_matrix_idle_anim) {
+                    switch (user_config.rgb_matrix_active_mode) {
+                        case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
+                            rgb_matrix_update_mode(RGB_MATRIX_TYPING_HEATMAP);
+                            break;
+                        case RGB_MATRIX_TYPING_HEATMAP:
+                            rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
+                            break;
+                        default:
+                            rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
+                            break;
+                    }
+                } else {
+                    switch (rgb_matrix_get_mode()) {
+                        case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
+                            rgb_matrix_update_mode(RGB_MATRIX_TYPING_HEATMAP);
+                            break;
+                        case RGB_MATRIX_TYPING_HEATMAP:
+                            rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
+                            break;
+                        default:
+                            rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
+                            break;
+                    }
                 }
             }
             break;
@@ -643,7 +657,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                         case RGB_MATRIX_BREATHING:
                             rgb_matrix_update_mode(RGB_MATRIX_CYCLE_ALL);
                             break;
-                        case RGB_MATRIX_CYCLE_ALL:
+                        default:
                             rgb_matrix_update_mode(RGB_MATRIX_SOLID_COLOR);
                             break;
                     }
@@ -655,7 +669,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                         case RGB_MATRIX_BREATHING:
                             rgb_matrix_update_mode(RGB_MATRIX_CYCLE_ALL);
                             break;
-                        case RGB_MATRIX_CYCLE_ALL:
+                        default:
                             rgb_matrix_update_mode(RGB_MATRIX_SOLID_COLOR);
                             break;
                     }
