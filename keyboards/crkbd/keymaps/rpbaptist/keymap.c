@@ -471,6 +471,25 @@ void rgb_matrix_toggle_simple_passive_mode(void) {
     }
 }
 
+void rgb_matrix_cycle_color_passive_mode(uint8_t mode) {
+    switch (mode) {
+        case RGB_MATRIX_RAINBOW_PINWHEELS:
+            rgb_matrix_update_mode(RGB_MATRIX_CYCLE_LEFT_RIGHT);
+            break;
+        default:
+            rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS);
+            break;
+    }
+}
+
+void rgb_matrix_toggle_color_passive_mode(void) {
+    if (user_config.rgb_matrix_idle_anim) {
+        rgb_matrix_cycle_color_passive_mode(user_config.rgb_matrix_idle_mode);
+    } else {
+        rgb_matrix_cycle_color_passive_mode(rgb_matrix_get_mode());
+    }
+}
+
 void rgb_matrix_set_defaults(void) {
     rgb_matrix_config.enable = 1;
     rgb_matrix_sethsv_noeeprom(THEME_HSV);
@@ -672,30 +691,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 rgb_matrix_toggle_simple_passive_mode();
             }
             break;
-        // case RGB_SOL:
-        //     if (record->event.pressed) {
-        //         if (rgb_matrix_get_mode() == RGB_MATRIX_SOLID_COLOR || user_config.rgb_matrix_idle_mode == RGB_MATRIX_SOLID_COLOR) {
-        //             rgb_matrix_update_mode(RGB_MATRIX_BREATHING);
-        //         } else {
-        //             rgb_matrix_update_mode(RGB_MATRIX_SOLID_COLOR);
-        //         }
-        //     }
-        //     break;
-        // case RGB_CYC:
-        //     if (record->event.pressed) {
-        //         rgb_matrix_update_mode(RGB_MATRIX_CYCLE_ALL);
-        //     }
-        //     break;
-        // case RGB_DUO:
-        //     if (record->event.pressed) {
-        //         rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS);
-        //     }
-        //     break;
-        // case RGB_SCR:
-        //     if (record->event.pressed) {
-        //         rgb_matrix_update_mode(RGB_MATRIX_CYCLE_LEFT_RIGHT);
-        //     }
-        //     break;
+        case RGB_PCT:
+            if (record->event.pressed) {
+                rgb_matrix_toggle_color_passive_mode();
+            }
+            break;
 #endif
     }
     return true;
