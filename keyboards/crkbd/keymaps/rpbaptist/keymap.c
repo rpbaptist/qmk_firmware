@@ -23,16 +23,19 @@ enum custom_keycodes {
     BSP_DEL = SAFE_RANGE,
     RGB_RST,  // Reset RGB
     RGB_UND,  // Toggle RGB underglow as layer indicator
+    RGB_ATG,  // Toggle active RGB layer
+    RGB_CLT,  // Toggle colorful RGB layer
+    RGB_PAT,  // Toggle passive RGB layer
     RGB_IDL,  // RGB Idling animations
-    RGB_MAP,  // RGB_MATRIX_TYPING_HEATMAP
-    RGB_NXS,  // RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS
-    RGB_SIM,  // RGB_MATRIX_SOLID_REACTIVE_SIMPLE
-    RGB_SOL,  // RGB_MATRIX_SOLID_COLOR
-    RGB_BRE,  // RGB_MATRIX_BREATHING
-    RGB_CYC,  // RGB_MATRIX_CYCLE_ALL
-    RGB_DUO,  // RGB_MATRIX_RAINBOW_PINWHEELS
-    RGB_SCR,  // RGB_MATRIX_CYCLE_LEFT_RIGHT,
-    TGL_LYR   // Toggle main layer from GAMING to COLEMAKDH and back
+    // RGB_MAP,  // RGB_MATRIX_TYPING_HEATMAP
+    // RGB_NXS,  // RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS
+    // RGB_SIM,  // RGB_MATRIX_SOLID_REACTIVE_SIMPLE
+    // RGB_SOL,  // RGB_MATRIX_SOLID_COLOR
+    // RGB_BRE,  // RGB_MATRIX_BREATHING
+    // RGB_CYC,  // RGB_MATRIX_CYCLE_ALL
+    // RGB_DUO,  // RGB_MATRIX_RAINBOW_PINWHEELS
+    // RGB_SCR,  // RGB_MATRIX_CYCLE_LEFT_RIGHT,
+    TGL_LYR   // Toggle main layer from GAMING to COLEMAKDH and back,
 };
 
 typedef union {
@@ -165,11 +168,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_UTIL] = LAYOUT_split_3x6_3( \
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        RESET, RGB_RST, KC_MPRV, KC_VOLU, KC_MNXT, TGL_LYR,                      RGB_SIM, RGB_NXS, RGB_MAP, RGB_IDL, RGB_UND, RGB_TOG,\
+        RESET, RGB_RST, KC_MPRV, KC_VOLU, KC_MNXT, TGL_LYR,                      RGB_ATG, XXXXXXX, XXXXXXX, RGB_IDL, RGB_UND, RGB_TOG,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      LCK_NMP, XXXXXXX, KC_MSTP, KC_VOLD, KC_MPLY, XXXXXXX,                      RGB_DUO, RGB_SCR, RGB_SPI, RGB_HUI, RGB_SAI, RGB_VAI,\
+      LCK_NMP, XXXXXXX, KC_MSTP, KC_VOLD, KC_MPLY, XXXXXXX,                      RGB_CLT, XXXXXXX, RGB_SPI, RGB_HUI, RGB_SAI, RGB_VAI,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      EEP_RST, KC_SLEP, XXXXXXX, KC_MUTE, XXXXXXX, XXXXXXX,                      RGB_SOL, RGB_CYC, RGB_SPD, RGB_HUD, RGB_SAD, RGB_VAD,\
+      EEP_RST, KC_SLEP, XXXXXXX, KC_MUTE, XXXXXXX, XXXXXXX,                      RGB_PAT, XXXXXXX, RGB_SPD, RGB_HUD, RGB_SAD, RGB_VAD,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______, _______, _______ \
                                       //`--------------------------'  `--------------------------'
@@ -623,45 +626,45 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             break;
-        case RGB_MAP:
+        case RGB_ATG:
             if (record->event.pressed) {
-                rgb_matrix_update_mode(RGB_MATRIX_TYPING_HEATMAP);
-            }
-            break;
-        case RGB_NXS:
-            if (record->event.pressed) {
-                rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
-            }
-            break;
-        case RGB_SIM:
-            if (record->event.pressed) {
-                rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
-            }
-            break;
-        case RGB_SOL:
-            if (record->event.pressed) {
-                if (rgb_matrix_get_mode() == RGB_MATRIX_SOLID_COLOR || user_config.rgb_matrix_idle_mode == RGB_MATRIX_SOLID_COLOR) {
-                    rgb_matrix_update_mode(RGB_MATRIX_BREATHING);
-                } else {
-                    rgb_matrix_update_mode(RGB_MATRIX_SOLID_COLOR);
+                switch (user_config.rgb_matrix_active_mode) {
+                    case RGB_MATRIX_TYPING_HEATMAP:
+                        rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
+                        break;
+                    case RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS:
+                        rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
+                        break;
+                    case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
+                        rgb_matrix_update_mode(RGB_MATRIX_TYPING_HEATMAP);
+                        break;
                 }
             }
             break;
-        case RGB_CYC:
-            if (record->event.pressed) {
-                rgb_matrix_update_mode(RGB_MATRIX_CYCLE_ALL);
-            }
-            break;
-        case RGB_DUO:
-            if (record->event.pressed) {
-                rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS);
-            }
-            break;
-        case RGB_SCR:
-            if (record->event.pressed) {
-                rgb_matrix_update_mode(RGB_MATRIX_CYCLE_LEFT_RIGHT);
-            }
-            break;
+        // case RGB_SOL:
+        //     if (record->event.pressed) {
+        //         if (rgb_matrix_get_mode() == RGB_MATRIX_SOLID_COLOR || user_config.rgb_matrix_idle_mode == RGB_MATRIX_SOLID_COLOR) {
+        //             rgb_matrix_update_mode(RGB_MATRIX_BREATHING);
+        //         } else {
+        //             rgb_matrix_update_mode(RGB_MATRIX_SOLID_COLOR);
+        //         }
+        //     }
+        //     break;
+        // case RGB_CYC:
+        //     if (record->event.pressed) {
+        //         rgb_matrix_update_mode(RGB_MATRIX_CYCLE_ALL);
+        //     }
+        //     break;
+        // case RGB_DUO:
+        //     if (record->event.pressed) {
+        //         rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS);
+        //     }
+        //     break;
+        // case RGB_SCR:
+        //     if (record->event.pressed) {
+        //         rgb_matrix_update_mode(RGB_MATRIX_CYCLE_LEFT_RIGHT);
+        //     }
+        //     break;
 #endif
     }
     return true;
