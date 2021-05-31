@@ -10,7 +10,7 @@ bool switched_from_gaming = false;
 #endif
 
 enum layer_names {
-  _COLEMAKDHM,
+  _COLEMAKDH,
   _GAMING,
   _GAMING_EXT,
   _NUMPAD,
@@ -50,7 +50,7 @@ typedef union {
 user_config_t user_config;
 
 // Base layers
-#define COLEMAK DF(_COLEMAKDHM)
+#define COLEMAK DF(_COLEMAKDH)
 #define GAMING  DF(_GAMING)
 
 // Layer toggle and switch
@@ -90,7 +90,7 @@ user_config_t user_config;
 #define KC_EUR ALGR(KC_5)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [_COLEMAKDHM] = LAYOUT_split_3x6_3( \
+  [_COLEMAKDH] = LAYOUT_split_3x6_3( \
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_ESC,    KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                         KC_J,    KC_L,    KC_U,    KC_Y, KC_SCLN, BSP_DEL,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -177,7 +177,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(default_layer_state)) {
-        case _COLEMAKDHM:
+        case _COLEMAKDH:
             state = update_tri_layer_state(state, _SYM, _NAV, _UTIL);
             break;
         case _GAMING:
@@ -233,7 +233,7 @@ const char *rgb_matrix_anim_oled_text(uint8_t mode) {
 void render_status(void) {
     // oled_write_P(PSTR("Layout: "), false);
     switch (get_highest_layer(default_layer_state)) {
-        case _COLEMAKDHM:
+        case _COLEMAKDH:
             oled_write_P(PSTR("TYPE "), false);
             break;
         case _GAMING:
@@ -343,7 +343,7 @@ void rgb_matrix_layer_helper(uint8_t hue, uint8_t sat, uint8_t val, uint8_t led_
 
 void check_default_layer(uint8_t type) {
     switch (get_highest_layer(default_layer_state)) {
-        case _COLEMAKDHM:
+        case _COLEMAKDH:
             rgb_matrix_layer_helper(THEME_HSV, type);
             break;
         case _GAMING:
@@ -472,7 +472,7 @@ void eeconfig_init_user(void) {
 
 void keyboard_post_init_user(void) {
     user_config.raw = eeconfig_read_user();
-    set_single_persistent_default_layer(_COLEMAKDHM);
+    set_single_persistent_default_layer(_COLEMAKDH);
     rgb_matrix_set_defaults();
     rgb_matrix_enable_noeeprom();
 }
@@ -556,9 +556,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 switch (get_highest_layer(default_layer_state)) {
                     case _GAMING:
                         switched_from_gaming = true; // remember if we switched from ALT+TAB
-                        default_layer_set(1U << _COLEMAKDHM);
+                        default_layer_set(1U << _COLEMAKDH);
                         break;
-                    case _COLEMAKDHM:
+                    case _COLEMAKDH:
                         if (switched_from_gaming) {
                             switched_from_gaming = false; // return to default state
                             default_layer_set(1U << _GAMING);
