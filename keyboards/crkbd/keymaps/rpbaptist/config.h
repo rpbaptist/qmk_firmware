@@ -28,7 +28,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define USB_POLLING_INTERVAL_MS 1
 
 #ifdef OLED_DRIVER_ENABLE
-#    undef SSD1306OLED
 #    define OLED_TIMEOUT 30000
 #endif
 
