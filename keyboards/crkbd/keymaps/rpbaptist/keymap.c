@@ -297,7 +297,7 @@ void render_status(void) {
 }
 
 void oled_task_user(void) {
-    if (timer_elapsed32(oled_timer) > OLED_TIMEOUT) {
+    if (sync_timer_elapsed32(oled_timer) > OLED_TIMEOUT) {
         oled_off();
         return;
     } else {
@@ -497,7 +497,7 @@ void rgb_matrix_set_defaults(void) {
 }
 
 void matrix_scan_rgb(void) {
-    if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_active_mode && timer_elapsed32(hypno_timer) > user_config.rgb_matrix_idle_timeout) {
+    if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_active_mode && sync_timer_elapsed32(hypno_timer) > user_config.rgb_matrix_idle_timeout) {
         if (user_config.rgb_layer_indicator) {
             rgb_matrix_layer_helper(0, 0, 0, LED_FLAG_UNDERGLOW);
         }
@@ -555,11 +555,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     static uint8_t saved_mods   = 0;
     uint16_t       temp_keycode = keycode;
 
-    oled_timer = timer_read32();
+    oled_timer = sync_timer_read32();
 
 #ifdef RGB_MATRIX_ENABLE
     if (user_config.rgb_matrix_idle_anim) {
-        hypno_timer = timer_read32();
+        hypno_timer = sync_timer_read32();
         if (rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
             rgb_matrix_update_current_mode(user_config.rgb_matrix_active_mode);
             if (!user_config.rgb_layer_indicator) {
