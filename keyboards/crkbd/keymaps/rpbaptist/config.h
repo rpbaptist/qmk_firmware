@@ -43,7 +43,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define NO_ACTION_ONESHOT
 
+// DRIVER_LED_TOTAL = 54
+
 #ifdef RGB_MATRIX_ENABLE
+#    define RGB_MATRIX_LED_PROCESS_LIMIT (DRIVER_LED_TOTAL + 4) / 5 // limits the number of LEDs to process in an animation per task run (increases keyboard responsiveness)
+// #    define RGB_LED_MIN = 0
+// #    define RGB_LED_MAX = 12
 #    define IDLE_TIMEOUT 60000 * 5
 #    define GAMING_IDLE_TIMEOUT 10000
 #    define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_SOLID_REACTIVE_SIMPLE
