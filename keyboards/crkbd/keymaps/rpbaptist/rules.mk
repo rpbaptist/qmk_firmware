@@ -9,6 +9,8 @@ EXTRAKEY_ENABLE    = yes  # Audio control and System control(+450)
 NKRO_ENABLE        = yes  # Nkey Rollover - if this doesn't work, see here: https://github.com/tmk/tmk_keyboard/wiki/FAQ#nkro-doesnt-work
 DYNAMIC_MACRO_ENABLE = no
 
+WPM_ENABLE = no # Enable so OLED can be re-actived on slave side
+
 MOUSEKEY_ENABLE    = no   # Mouse keys(+4700)
 RGBLIGHT_ENABLE    = no   # Enable WS2812 RGB underlight.
 BOOTMAGIC_ENABLE   = no   # Virtual DIP switch configuration(+1000)
@@ -29,6 +31,8 @@ SLEEP_LED_ENABLE   = no    # Breathing sleep LED during USB suspend
 BOOTLOADER       = qmk-dfu
 
 OLED_DRIVER_ENABLE = yes
+
+LAYOUTS = split_3x6_3
 
 ifeq ($(strip $(THEME)), godspeed)
     OPT_DEFS += -DTHEME_GODSPEED
