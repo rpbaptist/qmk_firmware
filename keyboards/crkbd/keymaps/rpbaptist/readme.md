@@ -8,7 +8,7 @@ Many thanks to foostan for the keyboard, all QMK contributors and drashna specif
 
 ## Layers
 
-### COLEMAKDHM
+### COLEMAKDH
 
 Main typing layer. I really love having SHIFT available on thumbs. I am a left thumb space bar person, so I put SPACE there and ENTER on right. I use CTRL key combos lot in my text editor and desktop environment. That's why I have two of them. I also found them to be a great position for the square brackets. (`[` and `]`). These become parenthesis (`(` and `)`) on either of the layers.
 
@@ -16,7 +16,7 @@ Holding SHIFT while tapping BACKSPACE will output DEL. Holding both SHIFT keys w
 
 I don't know about you but "lower" and "raise" don't mean that much to me. I named my layers `SYM`, short for symbols and `NAV`, short for navigation. Holding the key will activate the layer for as long as it is held, double tapping it will switch to it. Single tapping it once will switch to main layer again.
 
-Holding TAB will access `NUMPAD` layer which features a numpad.
+Holding TAB will access `NUMPAD` layer which features a numpad. This is lockable by going to `ADJUST` layer and pressing the same key.
 
 ### SYM
 
@@ -44,29 +44,35 @@ Most notable here is that there are no tap and hold differences anymore on left 
 
 ### GAMING_EXT
 
-This is the gaming extended layer where movement keys remain the same. This means I can keep moving while accessing second layer keys. All other keys are keys on which I can easily rebind something. Besides that it gives me an ENTER key which does not switch. This is good when a game requires you to hold ENTER.
+This is the gaming extended layer. I moved this to most inner thumb instead of mid thumb position. Num row is now moved to the home row. Besides that it gives me an ENTER key which does not switch. This is good when a game requires you to hold ENTER.
 
 ## RGB
 
 I took a big inspiration from Drashna's RGB configuration and tweaked it.
 
 - `RGB_UND`: Toggles underglow indicators on and off. Each layer has its own color.
-- `RGB_IDL`: This will enable/disable idle mode. By default, when typing, the `RGB_MATRIX_SOLID_REACTIVE_SIMPLE` will be used. When the idle timeout has exceeded the secondary animation will be activated, which is `RGB_MATRIX_SOLID_COLOR` by default. When switching to `GAMING` layer the timeout will be reduced and the idle animation changed to `RGB_MATRIX_RAINBOW_PINWHEELS`.
-   When idle mode is enabled, `RGB_MATRIX_TYPING_HEATMAP` and `RGB_MATRIX_MULTISPLASH` will be used for active animation. All others for idle animation. When disabling idle mode, the current idle animation will be activated. Additionally, on idling, the underglow layer indication will be deactivated.
-- There are no RGB mode cycle keys, but instead several keys to use a specific RGB directly. Each has their own default speed, although this can be changed.
+- `RGB_IDL`: This will enable/disable idle mode. By default an "active" RGB mode will be used. When the idle timeout has exceeded the secondary animation will be activated, which is a passive animation. When switching to `GAMING` layer the timeout will be reduced and the idle animation changed to `RGB_MATRIX_RAINBOW_PINWHEELS`.
+   When disabling idle mode, the current idle animation will be activated.
+   On idling, on idling, the underglow layer indication will be deactivated and the animation RGB will be set instead.
+- `RGB_ATG`: Cylces through three active modes: `RGB_MATRIX_SOLID_REACTIVE_SIMPLE` -> `RGB_MATRIX_TYPING_HEATMAP` -> `RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS`
+- `RGB_PST`: Cycles through three passive modes: `RGB_MATRIX_SOLID_COLOR` -> `RGB_MATRIX_BREATHING` -> `RGB_MATRIX_CYCLE_ALL`
+- `RGB_PCT`: Cycles through two, more colorful, passive modes: `RGB_MATRIX_RAINBOW_PINWHEELS` -> `RGB_MATRIX_CYCLE_LEFT_RIGHT`
 
 ## Building
 
-`make crkbd/rev1:rpbaptist:dfu`
+`qmk flash -bl dfu -kb crkbd -km rpbaptist`
 
 ## Notes
 
 I use several OLED slave side images, depending on the keycaps I am using. These also determine the default LED color and underglow.
 
-`make crkbd/rev1:rpbaptist:dfu THEME=pulse`
+Provide the theme like this:
+
+`THEME=laser qmk flash -bl dfu -kb crkbd -km rpbaptist`
 
 Current supported themes are:
 
+- pulse (default)
 - godspeed
 - laser
-- pulse
+- milkshake
