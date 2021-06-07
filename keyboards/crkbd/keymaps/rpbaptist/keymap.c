@@ -297,15 +297,14 @@ void render_status(void) {
 }
 
 void oled_task_user(void) {
-    if (sync_timer_elapsed32(oled_timer) > OLED_TIMEOUT) {
-        oled_off();
-        return;
-    } else {
-        oled_on();
-    }
-
     if (is_keyboard_master()) {
-        render_status();  // Renders the current keyboard state (layer, lock, caps, scroll, etc)
+        if (timer_elapsed32(oled_timer) > OLED_TIMEOUT) {
+            oled_off();
+            return;
+        } else {
+            oled_on();
+            render_status();  // Renders the current keyboard state (layer, lock, caps, scroll, etc)
+        }
     } else {
         render_crkbd_logo();
         #ifdef RGB_MATRIX_ENABLE
