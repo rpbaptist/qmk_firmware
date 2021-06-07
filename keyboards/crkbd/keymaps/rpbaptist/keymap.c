@@ -323,8 +323,8 @@ void oled_task_user(void) {
 extern led_config_t g_led_config;
 void rgb_matrix_layer_helper(uint8_t hue, uint8_t sat, uint8_t val, uint8_t led_type) {
     HSV hsv = {hue, sat, val};
-    if (hsv.v > rgb_matrix_config.hsv.v) {
-        hsv.v = rgb_matrix_config.hsv.v;
+    if (hsv.v > rgb_matrix_get_val()) {
+        hsv.v = rgb_matrix_get_val();
     }
 
     RGB rgb = hsv_to_rgb(hsv);
