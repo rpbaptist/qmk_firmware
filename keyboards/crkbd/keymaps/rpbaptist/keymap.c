@@ -323,7 +323,7 @@ void oled_task_user(void) {
 #ifdef RGB_MATRIX_ENABLE
 
 extern led_config_t g_led_config;
-void rgb_matrix_layer_helper(uint8_t hue, uint8_t sat, uint8_t val, uint8_t led_type) {
+void rgb_matrix_layer_helper(uint8_t hue, uint8_t sat, uint8_t val) {
     HSV hsv = {hue, sat, val};
     if (hsv.v > rgb_matrix_config.hsv.v) {
         hsv.v = rgb_matrix_config.hsv.v;
@@ -331,19 +331,19 @@ void rgb_matrix_layer_helper(uint8_t hue, uint8_t sat, uint8_t val, uint8_t led_
 
     RGB rgb = hsv_to_rgb(hsv);
     for (uint8_t i = 0; i < DRIVER_LED_TOTAL; i++) {
-        if (HAS_FLAGS(g_led_config.flags[i], led_type)) {
+        if (HAS_FLAGS(g_led_config.flags[i], LED_FLAG_UNDERGLOW)) {
             rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
         }
     }
 }
 
-void check_default_layer(uint8_t type) {
+void check_default_layer(void) {
     switch (get_highest_layer(default_layer_state)) {
         case _COLEMAKDH:
-            rgb_matrix_layer_helper(THEME_HSV, type);
+            rgb_matrix_layer_helper(THEME_HSV);
             break;
         case _GAMING:
-            rgb_matrix_layer_helper(HSV_RED, type);
+            rgb_matrix_layer_helper(HSV_RED);
             break;
     }
 }
@@ -356,22 +356,22 @@ void rgb_matrix_indicators_user(void) {
     {
         switch (get_highest_layer(layer_state)) {
             case _GAMING_EXT:
-                rgb_matrix_layer_helper(HSV_PURPLE, LED_FLAG_UNDERGLOW);
+                rgb_matrix_layer_helper(HSV_PURPLE);
                 break;
             case _SYM:
-                rgb_matrix_layer_helper(HSV_YELLOW, LED_FLAG_UNDERGLOW);
+                rgb_matrix_layer_helper(HSV_YELLOW);
                 break;
             case _NAV:
-                rgb_matrix_layer_helper(HSV_SPRINGGREEN, LED_FLAG_UNDERGLOW);
+                rgb_matrix_layer_helper(HSV_SPRINGGREEN);
                 break;
             case _UTIL:
-                rgb_matrix_layer_helper(HSV_PINK, LED_FLAG_UNDERGLOW);
+                rgb_matrix_layer_helper(HSV_PINK);
                 break;
             case _NUMPAD:
-                rgb_matrix_layer_helper(HSV_CORAL, LED_FLAG_UNDERGLOW);
+                rgb_matrix_layer_helper(HSV_CORAL);
                 break;
             default: {
-                check_default_layer(LED_FLAG_UNDERGLOW);
+                check_default_layer();
                 break;
             }
         }
@@ -500,7 +500,7 @@ void rgb_matrix_set_defaults(void) {
 void matrix_scan_rgb(void) {
     if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_active_mode && timer_elapsed32(hypno_timer) > user_config.rgb_matrix_idle_timeout) {
         if (user_config.rgb_layer_indicator) {
-            rgb_matrix_layer_helper(0, 0, 0, LED_FLAG_UNDERGLOW);
+            rgb_matrix_layer_helper(0, 0, 0);
         }
         rgb_matrix_update_current_mode(user_config.rgb_matrix_idle_mode);
     }
@@ -564,7 +564,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
             rgb_matrix_update_current_mode(user_config.rgb_matrix_active_mode);
             if (!user_config.rgb_layer_indicator) {
-                rgb_matrix_layer_helper(0, 0, 0, LED_FLAG_UNDERGLOW);
+                rgb_matrix_layer_helper(0, 0, 0);
             }
         }
     }
@@ -659,7 +659,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (user_config.rgb_layer_indicator) {
                     layer_state_set(layer_state);  // This is needed to immediately set the layer color (looks better)
                 } else {
-                    rgb_matrix_layer_helper(0, 0, 0, LED_FLAG_UNDERGLOW);
+                    rgb_matrix_layer_helper(0, 0, 0);
                 }
             }
             break;
