@@ -45,10 +45,6 @@ typedef union {
 
 user_config_t user_config;
 
-// Base layers
-// #define COLEMAK DF(_COLEMAKDH)
-// #define GAMING  DF(_GAMING)
-
 // Layer toggle and switch
 #define T_NAV TT(_NAV)
 #define S_NAV MO(_NAV)
