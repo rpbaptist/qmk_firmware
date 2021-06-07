@@ -327,7 +327,6 @@ void rgb_matrix_layer_helper(uint8_t hue, uint8_t sat, uint8_t val, uint8_t led_
     for (uint8_t i = 0; i < DRIVER_LED_TOTAL; i++) {
         if (HAS_FLAGS(g_led_config.flags[i], LED_FLAG_UNDERGLOW)) {
             RGB_MATRIX_INDICATOR_SET_COLOR(i, rgb.r, rgb.g, rgb.b);
-            // rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
         }
     }
 }
@@ -662,7 +661,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             break;
-        case RGB_IDL:  // Toggle idle/heatmap animation
+        case RGB_IDL:  // Toggle idle/active vs constant animation
             if (record->event.pressed) {
                 user_config.rgb_matrix_idle_anim ^= 1;
                 if (user_config.rgb_matrix_idle_anim) {
