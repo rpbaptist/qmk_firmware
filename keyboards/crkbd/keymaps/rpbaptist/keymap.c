@@ -321,7 +321,7 @@ void oled_task_user(void) {
 #ifdef RGB_MATRIX_ENABLE
 
 extern led_config_t g_led_config;
-void rgb_matrix_layer_helper(uint8_t hue, uint8_t sat, uint8_t val) {
+void rgb_matrix_layer_helper(uint8_t hue, uint8_t sat, uint8_t val, uint8_t led_min, uint8_t led_max) {
     HSV hsv = {hue, sat, val};
     if (hsv.v > rgb_matrix_get_val()) {
         hsv.v = rgb_matrix_get_val();
@@ -330,23 +330,24 @@ void rgb_matrix_layer_helper(uint8_t hue, uint8_t sat, uint8_t val) {
     RGB rgb = hsv_to_rgb(hsv);
     for (uint8_t i = 0; i < DRIVER_LED_TOTAL; i++) {
         if (HAS_FLAGS(g_led_config.flags[i], LED_FLAG_UNDERGLOW)) {
-            rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
+            RGB_MATRIX_INDICATOR_SET_COLOR(i, rgb.r, rgb.g, rgb.b);
+            // rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
         }
     }
 }
 
-void check_default_layer(void) {
+void check_default_layer(uint8_t led_min, uint8_t led_max) {
     switch (get_highest_layer(default_layer_state)) {
         case _COLEMAKDH:
-            rgb_matrix_layer_helper(THEME_HSV);
+            rgb_matrix_layer_helper(THEME_HSV, led_min, led_max);
             break;
         case _GAMING:
-            rgb_matrix_layer_helper(HSV_RED);
+            rgb_matrix_layer_helper(HSV_RED, led_min, led_max);
             break;
     }
 }
 
-void rgb_matrix_indicators_user(void) {
+void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
   if (
     user_config.rgb_layer_indicator && rgb_matrix_config.enable &&
       (!user_config.rgb_matrix_idle_anim || rgb_matrix_get_mode() != user_config.rgb_matrix_idle_mode)
@@ -354,26 +355,30 @@ void rgb_matrix_indicators_user(void) {
     {
         switch (get_highest_layer(layer_state)) {
             case _GAMING_EXT:
-                rgb_matrix_layer_helper(HSV_PURPLE);
+                rgb_matrix_layer_helper(HSV_PURPLE, led_min, led_max);
                 break;
             case _SYM:
-                rgb_matrix_layer_helper(HSV_YELLOW);
+                rgb_matrix_layer_helper(HSV_YELLOW, led_min, led_max);
                 break;
             case _NAV:
-                rgb_matrix_layer_helper(HSV_SPRINGGREEN);
+                rgb_matrix_layer_helper(HSV_SPRINGGREEN, led_min, led_max);
                 break;
             case _UTIL:
-                rgb_matrix_layer_helper(HSV_PINK);
+                rgb_matrix_layer_helper(HSV_PINK, led_min, led_max);
                 break;
             case _NUMPAD:
-                rgb_matrix_layer_helper(HSV_CORAL);
+                rgb_matrix_layer_helper(HSV_CORAL, led_min, led_max);
                 break;
             default: {
-                check_default_layer();
+                check_default_layer(led_min, led_max);
                 break;
             }
         }
     }
+}
+
+void rgb_matrix_turn_off_underglow(void) {
+    rgb_matrix_layer_helper(0, 0, 0, 0, 54);
 }
 
 uint8_t rgb_matrix_speed_for_mode(uint8_t mode) {
@@ -498,7 +503,7 @@ void rgb_matrix_set_defaults(void) {
 void matrix_scan_rgb(void) {
     if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_active_mode && sync_timer_elapsed32(hypno_timer) > user_config.rgb_matrix_idle_timeout) {
         if (user_config.rgb_layer_indicator) {
-            rgb_matrix_layer_helper(0, 0, 0);
+            rgb_matrix_turn_off_underglow();
         }
         rgb_matrix_update_current_mode(user_config.rgb_matrix_idle_mode);
     }
@@ -562,7 +567,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
             rgb_matrix_update_current_mode(user_config.rgb_matrix_active_mode);
             if (!user_config.rgb_layer_indicator) {
-                rgb_matrix_layer_helper(0, 0, 0);
+                rgb_matrix_turn_off_underglow();
             }
         }
     }
@@ -657,7 +662,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (user_config.rgb_layer_indicator) {
                     layer_state_set(layer_state);  // This is needed to immediately set the layer color (looks better)
                 } else {
-                    rgb_matrix_layer_helper(0, 0, 0);
+                    rgb_matrix_turn_off_underglow();
                 }
             }
             break;
