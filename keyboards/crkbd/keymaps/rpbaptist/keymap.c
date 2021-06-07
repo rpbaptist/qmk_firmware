@@ -298,7 +298,7 @@ void render_status(void) {
 
 void oled_task_user(void) {
     if (is_keyboard_master()) {
-        if (timer_elapsed32(oled_timer) > OLED_TIMEOUT) {
+        if (sync_timer_elapsed32(oled_timer) > OLED_TIMEOUT) {
             oled_off();
             return;
         } else {
