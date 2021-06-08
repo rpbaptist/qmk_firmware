@@ -1,6 +1,5 @@
 #include "rpbaptist.h"
 
-extern uint8_t  is_master;
 static uint32_t oled_timer           = 0;
 bool            alt_tab_used         = false;
 bool            switched_from_gaming = false;
@@ -105,7 +104,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 #ifdef OLED_DRIVER_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-    if (is_master) {
+    if (is_keyboard_master()) {
         return OLED_ROTATION_270;
     } else {
         return OLED_ROTATION_180;
@@ -200,7 +199,7 @@ void oled_task_user(void) {
         oled_on();
     }
 
-    if (is_master) {
+    if (is_keyboard_master()) {
         render_status();  // Renders the current keyboard state (layer, lock, caps, scroll, etc)
     } else {
         render_crkbd_logo();
