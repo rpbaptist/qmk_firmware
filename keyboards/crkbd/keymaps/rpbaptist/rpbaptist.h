@@ -1,12 +1,8 @@
+#pragma once
 #include QMK_KEYBOARD_H
 
-extern uint8_t  is_master;
-static uint32_t oled_timer           = 0;
-bool            alt_tab_used         = false;
-bool            switched_from_gaming = false;
-
-#ifdef RGB_MATRIX_ENABLE
-    #include "custom_rgb_matrix.h"
+#if defined(RGB_MATRIX_ENABLE)
+#    include "custom_rgb.h"
 #endif
 
 enum layer_names {

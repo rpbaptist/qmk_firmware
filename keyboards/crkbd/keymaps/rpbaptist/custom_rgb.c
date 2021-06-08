@@ -1,4 +1,5 @@
-#include QMK_KEYBOARD_H
+#include "rpbaptist.h"
+#include "rgb_matrix.h"
 
 const char *rgb_matrix_anim_oled_text(uint8_t mode) {
     switch (mode) {

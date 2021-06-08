@@ -51,5 +51,5 @@ ifeq ($(strip $(THEME)), milkshake)
 endif
 
 ifeq ($(strip $(RGB_MATRIX_ENABLE)), yes)
-	SRC += custom_rgb_matrix.c
+	SRC += custom_rgb.c
 endif
