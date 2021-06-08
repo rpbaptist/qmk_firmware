@@ -5,6 +5,10 @@
 #    include "custom_rgb.h"
 #endif
 
+#if defined(OLED_DRIVER_ENABLE)
+#    include "custom_oled.h"
+#endif
+
 enum layer_names {
   _COLEMAKDH,
   _GAMING,
