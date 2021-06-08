@@ -25,11 +25,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define USB_POLLING_INTERVAL_MS 1
 
-#ifdef OLED_DRIVER_ENABLE
-#    undef SSD1306OLED
-#    define OLED_TIMEOUT 600000
-#endif
-
 #undef USE_I2C
 #define USE_SERIAL_PD2
 
@@ -40,7 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define NO_ACTION_ONESHOT
 
 #ifdef RGB_MATRIX_ENABLE
-#    define RGB_MATRIX_LED_PROCESS_LIMIT (DRIVER_LED_TOTAL + 4) / 5 // limits the number of LEDs to process in an animation per task run (increases keyboard responsiveness)
+#    define RGB_MATRIX_LED_PROCESS_LIMIT (DRIVER_LED_TOTAL + 4) / 5  // limits the number of LEDs to process in an animation per task run (increases keyboard responsiveness)
 #    define IDLE_TIMEOUT 60000 * 5
 #    define GAMING_IDLE_TIMEOUT 10000
 #    define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_SOLID_REACTIVE_SIMPLE
@@ -106,6 +101,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define RGB_MATRIX_ANIMATION_SPEED_MEDIUM UINT8_MAX / 4
 #    define RGB_MATRIX_ANIMATION_SPEED_SLOW UINT8_MAX / 8
 #    define RGB_MATRIX_ANIMATION_SPEED_SLOWER UINT8_MAX / 24
+
+#    define THEME_HSV 123, 255, 125  // default
 #endif
 
 #define TAPPING_TERM 140
@@ -124,50 +121,62 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define MOUSEKEY_WHEEL_TIME_TO_MAX 100
 #endif
 
-// Default to Pulse theme
-// #ifdef THEME_PULSE
-#  define OLED_FONT_H "glcdfont_pulse.c"
-#  define THEME_HSV 123, 255, 125
-// #endif
+#ifdef OLED_DRIVER_ENABLE
+#    undef SSD1306OLED
+#    define OLED_TIMEOUT 600000
+#    define OLED_FONT_H "glcdfont_pulse.c"  // default
+#endif
 
 #ifdef THEME_GODSPEED
-#   undef OLED_FONT_H
-#   undef THEME_HSV
-
-#   define OLED_FONT_H "glcdfont_godspeed.c"
-#   define THEME_HSV 132, 255, 125
+#    ifdef OLED_DRIVER_ENABLE
+#        undef OLED_FONT_H
+#        define OLED_FONT_H "glcdfont_godspeed.c"
+#    endif
+#    ifdef RGB_MATRIX_ENABLE
+#        undef THEME_HSV
+#        define THEME_HSV 132, 255, 125
+#    endif
 #endif
 
 #ifdef THEME_GODSPEED_ARES
-#   undef OLED_FONT_H
-#   undef THEME_HSV
-
-#   define OLED_FONT_H "glcdfont_godspeed.c"
-#   define THEME_HSV HSV_ORANGE
+#    ifdef RGB_MATRIX_ENABLE
+#        undef THEME_HSV
+#        define THEME_HSV HSV_ORANGE
+#    endif
+#    ifdef OLED_DRIVER_ENABLE
+#        undef OLED_FONT_H
+#        define OLED_FONT_H "glcdfont_godspeed.c"
+#    endif
 #endif
 
 #ifdef THEME_LASER
-#   undef OLED_FONT_H
-#   undef THEME_HSV
-#   undef RGB_MATRIX_TYPING_ACTIVE
-#   undef RGB_MATRIX_TYPING_PASSIVE
-
-#   define OLED_FONT_H "glcdfont_laser.c"
-#   define THEME_HSV HSV_PURPLE
-#   define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_SOLID_REACTIVE_SIMPLE
-#   define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_CYCLE_LEFT_RIGHT
+#    ifdef RGB_MATRIX_ENABLE
+#        undef THEME_HSV
+#        undef RGB_MATRIX_TYPING_ACTIVE
+#        undef RGB_MATRIX_TYPING_PASSIVE
+#        define THEME_HSV HSV_PURPLE
+#        define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_SOLID_REACTIVE_SIMPLE
+#        define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_CYCLE_LEFT_RIGHT
+#    endif
+#    ifdef OLED_DRIVER_ENABLE
+#        undef OLED_FONT_H
+#        define OLED_FONT_H "glcdfont_laser.c"
+#    endif
 #endif
 
 #ifdef THEME_MILKSHAKE
-#   undef OLED_FONT_H
-#   undef THEME_HSV
-#   undef RGB_MATRIX_TYPING_ACTIVE
-#   undef RGB_MATRIX_TYPING_PASSIVE
-
-#   define OLED_FONT_H "glcdfont_milkshake.c"
-#   define THEME_HSV 30, 255, 218
-#   define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_TYPING_HEATMAP
-#   define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_CYCLE_LEFT_RIGHT
+#    ifdef RGB_MATRIX_ENABLE
+#        undef THEME_HSV
+#        undef RGB_MATRIX_TYPING_ACTIVE
+#        undef RGB_MATRIX_TYPING_PASSIVE
+#        define THEME_HSV 30, 255, 218
+#        define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_TYPING_HEATMAP
+#        define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_CYCLE_LEFT_RIGHT
+#    endif
+#    ifdef OLED_DRIVER_ENABLE
+#        undef OLED_FONT_H
+#        define OLED_FONT_H "glcdfont_milkshake.c"
+#    endif
 #endif
 
 #define NO_ACTION_ONESHOT
