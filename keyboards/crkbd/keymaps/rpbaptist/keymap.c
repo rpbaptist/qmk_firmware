@@ -492,6 +492,15 @@ void rgb_matrix_toggle_underglow_layer_indicator(void) {
     }
 }
 
+void rgb_matrix_toggle_idle_animation_change(void) {
+    user_config.rgb_matrix_idle_anim ^= 1;
+    if (user_config.rgb_matrix_idle_anim) {
+        rgb_matrix_update_mode(user_config.rgb_matrix_active_mode);
+    } else {
+        rgb_matrix_update_current_mode(user_config.rgb_matrix_idle_mode);
+    }
+}
+
 void rgb_matrix_set_defaults(void) {
     rgb_matrix_config.enable = 1;
     rgb_matrix_sethsv_noeeprom(THEME_HSV);
@@ -669,12 +678,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case RGB_IDL:  // Toggle idle/heatmap animation
             if (record->event.pressed) {
-                user_config.rgb_matrix_idle_anim ^= 1;
-                if (user_config.rgb_matrix_idle_anim) {
-                    rgb_matrix_update_mode(user_config.rgb_matrix_active_mode);
-                } else {
-                    rgb_matrix_update_current_mode(user_config.rgb_matrix_idle_mode);
-                }
+                rgb_matrix_toggle_idle_animation_change();
             }
             break;
         case RGB_ATG:
