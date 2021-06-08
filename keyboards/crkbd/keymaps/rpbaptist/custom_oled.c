@@ -69,7 +69,7 @@ void render_status(void) {
     oled_write_P(IS_LED_ON(led_usb_state, USB_LED_NUM_LOCK) ? PSTR(" NUM ") : PSTR("\n"), false);
     oled_write_P(IS_LED_ON(led_usb_state, USB_LED_CAPS_LOCK) ? PSTR(" CAPS") : PSTR("\n"), false);
 
-#    ifdef RGB_MATRIX_ENABLE
+#ifdef RGB_MATRIX_ENABLE
     oled_write_P(PSTR("\n"), false);
     oled_write_P(PSTR("\n"), false);
 
@@ -85,7 +85,7 @@ void render_status(void) {
         oled_write_P(PSTR("\n"), false);
         oled_write_P(PSTR("\n"), false);
     }
-#    endif
+#endif
 }
 
 void oled_task_user(void) {
@@ -100,12 +100,12 @@ void oled_task_user(void) {
         render_status();  // Renders the current keyboard state (layer, lock, caps, scroll, etc)
     } else {
         render_crkbd_logo();
-#    ifdef RGB_MATRIX_ENABLE
+#ifdef RGB_MATRIX_ENABLE
         if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
             oled_scroll_left();  // Turns on scrolling
         } else {
             oled_scroll_off();
         }
-#    endif
+#endif
     }
 }

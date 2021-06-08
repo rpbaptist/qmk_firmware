@@ -97,7 +97,6 @@ uint8_t rgb_matrix_speed_for_mode(uint8_t mode) {
             return RGB_MATRIX_ANIMATION_SPEED_SLOWER;
         default:
             return RGB_MATRIX_ANIMATION_SPEED_MEDIUM;
-
     }
 }
 
@@ -226,8 +225,8 @@ void rgb_matrix_set_defaults(void) {
     rgb_matrix_config.enable = 1;
     rgb_matrix_sethsv_noeeprom(THEME_HSV);
 
-    user_config.rgb_layer_indicator     = true;
-    user_config.rgb_matrix_idle_anim    = true;
+    user_config.rgb_layer_indicator  = true;
+    user_config.rgb_matrix_idle_anim = true;
 
     rgb_matrix_set_typing_defaults();
 
