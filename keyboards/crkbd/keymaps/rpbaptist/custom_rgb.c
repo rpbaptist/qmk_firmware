@@ -1,6 +1,8 @@
 #include "rpbaptist.h"
 #include "rgb_matrix.h"
 
+static uint32_t hypno_timer;
+
 const char *rgb_matrix_anim_oled_text(uint8_t mode) {
     switch (mode) {
         case RGB_MATRIX_TYPING_HEATMAP:

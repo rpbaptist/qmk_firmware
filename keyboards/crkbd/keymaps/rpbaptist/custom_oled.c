@@ -1,6 +1,8 @@
 #include "rpbaptist.h"
 #include "custom_oled.h"
 
+static uint32_t oled_timer;
+
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     if (is_keyboard_master()) {
         return OLED_ROTATION_270;

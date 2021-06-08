@@ -53,3 +53,7 @@ endif
 ifeq ($(strip $(RGB_MATRIX_ENABLE)), yes)
 	SRC += custom_rgb.c
 endif
+
+ifeq ($(strip $(OLED_DRIVER_ENABLE)), yes)
+	SRC+= custom_oled.c
+endif

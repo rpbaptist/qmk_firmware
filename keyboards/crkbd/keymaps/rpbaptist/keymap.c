@@ -1,6 +1,7 @@
 #include "rpbaptist.h"
 
 static uint32_t oled_timer           = 0;
+static uint32_t hypno_timer          = 0;
 bool            alt_tab_used         = false;
 bool            switched_from_gaming = false;
 
