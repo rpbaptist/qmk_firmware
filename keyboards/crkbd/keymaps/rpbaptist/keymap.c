@@ -1,84 +1,8 @@
-#include QMK_KEYBOARD_H
+#include "rpbaptist.h"
 
 static uint32_t oled_timer           = 0;
 bool            alt_tab_used         = false;
 bool            switched_from_gaming = false;
-
-#ifdef RGB_MATRIX_ENABLE
-static uint32_t hypno_timer;
-#endif
-
-enum layer_names {
-  _COLEMAKDH,
-  _GAMING,
-  _GAMING_EXT,
-  _NUMPAD,
-  _SYM,
-  _NAV,
-  _UTIL
-};
-
-enum custom_keycodes {
-    BSP_DEL = SAFE_RANGE,
-    RGB_RST,  // Reset RGB
-    RGB_UND,  // Toggle RGB underglow as layer indicator
-    RGB_ATG,  // Toggle active RGB mode
-    RGB_PST,  // Toggle simple passive RGB mode
-    RGB_PCT,  // Toggle colorful passive RGB mode
-    RGB_IDL,  // RGB Idling animations
-    TGL_LYR   // Toggle main layer from GAMING to COLEMAKDH and back,
-};
-
-typedef union {
-    uint32_t raw;
-    struct {
-        bool     rgb_layer_indicator : 1;
-        bool     rgb_matrix_idle_anim : 1;
-        uint8_t  rgb_matrix_active_mode : 4;
-        uint8_t  rgb_matrix_idle_mode : 4;
-        uint8_t  rgb_matrix_active_speed : 8;
-        uint8_t  rgb_matrix_idle_speed : 8;
-        uint32_t rgb_matrix_idle_timeout : 32;
-    };
-} user_config_t;
-
-user_config_t user_config;
-
-// Layer toggle and switch
-#define T_NAV TT(_NAV)
-#define S_NAV MO(_NAV)
-
-#define T_SYM TT(_SYM)
-#define S_SYM MO(_SYM)
-
-// Layer keys with functionality on tap
-#define NAV_0 LT(_NAV, KC_0)
-#define TAB_NUM LT(_NUMPAD, KC_TAB)
-#define LCK_NMP TG(_NUMPAD)
-#define S_NUM MO(_NUMPAD)
-
-#define EXTALT LT(_GAMING_EXT, KC_LALT)
-
-// Tap/mod keys
-#define RCTL_BR RCTL_T(KC_RBRACKET)
-#define LCTL_BR LCTL_T(KC_LBRACKET)
-
-#define SFT_SPC LSFT_T(KC_SPACE)
-#define SFT_ENT RSFT_T(KC_ENTER)
-
-// Global tab forward and backward
-#define TAB_FWD LCTL(KC_TAB)
-#define TAB_BCK LCTL(LSFT(KC_TAB))
-#define TAB_CLS LCTL(KC_W)
-
-#define WIN_CLS LALT(KC_F4)
-
-// CTRL become parens keys on NAV and NUM layers
-#define LCT_PRN KC_LCPO
-#define RCT_PRN KC_RCPC
-
-// €
-#define KC_EUR ALGR(KC_5)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_COLEMAKDH] = LAYOUT_split_3x6_3( \
@@ -196,31 +120,6 @@ void render_crkbd_logo(void) {
     oled_write_P(crkbd_logo, false);
 }
 
-#    ifdef RGB_MATRIX_ENABLE
-const char *rgb_matrix_anim_oled_text(uint8_t mode) {
-    switch (mode) {
-        case RGB_MATRIX_TYPING_HEATMAP:
-            return PSTR("Heat ");
-        case RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS:
-            return PSTR("Nexus");
-        case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
-            return PSTR("Ease ");
-        case RGB_MATRIX_SOLID_COLOR:
-            return PSTR("Solid");
-        case RGB_MATRIX_BREATHING:
-            return PSTR("Fade ");
-        case RGB_MATRIX_CYCLE_ALL:
-            return PSTR("Cycle");
-        case RGB_MATRIX_RAINBOW_PINWHEELS:
-            return PSTR("Wheel");
-        case RGB_MATRIX_CYCLE_LEFT_RIGHT:
-            return PSTR("Wave ");
-        default:
-            return PSTR("");
-    }
-}
-#    endif
-
 void render_status(void) {
     // oled_write_P(PSTR("Layout: "), false);
     switch (get_highest_layer(default_layer_state)) {
@@ -314,264 +213,22 @@ void oled_task_user(void) {
 }
 #endif
 
-#ifdef RGB_MATRIX_ENABLE
-
-extern led_config_t g_led_config;
-void rgb_matrix_layer_helper(uint8_t hue, uint8_t sat, uint8_t val, uint8_t led_min, uint8_t led_max) {
-    HSV hsv = {hue, sat, val};
-    if (hsv.v > rgb_matrix_get_val()) {
-        hsv.v = rgb_matrix_get_val();
-    }
-
-    RGB rgb = hsv_to_rgb(hsv);
-    for (uint8_t i = 0; i < DRIVER_LED_TOTAL; i++) {
-        if (HAS_FLAGS(g_led_config.flags[i], LED_FLAG_UNDERGLOW)) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(i, rgb.r, rgb.g, rgb.b);
-        }
-    }
-}
-
-void check_default_layer(uint8_t led_min, uint8_t led_max) {
-    switch (get_highest_layer(default_layer_state)) {
-        case _COLEMAKDH:
-            rgb_matrix_layer_helper(THEME_HSV, led_min, led_max);
-            break;
-        case _GAMING:
-            rgb_matrix_layer_helper(HSV_RED, led_min, led_max);
-            break;
-    }
-}
-
-void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-  if (
-    user_config.rgb_layer_indicator && rgb_matrix_config.enable &&
-      (!user_config.rgb_matrix_idle_anim || rgb_matrix_get_mode() != user_config.rgb_matrix_idle_mode)
-  )
-    {
-        switch (get_highest_layer(layer_state)) {
-            case _GAMING_EXT:
-                rgb_matrix_layer_helper(HSV_PURPLE, led_min, led_max);
-                break;
-            case _SYM:
-                rgb_matrix_layer_helper(HSV_YELLOW, led_min, led_max);
-                break;
-            case _NAV:
-                rgb_matrix_layer_helper(HSV_SPRINGGREEN, led_min, led_max);
-                break;
-            case _UTIL:
-                rgb_matrix_layer_helper(HSV_PINK, led_min, led_max);
-                break;
-            case _NUMPAD:
-                rgb_matrix_layer_helper(HSV_CORAL, led_min, led_max);
-                break;
-            default: {
-                check_default_layer(led_min, led_max);
-                break;
-            }
-        }
-    }
-}
-
-void rgb_matrix_turn_off_underglow(void) {
-    rgb_matrix_layer_helper(0, 0, 0, 0, 54);
-}
-
-uint8_t rgb_matrix_speed_for_mode(uint8_t mode) {
-    switch (mode) {
-        case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
-        case RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS:
-            return RGB_MATRIX_ANIMATION_SPEED_FAST;
-        case RGB_MATRIX_BREATHING:
-        case RGB_MATRIX_CYCLE_LEFT_RIGHT:
-        case RGB_MATRIX_RAINBOW_PINWHEELS:
-            return RGB_MATRIX_ANIMATION_SPEED_SLOW;
-        case RGB_MATRIX_CYCLE_ALL:
-            return RGB_MATRIX_ANIMATION_SPEED_SLOWER;
-        default:
-            return RGB_MATRIX_ANIMATION_SPEED_MEDIUM;
-
-    }
-}
-
-bool rgb_matrix_mode_active(uint8_t mode) {
-    return(mode == RGB_MATRIX_SOLID_REACTIVE_SIMPLE || mode == RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS || mode == RGB_MATRIX_TYPING_HEATMAP);
-}
-
-void rgb_matrix_update_current_mode(uint8_t mode) {
-    rgb_matrix_config.speed = rgb_matrix_speed_for_mode(mode);
-    rgb_matrix_mode_noeeprom(mode);
-    eeconfig_update_user(user_config.raw);
-}
-
-void rgb_matrix_update_dynamic_mode(uint8_t mode) {
-    uint8_t speed;
-    speed = rgb_matrix_speed_for_mode(mode);
-
-    if (rgb_matrix_mode_active(mode)) {
-        user_config.rgb_matrix_active_speed = speed;
-        user_config.rgb_matrix_active_mode  = mode;
-    } else {
-        user_config.rgb_matrix_idle_speed = speed;
-        user_config.rgb_matrix_idle_mode  = mode;
-    }
-}
-
-void rgb_matrix_update_mode(uint8_t mode) {
-    if (user_config.rgb_matrix_idle_anim) {
-        rgb_matrix_update_dynamic_mode(mode);
-    }
-    if (rgb_matrix_mode_active(mode) || !user_config.rgb_matrix_idle_anim) {
-        rgb_matrix_update_current_mode(mode);
-    }
-}
-
-uint8_t get_rgb_matrix_acive_mode(void) {
-    if (user_config.rgb_matrix_idle_anim) {
-        return user_config.rgb_matrix_active_mode;
-    } else {
-        return rgb_matrix_get_mode();
-    }
-}
-
-void rgb_matrix_toggle_active_mode(void) {
-    switch (get_rgb_matrix_acive_mode()) {
-        case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
-            rgb_matrix_update_mode(RGB_MATRIX_TYPING_HEATMAP);
-            break;
-        case RGB_MATRIX_TYPING_HEATMAP:
-            rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
-            break;
-        default:
-            rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
-            break;
-    }
-}
-
-uint8_t get_rgb_matrix_idle_mode(void) {
-    if (user_config.rgb_matrix_idle_anim) {
-        return user_config.rgb_matrix_idle_mode;
-    } else {
-        return rgb_matrix_get_mode();
-    }
-}
-
-void rgb_matrix_toggle_simple_passive_mode(void) {
-    switch (get_rgb_matrix_idle_mode()) {
-        case RGB_MATRIX_SOLID_COLOR:
-            rgb_matrix_update_mode(RGB_MATRIX_BREATHING);
-            break;
-        case RGB_MATRIX_BREATHING:
-            rgb_matrix_update_mode(RGB_MATRIX_CYCLE_ALL);
-            break;
-        default:
-            rgb_matrix_update_mode(RGB_MATRIX_SOLID_COLOR);
-            break;
-    }
-}
-
-void rgb_matrix_toggle_color_passive_mode(void) {
-    switch (get_rgb_matrix_idle_mode()) {
-        case RGB_MATRIX_RAINBOW_PINWHEELS:
-            rgb_matrix_update_mode(RGB_MATRIX_CYCLE_LEFT_RIGHT);
-            break;
-        default:
-            rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS);
-            break;
-    }
-}
-
-void rgb_matrix_toggle_underglow_layer_indicator(void) {
-    user_config.rgb_layer_indicator ^= 1;
-    eeconfig_update_user(user_config.raw);
-    if (user_config.rgb_layer_indicator) {
-        layer_state_set(layer_state);  // This is needed to immediately set the layer color (looks better)
-    } else {
-        rgb_matrix_turn_off_underglow();
-    }
-}
-
-void rgb_matrix_toggle_idle_animation_change(void) {
-    user_config.rgb_matrix_idle_anim ^= 1;
-    if (user_config.rgb_matrix_idle_anim) {
-        rgb_matrix_update_mode(user_config.rgb_matrix_active_mode);
-    } else {
-        rgb_matrix_update_current_mode(user_config.rgb_matrix_idle_mode);
-    }
-}
-
-void rgb_matrix_set_gaming_defaults(void) {
-    if (!user_config.rgb_layer_indicator) {
-        user_config.rgb_layer_indicator = true;
-    }
-    user_config.rgb_matrix_idle_timeout = GAMING_IDLE_TIMEOUT;
-    rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS);
-    rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
-}
-
-void rgb_matrix_set_typing_defaults(void) {
-    user_config.rgb_matrix_idle_timeout = IDLE_TIMEOUT;
-    rgb_matrix_update_mode(RGB_MATRIX_TYPING_PASSIVE);
-    rgb_matrix_update_mode(RGB_MATRIX_TYPING_ACTIVE);
-}
-
-void rgb_matrix_set_defaults(void) {
-    rgb_matrix_config.enable = 1;
-    rgb_matrix_sethsv_noeeprom(THEME_HSV);
-
-    user_config.rgb_layer_indicator     = true;
-    user_config.rgb_matrix_idle_anim    = true;
-
-    rgb_matrix_set_typing_defaults();
-
-    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
-
-    eeprom_update_block(&rgb_matrix_config, EECONFIG_RGB_MATRIX, sizeof(rgb_matrix_config));
-}
-
-void matrix_scan_rgb(void) {
-    if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_active_mode && sync_timer_elapsed32(hypno_timer) > user_config.rgb_matrix_idle_timeout) {
-        if (user_config.rgb_layer_indicator) {
-            rgb_matrix_turn_off_underglow();
-        }
-        rgb_matrix_update_current_mode(user_config.rgb_matrix_idle_mode);
-    }
-}
-
-void matrix_scan_user(void) {
-    static bool has_ran_yet;
-    if (!has_ran_yet) {
-        has_ran_yet = true;
-        startup_user();
-    }
-    matrix_scan_rgb();
-}
-
-void eeconfig_init_user(void) {
-    user_config.raw = 0;
-    rgb_matrix_mode_noeeprom(user_config.rgb_matrix_active_mode);
-    keyboard_init();
-}
-
-void keyboard_post_init_user(void) {
-    user_config.raw = eeconfig_read_user();
-    set_single_persistent_default_layer(_COLEMAKDH);
-    rgb_matrix_set_defaults();
-    rgb_matrix_enable_noeeprom();
-}
-#endif
-
 void suspend_power_down_keymap(void) {
 #ifdef OLED_DRIVER_ENABLE
     oled_off();
 #endif
+#ifdef RGB_MATRIX_ENABLE
     rgb_matrix_set_suspend_state(true);
+#endif
 }
 
 void suspend_wakeup_init_keymap(void) {
 #ifdef OLED_DRIVER_ENABLE
     oled_on();
 #endif
+#ifdef RGB_MATRIX_ENABLE
     rgb_matrix_set_suspend_state(false);
+#endif
 }
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {

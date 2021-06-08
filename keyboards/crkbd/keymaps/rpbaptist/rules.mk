@@ -53,3 +53,7 @@ endif
 ifeq ($(strip $(THEME)), milkshake)
     OPT_DEFS += -DTHEME_MILKSHAKE
 endif
+
+ifeq ($(strip $(RGB_MATRIX_ENABLE)), yes)
+	SRC += custom_rgb.c
+endif
