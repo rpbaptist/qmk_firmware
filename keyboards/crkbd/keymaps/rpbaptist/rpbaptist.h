@@ -6,7 +6,7 @@ bool            alt_tab_used         = false;
 bool            switched_from_gaming = false;
 
 #ifdef RGB_MATRIX_ENABLE
-static uint32_t hypno_timer;
+    #include "custom_rgb_matrix.h"
 #endif
 
 enum layer_names {

@@ -116,31 +116,6 @@ void render_crkbd_logo(void) {
     oled_write_P(crkbd_logo, false);
 }
 
-#    ifdef RGB_MATRIX_ENABLE
-const char *rgb_matrix_anim_oled_text(uint8_t mode) {
-    switch (mode) {
-        case RGB_MATRIX_TYPING_HEATMAP:
-            return PSTR("Heat ");
-        case RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS:
-            return PSTR("Nexus");
-        case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
-            return PSTR("Ease ");
-        case RGB_MATRIX_SOLID_COLOR:
-            return PSTR("Solid");
-        case RGB_MATRIX_BREATHING:
-            return PSTR("Fade ");
-        case RGB_MATRIX_CYCLE_ALL:
-            return PSTR("Cycle");
-        case RGB_MATRIX_RAINBOW_PINWHEELS:
-            return PSTR("Wheel");
-        case RGB_MATRIX_CYCLE_LEFT_RIGHT:
-            return PSTR("Wave ");
-        default:
-            return PSTR("");
-    }
-}
-#    endif
-
 void render_status(void) {
     // oled_write_P(PSTR("Layout: "), false);
     switch (get_highest_layer(default_layer_state)) {
@@ -235,6 +210,7 @@ void oled_task_user(void) {
 }
 #endif
 
+<<<<<<< Updated upstream
 #ifdef RGB_MATRIX_ENABLE
 
 extern led_config_t g_led_config;
@@ -481,18 +457,24 @@ void keyboard_post_init_user(void) {
 }
 #endif
 
+=======
+>>>>>>> Stashed changes
 void suspend_power_down_keymap(void) {
 #ifdef OLED_DRIVER_ENABLE
     oled_off();
 #endif
+#    ifdef RGB_MATRIX_ENABLE
     rgb_matrix_set_suspend_state(true);
+#endif
 }
 
 void suspend_wakeup_init_keymap(void) {
 #ifdef OLED_DRIVER_ENABLE
     oled_on();
 #endif
+#    ifdef RGB_MATRIX_ENABLE
     rgb_matrix_set_suspend_state(false);
+#endif
 }
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
