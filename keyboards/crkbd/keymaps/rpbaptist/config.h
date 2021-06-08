@@ -126,7 +126,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Default to Pulse theme
 // #ifdef THEME_PULSE
-#  define OLED_FONT_H "keyboards/crkbd/keymaps/rpbaptist/glcdfont_pulse.c"
+#  define OLED_FONT_H "glcdfont_pulse.c"
 #  define THEME_HSV 123, 255, 125
 // #endif
 
@@ -134,7 +134,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   undef OLED_FONT_H
 #   undef THEME_HSV
 
-#   define OLED_FONT_H "keyboards/crkbd/keymaps/rpbaptist/glcdfont_godspeed.c"
+#   define OLED_FONT_H "glcdfont_godspeed.c"
 #   define THEME_HSV 132, 255, 125
 #endif
 
@@ -142,7 +142,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   undef OLED_FONT_H
 #   undef THEME_HSV
 
-#   define OLED_FONT_H "keyboards/crkbd/keymaps/rpbaptist/glcdfont_godspeed.c"
+#   define OLED_FONT_H "glcdfont_godspeed.c"
 #   define THEME_HSV HSV_ORANGE
 #endif
 
@@ -152,7 +152,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   undef RGB_MATRIX_TYPING_ACTIVE
 #   undef RGB_MATRIX_TYPING_PASSIVE
 
-#   define OLED_FONT_H "keyboards/crkbd/keymaps/rpbaptist/glcdfont_laser.c"
+#   define OLED_FONT_H "glcdfont_laser.c"
 #   define THEME_HSV HSV_PURPLE
 #   define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_SOLID_REACTIVE_SIMPLE
 #   define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_CYCLE_LEFT_RIGHT
@@ -164,7 +164,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   undef RGB_MATRIX_TYPING_ACTIVE
 #   undef RGB_MATRIX_TYPING_PASSIVE
 
-#   define OLED_FONT_H "keyboards/crkbd/keymaps/rpbaptist/glcdfont_milkshake.c"
+#   define OLED_FONT_H "glcdfont_milkshake.c"
 #   define THEME_HSV 30, 255, 218
 #   define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_TYPING_HEATMAP
 #   define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_CYCLE_LEFT_RIGHT
