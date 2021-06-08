@@ -482,6 +482,16 @@ void rgb_matrix_toggle_color_passive_mode(void) {
     }
 }
 
+void rgb_matrix_toggle_underglow_layer_indicator(void) {
+    user_config.rgb_layer_indicator ^= 1;
+    eeconfig_update_user(user_config.raw);
+    if (user_config.rgb_layer_indicator) {
+        layer_state_set(layer_state);  // This is needed to immediately set the layer color (looks better)
+    } else {
+        rgb_matrix_turn_off_underglow();
+    }
+}
+
 void rgb_matrix_set_defaults(void) {
     rgb_matrix_config.enable = 1;
     rgb_matrix_sethsv_noeeprom(THEME_HSV);
@@ -654,13 +664,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case RGB_UND:  // Toggle separate underglow status
             if (record->event.pressed) {
-                user_config.rgb_layer_indicator ^= 1;
-                eeconfig_update_user(user_config.raw);
-                if (user_config.rgb_layer_indicator) {
-                    layer_state_set(layer_state);  // This is needed to immediately set the layer color (looks better)
-                } else {
-                    rgb_matrix_turn_off_underglow();
-                }
+                rgb_matrix_toggle_underglow_layer_indicator();
             }
             break;
         case RGB_IDL:  // Toggle idle/heatmap animation
