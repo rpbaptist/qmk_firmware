@@ -501,16 +501,30 @@ void rgb_matrix_toggle_idle_animation_change(void) {
     }
 }
 
+void rgb_matrix_set_gaming_defaults(void) {
+    if (!user_config.rgb_layer_indicator) {
+        user_config.rgb_layer_indicator = true;
+    }
+    user_config.rgb_matrix_idle_timeout = GAMING_IDLE_TIMEOUT;
+    rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS);
+    rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
+}
+
+void rgb_matrix_set_typing_defaults(void) {
+    user_config.rgb_matrix_idle_timeout = IDLE_TIMEOUT;
+    rgb_matrix_update_mode(RGB_MATRIX_TYPING_PASSIVE);
+    rgb_matrix_update_mode(RGB_MATRIX_TYPING_ACTIVE);
+}
+
 void rgb_matrix_set_defaults(void) {
     rgb_matrix_config.enable = 1;
     rgb_matrix_sethsv_noeeprom(THEME_HSV);
 
     user_config.rgb_layer_indicator     = true;
     user_config.rgb_matrix_idle_anim    = true;
-    user_config.rgb_matrix_idle_timeout = IDLE_TIMEOUT;
 
-    rgb_matrix_update_dynamic_mode(RGB_MATRIX_TYPING_PASSIVE);
-    rgb_matrix_update_dynamic_mode(RGB_MATRIX_TYPING_ACTIVE);
+    rgb_matrix_set_typing_defaults();
+
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
 
     eeprom_update_block(&rgb_matrix_config, EECONFIG_RGB_MATRIX, sizeof(rgb_matrix_config));
@@ -643,21 +657,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 switch (get_highest_layer(default_layer_state)) {
                     case _GAMING:
 #ifdef RGB_MATRIX_ENABLE
-                        user_config.rgb_matrix_idle_timeout = IDLE_TIMEOUT;
-                        rgb_matrix_update_mode(RGB_MATRIX_TYPING_PASSIVE);
-                        rgb_matrix_update_mode(RGB_MATRIX_TYPING_ACTIVE);
-                        switched_from_gaming = false;  // When manually switching, disable ALT+TAB behavior
+                        rgb_matrix_set_typing_defaults();
 #endif
+                        switched_from_gaming = false;  // When manually switching, disable ALT+TAB behavior
                         default_layer_set(1U << _COLEMAKDH);
                         break;
                     case _COLEMAKDH:
 #ifdef RGB_MATRIX_ENABLE
-                        if (!user_config.rgb_layer_indicator) {
-                            user_config.rgb_layer_indicator = true;
-                        }
-                        user_config.rgb_matrix_idle_timeout = GAMING_IDLE_TIMEOUT;
-                        rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS);
-                        rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
+                        rgb_matrix_set_gaming_defaults();
 #endif
                         default_layer_set(1U << _GAMING);
                         break;
