@@ -5,6 +5,10 @@
 #    include "custom_rgb.h"
 #endif
 
+#if defined(OLED_DRIVER_ENABLE)
+#    include "custom_oled.h"
+#endif
+
 enum layer_names {
   _COLEMAKDH,
   _GAMING,
@@ -17,29 +21,16 @@ enum layer_names {
 
 enum custom_keycodes {
     BSP_DEL = SAFE_RANGE,
+#if defined(RGB_MATRIX_ENABLE)
     RGB_RST,  // Reset RGB
     RGB_UND,  // Toggle RGB underglow as layer indicator
     RGB_ATG,  // Toggle active RGB mode
     RGB_PST,  // Toggle simple passive RGB mode
     RGB_PCT,  // Toggle colorful passive RGB mode
     RGB_IDL,  // RGB Idling animations
-    TGL_LYR   // Toggle main layer from GAMING to COLEMAKDH and back,
+#endif
+    TGL_LYR  // Toggle main layer from GAMING to COLEMAKDH and back,
 };
-
-typedef union {
-    uint32_t raw;
-    struct {
-        bool     rgb_layer_indicator : 1;
-        bool     rgb_matrix_idle_anim : 1;
-        uint8_t  rgb_matrix_active_mode : 4;
-        uint8_t  rgb_matrix_idle_mode : 4;
-        uint8_t  rgb_matrix_active_speed : 8;
-        uint8_t  rgb_matrix_idle_speed : 8;
-        uint32_t rgb_matrix_idle_timeout : 32;
-    };
-} user_config_t;
-
-user_config_t user_config;
 
 // Layer toggle and switch
 #define T_NAV TT(_NAV)

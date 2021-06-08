@@ -1,6 +1,8 @@
 #include "rpbaptist.h"
 #include "rgb_matrix.h"
 
+static uint32_t hypno_timer;
+
 const char *rgb_matrix_anim_oled_text(uint8_t mode) {
     switch (mode) {
         case RGB_MATRIX_TYPING_HEATMAP:
@@ -97,7 +99,6 @@ uint8_t rgb_matrix_speed_for_mode(uint8_t mode) {
             return RGB_MATRIX_ANIMATION_SPEED_SLOWER;
         default:
             return RGB_MATRIX_ANIMATION_SPEED_MEDIUM;
-
     }
 }
 
@@ -226,8 +227,8 @@ void rgb_matrix_set_defaults(void) {
     rgb_matrix_config.enable = 1;
     rgb_matrix_sethsv_noeeprom(THEME_HSV);
 
-    user_config.rgb_layer_indicator     = true;
-    user_config.rgb_matrix_idle_anim    = true;
+    user_config.rgb_layer_indicator  = true;
+    user_config.rgb_matrix_idle_anim = true;
 
     rgb_matrix_set_typing_defaults();
 
