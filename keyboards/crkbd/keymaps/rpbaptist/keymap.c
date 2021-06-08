@@ -1,11 +1,11 @@
 #include QMK_KEYBOARD_H
 
-static uint32_t oled_timer = 0;
-bool alt_tab_used = false;
-bool switched_from_gaming = false;
+static uint32_t oled_timer           = 0;
+bool            alt_tab_used         = false;
+bool            switched_from_gaming = false;
 
 #ifdef RGB_MATRIX_ENABLE
-    static uint32_t hypno_timer;
+static uint32_t hypno_timer;
 #endif
 
 enum layer_names {
@@ -32,12 +32,12 @@ enum custom_keycodes {
 typedef union {
     uint32_t raw;
     struct {
-        bool     rgb_layer_indicator     : 1;
-        bool     rgb_matrix_idle_anim    : 1;
-        uint8_t  rgb_matrix_active_mode  : 4;
-        uint8_t  rgb_matrix_idle_mode    : 4;
+        bool     rgb_layer_indicator : 1;
+        bool     rgb_matrix_idle_anim : 1;
+        uint8_t  rgb_matrix_active_mode : 4;
+        uint8_t  rgb_matrix_idle_mode : 4;
         uint8_t  rgb_matrix_active_speed : 8;
-        uint8_t  rgb_matrix_idle_speed   : 8;
+        uint8_t  rgb_matrix_idle_speed : 8;
         uint32_t rgb_matrix_idle_timeout : 32;
     };
 } user_config_t;
@@ -285,10 +285,10 @@ void render_status(void) {
             oled_write_P(PSTR("\n"), false);
             oled_write_P(rgb_matrix_anim_oled_text(rgb_matrix_get_mode()), false);
         }
-      } else {
+    } else {
         oled_write_P(PSTR("\n"), false);
         oled_write_P(PSTR("\n"), false);
-      }
+    }
 #    endif
 }
 
@@ -303,13 +303,13 @@ void oled_task_user(void) {
         }
     } else {
         render_crkbd_logo();
-        #ifdef RGB_MATRIX_ENABLE
-            if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
-                oled_scroll_left();  // Turns on scrolling
-            } else {
-              oled_scroll_off();
-            }
-        #endif
+#    ifdef RGB_MATRIX_ENABLE
+        if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
+            oled_scroll_left();  // Turns on scrolling
+        } else {
+            oled_scroll_off();
+        }
+#    endif
     }
 }
 #endif
@@ -528,16 +528,16 @@ void keyboard_post_init_user(void) {
 #endif
 
 void suspend_power_down_keymap(void) {
-#   ifdef OLED_DRIVER_ENABLE
+#ifdef OLED_DRIVER_ENABLE
     oled_off();
-#   endif
+#endif
     rgb_matrix_set_suspend_state(true);
 }
 
 void suspend_wakeup_init_keymap(void) {
-#   ifdef OLED_DRIVER_ENABLE
+#ifdef OLED_DRIVER_ENABLE
     oled_on();
-#   endif
+#endif
     rgb_matrix_set_suspend_state(false);
 }
 
@@ -594,53 +594,53 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case KC_TAB:
             if (record->event.pressed) {
-                if (get_mods() & MOD_MASK_ALT) { // ALT is pressed
-                    alt_tab_used = true; // Set a reminder that ALT+TAB has been used
+                if (get_mods() & MOD_MASK_ALT) {  // ALT is pressed
+                    alt_tab_used = true;          // Set a reminder that ALT+TAB has been used
                 }
             }
             return true;
         case KC_LALT:
         case KC_RALT:
-            if (!record->event.pressed && alt_tab_used) { // Only run this upon release and if ALT+TAB was used
+            if (!record->event.pressed && alt_tab_used) {  // Only run this upon release and if ALT+TAB was used
                 switch (get_highest_layer(default_layer_state)) {
                     case _GAMING:
-                        switched_from_gaming = true; // remember if we switched from ALT+TAB
+                        switched_from_gaming = true;  // remember if we switched from ALT+TAB
                         default_layer_set(1U << _COLEMAKDH);
                         break;
                     case _COLEMAKDH:
                         if (switched_from_gaming) {
-                            switched_from_gaming = false; // return to default state
+                            switched_from_gaming = false;  // return to default state
                             default_layer_set(1U << _GAMING);
                         }
                         break;
                 }
-                alt_tab_used = false; // return to default state
+                alt_tab_used = false;  // return to default state
             }
             return true;
         case TGL_LYR:
             if (record->event.pressed) {
                 switch (get_highest_layer(default_layer_state)) {
                     case _GAMING:
-                        #ifdef RGB_MATRIX_ENABLE
-                            user_config.rgb_matrix_idle_timeout = IDLE_TIMEOUT;
-                            rgb_matrix_update_mode(RGB_MATRIX_TYPING_PASSIVE);
-                            rgb_matrix_update_mode(RGB_MATRIX_TYPING_ACTIVE);
-                            switched_from_gaming = false; // When manually switching, disable ALT+TAB behavior
-                        #endif
+#ifdef RGB_MATRIX_ENABLE
+                        user_config.rgb_matrix_idle_timeout = IDLE_TIMEOUT;
+                        rgb_matrix_update_mode(RGB_MATRIX_TYPING_PASSIVE);
+                        rgb_matrix_update_mode(RGB_MATRIX_TYPING_ACTIVE);
+                        switched_from_gaming = false;  // When manually switching, disable ALT+TAB behavior
+#endif
                         default_layer_set(1U << _COLEMAKDH);
                         break;
                     case _COLEMAKDH:
-                        #ifdef RGB_MATRIX_ENABLE
-                            if (!user_config.rgb_layer_indicator) {
-                                user_config.rgb_layer_indicator = true;
-                            }
-                            user_config.rgb_matrix_idle_timeout = GAMING_IDLE_TIMEOUT;
-                            rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS);
-                            rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
-                        #endif
+#ifdef RGB_MATRIX_ENABLE
+                        if (!user_config.rgb_layer_indicator) {
+                            user_config.rgb_layer_indicator = true;
+                        }
+                        user_config.rgb_matrix_idle_timeout = GAMING_IDLE_TIMEOUT;
+                        rgb_matrix_update_mode(RGB_MATRIX_RAINBOW_PINWHEELS);
+                        rgb_matrix_update_mode(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
+#endif
                         default_layer_set(1U << _GAMING);
                         break;
-                    }
+                }
             }
             return true;
 #ifdef RGB_MATRIX_ENABLE
