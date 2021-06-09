@@ -1,7 +1,7 @@
 #include "rpbaptist.h"
 #include "rgb_matrix.h"
 
-static uint32_t hypno_timer;
+static uint32_t idle_timer;
 
 const char *rgb_matrix_anim_oled_text(uint8_t mode) {
     switch (mode) {
@@ -238,7 +238,7 @@ void rgb_matrix_set_defaults(void) {
 }
 
 void matrix_scan_rgb(void) {
-    if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_active_mode && sync_timer_elapsed32(hypno_timer) > user_config.rgb_matrix_idle_timeout) {
+    if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_active_mode && sync_timer_elapsed32(idle_timer) > user_config.rgb_matrix_idle_timeout) {
         if (user_config.rgb_layer_indicator) {
             rgb_matrix_turn_off_underglow();
         }
