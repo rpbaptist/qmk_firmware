@@ -137,24 +137,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif
 
 #ifdef RGB_MATRIX_ENABLE
-    if (user_config.rgb_matrix_idle_anim) {
-        if (rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
-            rgb_matrix_update_current_mode(user_config.rgb_matrix_active_mode);
-            if (!user_config.rgb_layer_indicator) {
-                rgb_matrix_turn_off_underglow();
-            }
-        }
-    }
+    process_record_user_rgb_matrix(temp_keycode, record);
 #endif
 
     // Filter out the actual keycode from MT and LT keys.
     if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) {
         temp_keycode &= 0xFF;
     }
-
-#ifdef RGB_MATRIX_ENABLE
-    process_record_user_rgb_matrix(temp_keycode, record);
-#endif
 
     switch (temp_keycode) {
         case BSP_DEL:
