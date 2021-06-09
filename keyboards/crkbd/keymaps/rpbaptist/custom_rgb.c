@@ -267,8 +267,6 @@ void keyboard_post_init_user(void) {
 }
 
 bool process_record_user_rgb_matrix(uint16_t keycode, keyrecord_t *record) {
-    idle_timer = sync_timer_read32();
-
     if (user_config.rgb_matrix_idle_anim) {
         if (rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
             rgb_matrix_update_current_mode(user_config.rgb_matrix_active_mode);

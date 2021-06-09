@@ -88,10 +88,6 @@ void render_status(void) {
 #endif
 }
 
-void oled_update_idle_timer(void) {
-    idle_timer = sync_timer_read32();
-}
-
 void oled_task_user(void) {
     if (sync_timer_elapsed32(idle_timer) > OLED_TIMEOUT) {
         oled_off();
