@@ -151,6 +151,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         temp_keycode &= 0xFF;
     }
 
+    #ifdef RGB_MATRIX_ENABLE
+        process_record_user_rgb_matrix(temp_keycode, record);
+    #endif
+
     switch (temp_keycode) {
         case BSP_DEL:
             if (record->event.pressed) {
@@ -214,39 +218,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             return true;
-#ifdef RGB_MATRIX_ENABLE
-        case RGB_RST:
-            if (record->event.pressed) {
-                rgb_matrix_set_defaults();
-                rgb_matrix_enable();
-            }
-            break;
-        case RGB_UND:  // Toggle separate underglow status
-            if (record->event.pressed) {
-                rgb_matrix_toggle_underglow_layer_indicator();
-            }
-            break;
-        case RGB_IDL:  // Toggle idle/heatmap animation
-            if (record->event.pressed) {
-                rgb_matrix_toggle_idle_animation_change();
-            }
-            break;
-        case RGB_ATG:
-            if (record->event.pressed) {
-                rgb_matrix_toggle_active_mode();
-            }
-            break;
-        case RGB_PST:
-            if (record->event.pressed) {
-                rgb_matrix_toggle_simple_passive_mode();
-            }
-            break;
-        case RGB_PCT:
-            if (record->event.pressed) {
-                rgb_matrix_toggle_color_passive_mode();
-            }
-            break;
-#endif
     }
     return true;
 }
