@@ -1,7 +1,7 @@
 #include "rpbaptist.h"
 #include "custom_oled.h"
 
-static uint32_t idle_timer;
+uint32_t oled_idle_timer = 0;
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     if (is_master) {
@@ -90,8 +90,12 @@ void render_status(void) {
 #endif
 }
 
+void oled_update_idle_timer(void) {
+    oled_idle_timer = sync_timer_read32();
+}
+
 void oled_task_user(void) {
-    if (sync_timer_elapsed32(idle_timer) > OLED_TIMEOUT) {
+    if (sync_timer_elapsed32(oled_idle_timer) > OLED_TIMEOUT) {
         oled_off();
         return;
     } else {

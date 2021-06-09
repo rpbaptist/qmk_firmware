@@ -1,6 +1,5 @@
 #include "rpbaptist.h"
 
-static uint32_t idle_timer           = 0;
 bool            alt_tab_used         = false;
 bool            switched_from_gaming = false;
 
@@ -133,7 +132,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     static uint8_t saved_mods   = 0;
     uint16_t       temp_keycode = keycode;
 
-    idle_timer = sync_timer_read32();
+#ifdef OLED_DRIVER_ENABLE
+    oled_update_idle_timer();
+#endif
 
 #ifdef RGB_MATRIX_ENABLE
     if (user_config.rgb_matrix_idle_anim) {
