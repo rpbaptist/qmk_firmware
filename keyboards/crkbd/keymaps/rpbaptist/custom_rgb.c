@@ -1,7 +1,7 @@
 #include "rpbaptist.h"
 #include "rgb_matrix.h"
 
-static uint32_t rgb_idle_timer;
+uint32_t rgb_idle_timer = 0;
 
 const char *rgb_matrix_anim_oled_text(uint8_t mode) {
     switch (mode) {
