@@ -2,15 +2,15 @@
 #include QMK_KEYBOARD_H
 
 #if defined(RGB_MATRIX_ENABLE) || defined(OLED_DRIVER_ENABLE)
-    uint32_t idle_timer;
+uint32_t idle_timer;
 #endif
 
 #if defined(RGB_MATRIX_ENABLE)
-#    include "custom_rgb.h"
+#    include "rgb.h"
 #endif
 
 #if defined(OLED_DRIVER_ENABLE)
-#    include "custom_oled.h"
+#    include "oled.h"
 #endif
 
 enum layer_names {

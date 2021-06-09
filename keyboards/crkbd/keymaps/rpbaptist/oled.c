@@ -1,5 +1,5 @@
 #include "rpbaptist.h"
-#include "custom_oled.h"
+#include "oled.h"
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     if (is_keyboard_master()) {
