@@ -132,7 +132,7 @@ void rgb_matrix_update_mode(uint8_t mode) {
     }
 }
 
-uint8_t get_rgb_matrix_acive_mode(void) {
+uint8_t get_rgb_matrix_active_mode(void) {
     if (user_config.rgb_matrix_idle_anim) {
         return user_config.rgb_matrix_active_mode;
     } else {
@@ -141,7 +141,7 @@ uint8_t get_rgb_matrix_acive_mode(void) {
 }
 
 void rgb_matrix_toggle_active_mode(void) {
-    switch (get_rgb_matrix_acive_mode()) {
+    switch (get_rgb_matrix_active_mode()) {
         case RGB_MATRIX_SOLID_REACTIVE_SIMPLE:
             rgb_matrix_update_mode(RGB_MATRIX_TYPING_HEATMAP);
             break;
