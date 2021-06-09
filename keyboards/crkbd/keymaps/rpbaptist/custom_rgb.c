@@ -236,7 +236,7 @@ void rgb_matrix_set_defaults(void) {
 }
 
 void matrix_scan_rgb(void) {
-    if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_active_mode && sync_timer_elapsed32(rgb_idle_timer) > user_config.rgb_matrix_idle_timeout) {
+    if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_active_mode && sync_timer_elapsed32(idle_timer) > user_config.rgb_matrix_idle_timeout) {
         if (user_config.rgb_layer_indicator) {
             rgb_matrix_turn_off_underglow();
         }
@@ -267,7 +267,7 @@ void keyboard_post_init_user(void) {
 }
 
 bool process_record_user_rgb_matrix(uint16_t keycode, keyrecord_t *record) {
-    rgb_idle_timer = sync_timer_read32();
+    idle_timer = sync_timer_read32();
 
     if (user_config.rgb_matrix_idle_anim) {
         if (rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
