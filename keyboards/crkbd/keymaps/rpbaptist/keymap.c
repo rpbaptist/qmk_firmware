@@ -1,9 +1,7 @@
 #include "rpbaptist.h"
 
-static uint32_t oled_timer           = 0;
-static uint32_t hypno_timer          = 0;
-bool            alt_tab_used         = false;
-bool            switched_from_gaming = false;
+bool alt_tab_used         = false;
+bool switched_from_gaming = false;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_COLEMAKDH] = LAYOUT_split_3x6_3( \
@@ -134,18 +132,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     static uint8_t saved_mods   = 0;
     uint16_t       temp_keycode = keycode;
 
-    oled_timer = sync_timer_read32();
+#if defined(RGB_MATRIX_ENABLE) || defined(OLED_DRIVER_ENABLE)
+    idle_timer = sync_timer_read32();
+#endif
 
 #ifdef RGB_MATRIX_ENABLE
-    if (user_config.rgb_matrix_idle_anim) {
-        hypno_timer = sync_timer_read32();
-        if (rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
-            rgb_matrix_update_current_mode(user_config.rgb_matrix_active_mode);
-            if (!user_config.rgb_layer_indicator) {
-                rgb_matrix_turn_off_underglow();
-            }
-        }
-    }
+    process_record_user_rgb_matrix(temp_keycode, record);
 #endif
 
     // Filter out the actual keycode from MT and LT keys.
@@ -216,39 +208,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             return true;
-#ifdef RGB_MATRIX_ENABLE
-        case RGB_RST:
-            if (record->event.pressed) {
-                rgb_matrix_set_defaults();
-                rgb_matrix_enable();
-            }
-            break;
-        case RGB_UND:  // Toggle separate underglow status
-            if (record->event.pressed) {
-                rgb_matrix_toggle_underglow_layer_indicator();
-            }
-            break;
-        case RGB_IDL:  // Toggle idle/active vs constant animation
-            if (record->event.pressed) {
-                rgb_matrix_toggle_idle_animation_change();
-            }
-            break;
-        case RGB_ATG:
-            if (record->event.pressed) {
-                rgb_matrix_toggle_active_mode();
-            }
-            break;
-        case RGB_PST:
-            if (record->event.pressed) {
-                rgb_matrix_toggle_simple_passive_mode();
-            }
-            break;
-        case RGB_PCT:
-            if (record->event.pressed) {
-                rgb_matrix_toggle_color_passive_mode();
-            }
-            break;
-#endif
     }
     return true;
 }

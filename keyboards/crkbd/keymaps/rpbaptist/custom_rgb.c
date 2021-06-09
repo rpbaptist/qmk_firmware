@@ -1,8 +1,6 @@
 #include "rpbaptist.h"
 #include "rgb_matrix.h"
 
-static uint32_t hypno_timer;
-
 const char *rgb_matrix_anim_oled_text(uint8_t mode) {
     switch (mode) {
         case RGB_MATRIX_TYPING_HEATMAP:
@@ -238,7 +236,7 @@ void rgb_matrix_set_defaults(void) {
 }
 
 void matrix_scan_rgb(void) {
-    if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_active_mode && sync_timer_elapsed32(hypno_timer) > user_config.rgb_matrix_idle_timeout) {
+    if (user_config.rgb_matrix_idle_anim && rgb_matrix_get_mode() == user_config.rgb_matrix_active_mode && sync_timer_elapsed32(idle_timer) > user_config.rgb_matrix_idle_timeout) {
         if (user_config.rgb_layer_indicator) {
             rgb_matrix_turn_off_underglow();
         }
@@ -266,4 +264,50 @@ void keyboard_post_init_user(void) {
     set_single_persistent_default_layer(_COLEMAKDH);
     rgb_matrix_set_defaults();
     rgb_matrix_enable_noeeprom();
+}
+
+bool process_record_user_rgb_matrix(uint16_t keycode, keyrecord_t *record) {
+    if (user_config.rgb_matrix_idle_anim) {
+        if (rgb_matrix_get_mode() == user_config.rgb_matrix_idle_mode) {
+            rgb_matrix_update_current_mode(user_config.rgb_matrix_active_mode);
+            if (!user_config.rgb_layer_indicator) {
+                rgb_matrix_turn_off_underglow();
+            }
+        }
+    }
+
+    switch (keycode) {
+        case RGB_RST:
+            if (record->event.pressed) {
+                rgb_matrix_set_defaults();
+                rgb_matrix_enable();
+            }
+            break;
+        case RGB_UND:  // Toggle separate underglow status
+            if (record->event.pressed) {
+                rgb_matrix_toggle_underglow_layer_indicator();
+            }
+            break;
+        case RGB_IDL:  // Toggle idle/heatmap animation
+            if (record->event.pressed) {
+                rgb_matrix_toggle_idle_animation_change();
+            }
+            break;
+        case RGB_ATG:
+            if (record->event.pressed) {
+                rgb_matrix_toggle_active_mode();
+            }
+            break;
+        case RGB_PST:
+            if (record->event.pressed) {
+                rgb_matrix_toggle_simple_passive_mode();
+            }
+            break;
+        case RGB_PCT:
+            if (record->event.pressed) {
+                rgb_matrix_toggle_color_passive_mode();
+            }
+            break;
+    }
+    return true;
 }
