@@ -175,8 +175,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    endif
 #endif
 
-#define NO_ACTION_ONESHOT
-
 #undef PRODUCT
 #define PRODUCT Corne Keyboard
 
