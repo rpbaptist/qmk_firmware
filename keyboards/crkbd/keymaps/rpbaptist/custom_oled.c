@@ -4,7 +4,7 @@
 static uint32_t oled_timer;
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-    if (is_keyboard_master()) {
+    if (is_master) {
         return OLED_ROTATION_270;
     } else {
         return OLED_ROTATION_180;
@@ -98,7 +98,7 @@ void oled_task_user(void) {
         oled_on();
     }
 
-    if (is_keyboard_master()) {
+    if (is_master) {
         render_status();  // Renders the current keyboard state (layer, lock, caps, scroll, etc)
     } else {
         render_crkbd_logo();
