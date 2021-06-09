@@ -51,9 +51,9 @@ ifeq ($(strip $(THEME)), milkshake)
 endif
 
 ifeq ($(strip $(RGB_MATRIX_ENABLE)), yes)
-	SRC += custom_rgb.c
+	SRC += rgb.c
 endif
 
 ifeq ($(strip $(OLED_DRIVER_ENABLE)), yes)
-	SRC+= custom_oled.c
+	SRC+= oled.c
 endif

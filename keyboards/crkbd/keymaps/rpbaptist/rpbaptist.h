@@ -6,11 +6,11 @@
 #endif
 
 #if defined(RGB_MATRIX_ENABLE)
-#    include "custom_rgb.h"
+#    include "rgb.h"
 #endif
 
 #if defined(OLED_DRIVER_ENABLE)
-#    include "custom_oled.h"
+#    include "oled.h"
 #endif
 
 enum layer_names {
