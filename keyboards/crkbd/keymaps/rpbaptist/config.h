@@ -28,10 +28,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #undef USE_I2C
 #define USE_SERIAL_PD2
 
-#define QMK_ESC_OUTPUT F4  // usually COL
-#define QMK_ESC_INPUT D4   // usually ROW
-#define QMK_LED B0
-
 #define NO_ACTION_ONESHOT
 
 #ifdef RGB_MATRIX_ENABLE
