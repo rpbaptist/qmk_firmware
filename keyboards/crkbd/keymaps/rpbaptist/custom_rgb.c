@@ -269,7 +269,7 @@ void keyboard_post_init_user(void) {
 }
 
 bool process_record_user_rgb_matrix(uint16_t keycode, keyrecord_t *record) {
-    rgb_idle_timer  = sync_timer_read32();
+    rgb_idle_timer = sync_timer_read32();
 
     switch (keycode) {
         case RGB_RST:

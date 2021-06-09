@@ -1,7 +1,7 @@
 #include "rpbaptist.h"
 
-bool            alt_tab_used         = false;
-bool            switched_from_gaming = false;
+bool alt_tab_used         = false;
+bool switched_from_gaming = false;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_COLEMAKDH] = LAYOUT_split_3x6_3( \
@@ -152,9 +152,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         temp_keycode &= 0xFF;
     }
 
-    #ifdef RGB_MATRIX_ENABLE
-        process_record_user_rgb_matrix(temp_keycode, record);
-    #endif
+#ifdef RGB_MATRIX_ENABLE
+    process_record_user_rgb_matrix(temp_keycode, record);
+#endif
 
     switch (temp_keycode) {
         case BSP_DEL:
