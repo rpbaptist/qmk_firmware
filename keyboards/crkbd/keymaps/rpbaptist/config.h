@@ -98,7 +98,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define RGB_MATRIX_ANIMATION_SPEED_SLOW UINT8_MAX / 8
 #    define RGB_MATRIX_ANIMATION_SPEED_SLOWER UINT8_MAX / 24
 
-#    define THEME_HSV 123, 255, 125  // default
+#    if defined(THEME_GODSPEED)
+#        define THEME_HSV 132, 255, 125
+#    elif defined(THEME_GODSPEED_ARES)
+#        define THEME_HSV HSV_ORANGE
+#    elif defined(THEME_LASER)
+#        undef RGB_MATRIX_TYPING_ACTIVE
+#        undef RGB_MATRIX_TYPING_PASSIVE
+#        define THEME_HSV HSV_PURPLE
+#        define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_SOLID_REACTIVE_SIMPLE
+#        define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_CYCLE_LEFT_RIGHT
+#    elif defined(THEME_MILKSHAKE)
+#        undef RGB_MATRIX_TYPING_ACTIVE
+#        undef RGB_MATRIX_TYPING_PASSIVE
+#        define THEME_HSV 30, 255, 218
+#        define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_TYPING_HEATMAP
+#        define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_CYCLE_LEFT_RIGHT
+#    else
+#        define THEME_HSV 123, 255, 125  // default to PULSE
+#    endif
 #endif
 
 #define TAPPING_TERM 140
@@ -120,59 +138,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef OLED_DRIVER_ENABLE
 #    undef SSD1306OLED
 #    define OLED_TIMEOUT 600000
-#    define OLED_FONT_H "glcdfont_pulse.c"  // default
-#endif
-
-#ifdef THEME_GODSPEED
-#    ifdef OLED_DRIVER_ENABLE
-#        undef OLED_FONT_H
-#        define OLED_FONT_H "glcdfont_godspeed.c"
-#    endif
-#    ifdef RGB_MATRIX_ENABLE
-#        undef THEME_HSV
-#        define THEME_HSV 132, 255, 125
-#    endif
-#endif
-
-#ifdef THEME_GODSPEED_ARES
-#    ifdef RGB_MATRIX_ENABLE
-#        undef THEME_HSV
-#        define THEME_HSV HSV_ORANGE
-#    endif
-#    ifdef OLED_DRIVER_ENABLE
-#        undef OLED_FONT_H
-#        define OLED_FONT_H "glcdfont_godspeed.c"
-#    endif
-#endif
-
-#ifdef THEME_LASER
-#    ifdef RGB_MATRIX_ENABLE
-#        undef THEME_HSV
-#        undef RGB_MATRIX_TYPING_ACTIVE
-#        undef RGB_MATRIX_TYPING_PASSIVE
-#        define THEME_HSV HSV_PURPLE
-#        define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_SOLID_REACTIVE_SIMPLE
-#        define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_CYCLE_LEFT_RIGHT
-#    endif
-#    ifdef OLED_DRIVER_ENABLE
-#        undef OLED_FONT_H
-#        define OLED_FONT_H "glcdfont_laser.c"
-#    endif
-#endif
-
-#ifdef THEME_MILKSHAKE
-#    ifdef RGB_MATRIX_ENABLE
-#        undef THEME_HSV
-#        undef RGB_MATRIX_TYPING_ACTIVE
-#        undef RGB_MATRIX_TYPING_PASSIVE
-#        define THEME_HSV 30, 255, 218
-#        define RGB_MATRIX_TYPING_ACTIVE RGB_MATRIX_TYPING_HEATMAP
-#        define RGB_MATRIX_TYPING_PASSIVE RGB_MATRIX_CYCLE_LEFT_RIGHT
-#    endif
-#    ifdef OLED_DRIVER_ENABLE
-#        undef OLED_FONT_H
-#        define OLED_FONT_H "glcdfont_milkshake.c"
-#    endif
+#    define OLED_FONT_H "glcdfont_multi.c"
 #endif
 
 #undef PRODUCT
