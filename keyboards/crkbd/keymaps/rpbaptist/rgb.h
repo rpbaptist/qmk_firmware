@@ -26,7 +26,7 @@ bool        rgb_matrix_mode_active(uint8_t mode);
 void        rgb_matrix_update_current_mode(uint8_t mode);
 void        rgb_matrix_update_dynamic_mode(uint8_t mode);
 void        rgb_matrix_update_mode(uint8_t mode);
-uint8_t     get_rgb_matrix_acive_mode(void);
+uint8_t     get_rgb_matrix_active_mode(void);
 void        rgb_matrix_toggle_active_mode(void);
 uint8_t     get_rgb_matrix_idle_mode(void);
 void        rgb_matrix_toggle_simple_passive_mode(void);
