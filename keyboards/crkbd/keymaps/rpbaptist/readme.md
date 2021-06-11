@@ -1,6 +1,6 @@
 # Corne keyboard layout
 
-This is my highly personalized CRKBD layout. I use Colemak DHm as main typing layer. I use this keyboard and layout in my daily programming job and for everything at home, including gaming.
+This is my highly personalized CRKBD layout. I use Colemak DH as main typing layer. I use this keyboard and layout in my daily programming job and for everything at home, including gaming.
 
 This keymap is the result of an evolution from Ultimate Hacking Keyboard to Iris, to Corne. It took many iterations and changes and only now I feel this is ready to be merged into the main QMK repository, because I think further changes will be minor. This is my 1.0 release so to speak.
 
