@@ -30,6 +30,8 @@ BOOTLOADER       = qmk-dfu
 
 OLED_DRIVER_ENABLE = yes
 
+DEBOUNCE_TYPE = sym_eager_pk
+
 ifeq ($(strip $(THEME)), godspeed)
     OPT_DEFS += -DTHEME_GODSPEED
 endif
