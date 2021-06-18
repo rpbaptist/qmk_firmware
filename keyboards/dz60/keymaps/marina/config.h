@@ -20,4 +20,4 @@
 #undef DEBOUNCE
 #define DEBOUNCE 30
 
-#define DEBOUNCE_TYPE "sym_eager_pk"
+#define DEBOUNCE_TYPE sym_eager_pk
